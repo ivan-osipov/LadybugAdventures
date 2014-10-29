@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<managementProgram type="zvenigorodskyTask" programCreator="vasya" programName="myFirstProgram" mapAddress="customMap">
+	<move>UP</move>
+	<move>LEFT</move>
+	<cycle iterations = "3">
+		<move>UP</move>
+	</cycle>
+	<push></push><!-- Толкать кубик в направлении движения -->
+	<jump></jump>
+	<cycle iterations = "2">
+		<move>LEFT</move>
+	</cycle>
+	<occupy></occupy><!-- занять "занятую клетку" -->
+	
+</managementProgram>
