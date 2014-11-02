@@ -20,6 +20,7 @@ public class App
 {
     public static void main( String[] args )
     {
+    	System.out.print("sdfwe");
     	File file = new File("C:/Users/osipov/SOFT/eclipse/workspaces/LUNA workspace/zvenigorodskyTask/src/main/resources/managementProgram.xml");
     	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
     	DocumentBuilder dBuilder;
