@@ -5,11 +5,11 @@
 	<cycle iterations = "3">
 		<move>UP</move>
 	</cycle>
-	<push></push><!-- Толкать кубик в направлении движения -->
-	<jump></jump>
+	<push>LEFT</push><!-- Толкать кубик в направлении движения -->
+	<jump>RIGHT</jump>
 	<cycle iterations = "2">
 		<move>LEFT</move>
 	</cycle>
-	<occupy></occupy><!-- занять "занятую клетку" -->
-	
+<!-- 	<occupy></occupy>занять "занятую клетку" -->
+
 </managementProgram>
