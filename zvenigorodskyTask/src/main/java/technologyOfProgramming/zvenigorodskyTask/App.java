@@ -11,7 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgramImpl;
+import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 
 /**
  * Hello world!

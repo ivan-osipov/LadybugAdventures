@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.entities;
+package technologyOfProgramming.zvenigorodskyTask.data;
 
 import java.text.MessageFormat;
 import java.util.LinkedList;
@@ -8,20 +8,21 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import technologyOfProgramming.zvenigorodskyTask.interfaces.ManagementProgram;
+import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
+import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
 
-public class ManagementProgramImpl implements ManagementProgram{
+public class FileSystemManager implements StorageManager{
 	private static final String MAP_ADDRESS_DEFAULT = "default";
-	private static final String PROGRAM_NAME_DEFAULT = "noname"; 
+	private static final String PROGRAM_NAME_DEFAULT = "noname";
 	private static final String PROGRAM_CREATOR = "anonym";
-	
-	private List<ComandType> comandList;
-	
+
+	private List<Command> comandList;
+
 	private String mapAddress;
 	private String programName;
 	private String programCreator;
 	private boolean validate;
-	public ManagementProgramImpl(){
+	public FileSystemManager(){
 		mapAddress = MAP_ADDRESS_DEFAULT;
 		programName = PROGRAM_NAME_DEFAULT;
 		programCreator = PROGRAM_CREATOR;
@@ -46,12 +47,17 @@ public class ManagementProgramImpl implements ManagementProgram{
 //		System.out.println( list.item(0).getAttributes().getNamedItem(name));
 		validate = true;
 	}
-	
+
 	public Document getProgram() {
 		return null;
 	}
-	public List<ComandType> getComandList() {
+	public List<Command> getComandList() {
 		return comandList;
+	}
+	@Override
+	public ManagementProgram getManagementProgramm() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
