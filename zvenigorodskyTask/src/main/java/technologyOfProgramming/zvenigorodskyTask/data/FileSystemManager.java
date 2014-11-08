@@ -1,63 +1,70 @@
 package technologyOfProgramming.zvenigorodskyTask.data;
 
-import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.File;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 
-public class FileSystemManager implements StorageManager{
-	private static final String MAP_ADDRESS_DEFAULT = "default";
-	private static final String PROGRAM_NAME_DEFAULT = "noname";
-	private static final String PROGRAM_CREATOR = "anonym";
-
-	private List<Command> comandList;
-
-	private String mapAddress;
-	private String programName;
-	private String programCreator;
-	private boolean validate;
-	public FileSystemManager(){
-		mapAddress = MAP_ADDRESS_DEFAULT;
-		programName = PROGRAM_NAME_DEFAULT;
-		programCreator = PROGRAM_CREATOR;
-		comandList = new LinkedList<>();
-		validate = false;
-	}
-	public boolean isValidate() {
-		return validate;
-	}
-	public void setProgram(Document doc) {
-		Node firstNode = doc.getFirstChild();
-		if(!firstNode.getAttributes().getNamedItem("type").getTextContent().equals("zvenigorodskyTask"))
-			return;
-		mapAddress = firstNode.getAttributes().getNamedItem("mapAddress").getTextContent();
-		programName = firstNode.getAttributes().getNamedItem("programName").getTextContent();
-		programCreator = firstNode.getAttributes().getNamedItem("programCreator").getTextContent();
-		//TODO Проход и соханение всех вложенных блоков в список соманд
-//		System.out.println(MessageFormat.format("{0} - {1} - {2}", mapAddress, programName, programCreator));
-//		for(int i =0; i< list.getLength();i++){
-//			System.out.println(list.item(i).getLocalName());
-//		}
-//		System.out.println( list.item(0).getAttributes().getNamedItem(name));
-		validate = true;
+public class FileSystemManager{
+	private static final String PROGRAM_ADDRESS = "/managementProgram.xml";
+	private static String programAddress;
+	private static String mapAddress;
+	static{
+		programAddress = PROGRAM_ADDRESS;
 	}
 
-	public Document getProgram() {
-		return null;
+	public static  ManagementProgram getManagementProgramm() throws StorageException {
+		try {
+            JAXBContext context = JAXBContext.newInstance(ManagementProgram.class);
+            Unmarshaller un = context.createUnmarshaller();
+            ManagementProgram mgp = (ManagementProgram) un.unmarshal(new File(programAddress));
+            mapAddress = mgp.getMapAddress();
+            return mgp;
+        } catch (JAXBException e) {
+            throw new StorageException();
+        }
 	}
-	public List<Command> getComandList() {
-		return comandList;
+	public static void saveManagementProgram(ManagementProgram program) throws StorageException{
+		try {
+            JAXBContext context = JAXBContext.newInstance(ManagementProgram.class);
+            Marshaller m = context.createMarshaller();
+//            for pretty-print XML in JAXB
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+//             Write to System.out for debugging
+//             m.marshal(program, System.out);
+
+//            Write to File
+            m.marshal(program, new File(programAddress));
+        } catch (JAXBException e) {
+            throw new StorageException();
+        }
 	}
-	@Override
-	public ManagementProgram getManagementProgramm() {
-		// TODO Auto-generated method stub
-		return null;
+	public static void saveManagementProgram(ManagementProgram program, String programAddress) throws StorageException{
+		FileSystemManager.programAddress = programAddress;
+		saveManagementProgram(program);
 	}
+//	public static void saveCommand(Command command){
+//		try {
+//            JAXBContext context = JAXBContext.newInstance(Cycle.class);
+//            Marshaller m = context.createMarshaller();
+//            //for pretty-print XML in JAXB
+//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+//
+////             Write to System.out for debugging
+//             m.marshal(command, System.out);
+//
+//            // Write to File
+////            m.marshal(program, new File("/program.xml"));
+//        } catch (JAXBException e) {
+//            e.printStackTrace();
+//        }
+//	}
 
 }

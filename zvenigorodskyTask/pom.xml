@@ -57,6 +57,11 @@
 		<artifactId>x86</artifactId>
 		<version>3.3.0-v3346</version>
 	</dependency>
+<!-- 	<dependency> -->
+<!-- 		<groupId>com.sun.xml.bind</groupId> -->
+<!-- 		<artifactId>jaxb-impl</artifactId> -->
+<!-- 		<version>2.2.11</version> -->
+<!-- 	</dependency> -->
 
 
   </dependencies>
