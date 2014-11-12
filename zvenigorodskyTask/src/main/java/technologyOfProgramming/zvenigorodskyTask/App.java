@@ -2,6 +2,7 @@ package technologyOfProgramming.zvenigorodskyTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,33 +11,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgramImpl;
+import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 
 /**
  * Hello world!
  *
  */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
-    	System.out.print("sdfwe");
-    	System.out.print("sdfwes");
-    	File file = new File("C:/Users/osipov/SOFT/eclipse/workspaces/LUNA workspace/zvenigorodskyTask/src/main/resources/managementProgram.xml");
-    	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-    	DocumentBuilder dBuilder;
-		try {
-			dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(file);
-//			doc.getDocumentElement().normalize(); 
-			System.out.println(doc.getChildNodes().getLength());
-			new ManagementProgramImpl().setProgram(doc);
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	 
-    	
+    	System.out.println("Hello,World!");
+    	System.out.println("Bye!");
+
+//		sample: How get file from resources
+//		File file = new File(App.class.getResource("/programs/managementProgram.xml").getPath());
+//		System.out.println(file.exists());
     }
 }
