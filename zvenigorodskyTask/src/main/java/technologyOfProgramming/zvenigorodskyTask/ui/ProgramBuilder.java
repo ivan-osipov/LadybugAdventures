@@ -19,7 +19,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 
-public class programBuilder extends Composite {
+public class ProgramBuilder extends Composite {
 	private Text text;
 	private Text text_1;
 
@@ -29,7 +29,7 @@ public class programBuilder extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public programBuilder(Composite parent, int style) {
+	public ProgramBuilder(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new RowLayout(SWT.HORIZONTAL));
 

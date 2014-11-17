@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 
-public class gameFieldBuilder {
+public class GameFieldBuilder {
 
 	protected Shell shell;
 
@@ -18,7 +18,7 @@ public class gameFieldBuilder {
 	 */
 	public static void main(String[] args) {
 		try {
-			gameFieldBuilder window = new gameFieldBuilder();
+			GameFieldBuilder window = new GameFieldBuilder();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();

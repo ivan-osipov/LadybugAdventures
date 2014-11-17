@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
 
-public class mainFrame {
+public class MainFrame {
 
 	protected Shell shell;
 
@@ -15,7 +15,7 @@ public class mainFrame {
 	 */
 	public static void main(String[] args) {
 		try {
-			mainFrame window = new mainFrame();
+			MainFrame window = new MainFrame();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
