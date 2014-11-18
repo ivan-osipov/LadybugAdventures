@@ -15,14 +15,14 @@ public class GameField implements Serializable {
 	//2 - кубик
 	//3 - ямка
 	//4 - занятая клетка
-	private GameObjects[][] field;
-	private enum GameObjects {LADYBUG, EMPTY_CELL, BLOCK, HOLE, OCCUPIED_CELL}
+	private GameObject[][] field;
+	private enum GameObject {LADYBUG, EMPTY_CELL, BLOCK, HOLE, OCCUPIED_CELL}
 	
-	public GameObjects[][] getField() {
+	public GameObject[][] getField() {
 		return field;
 	}
 	
-	public GameObjects getType (int x, int y) {
+	public GameObject getType (int x, int y) {
 		return field[y][x];
 	}
 	
@@ -35,14 +35,14 @@ public class GameField implements Serializable {
 	}
 	
 	public GameField(int width, int height) {
-		field = new GameObjects[height][width];
+		field = new GameObject[height][width];
 		cleanField();
 	}
 	
 	public boolean isControlObjectOnField() {
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeigh(); j++) {
-				if (field[j][i] == GameObjects.LADYBUG) {
+				if (field[j][i] == GameObject.LADYBUG) {
 					return true;
 				}
 			}
@@ -50,12 +50,12 @@ public class GameField implements Serializable {
 		return false;
 	}
 	
-	public void addObject(GameObjects object, int x, int y) {
+	public void addObject(GameObject object, int x, int y) {
 		//проверку на выходы за границы поля не делаю, ибо (как мне помнится) добавление
 		//элемента на поле происходит по клику мыши на соответствующей ячейке поля
-		if (object == GameObjects.LADYBUG) {
+		if (object == GameObject.LADYBUG) {
 			if (!isControlObjectOnField()) {	//Если на поле уже есть объект управления, то ничего не добавляется. Можно придумать код ошибки.
-				field[y][x] = GameObjects.LADYBUG;
+				field[y][x] = GameObject.LADYBUG;
 			}
 		}
 		else {
@@ -64,13 +64,13 @@ public class GameField implements Serializable {
 	}
 	
 	public void removeObject(int x, int y) {
-		field[y][x] = GameObjects.EMPTY_CELL;
+		field[y][x] = GameObject.EMPTY_CELL;
 	}
 	
 	public void cleanField() {
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeigh(); j++) {
-				field[j][i] = GameObjects.EMPTY_CELL;
+				field[j][i] = GameObject.EMPTY_CELL;
 			}
 		}
 	}
@@ -79,17 +79,17 @@ public class GameField implements Serializable {
 		Random random = new Random();
 		int currentObjectAmount;
 		int objectMaxAmount = (int)(getWidth() * getHeigh() * MAX_OBJECT_PERCENT); //константа, обеспечивающая заполнение поля объектом каждого типа не более, чем на 20%
-		field[random.nextInt(getHeigh())][random.nextInt(getWidth())] = GameObjects.LADYBUG; //ставим одну божью коровку
+		field[random.nextInt(getHeigh())][random.nextInt(getWidth())] = GameObject.LADYBUG; //ставим одну божью коровку
 		int currentX = random.nextInt(getWidth());
 		int currentY = random.nextInt(getHeigh());
 		for (int i = 2; i < 5; i++) {
 			currentObjectAmount = random.nextInt(objectMaxAmount + 1);
 			for (int j = 0; j < currentObjectAmount; j++) {
-				while (field[currentY][currentX] != GameObjects.EMPTY_CELL) {
+				while (field[currentY][currentX] != GameObject.EMPTY_CELL) {
 					currentX = random.nextInt(getWidth());
 					currentY = random.nextInt(getHeigh());
 				}
-				field[currentY][currentX] = GameObjects.values()[i];
+				field[currentY][currentX] = GameObject.values()[i];
 			}
 		}
 	}
