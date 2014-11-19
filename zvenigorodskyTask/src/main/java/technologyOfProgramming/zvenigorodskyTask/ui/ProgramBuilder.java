@@ -6,7 +6,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.SWT;
 
-import swing2swt.layout.BoxLayout;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
@@ -14,14 +13,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.layout.RowData;
-import swing2swt.layout.FlowLayout;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 
-public class programBuilder extends Composite {
+public class ProgramBuilder extends Composite {
 	private Text text;
 	private Text text_1;
 
@@ -31,7 +29,7 @@ public class programBuilder extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public programBuilder(Composite parent, int style) {
+	public ProgramBuilder(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new RowLayout(SWT.HORIZONTAL));
 
@@ -108,7 +106,6 @@ public class programBuilder extends Composite {
 
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setBounds(111, 10, 51, 26);
-		composite_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		text = new Text(composite_1, SWT.BORDER);
 		text.setText("1");
