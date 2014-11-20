@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class GameField implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private final float MAX_OBJECT_PERCENT = 0.2f;
 	private static final long serialVersionUID = 1L;
@@ -16,29 +16,29 @@ public class GameField implements Serializable {
 	//3 - ямка
 	//4 - занятая клетка
 	private GameObject[][] field;
-	private enum GameObject {LADYBUG, EMPTY_CELL, BLOCK, HOLE, OCCUPIED_CELL}
-	
+	public enum GameObject {LADYBUG, EMPTY_CELL, BLOCK, HOLE, OCCUPIED_CELL}
+
 	public GameObject[][] getField() {
 		return field;
 	}
-	
+
 	public GameObject getType (int x, int y) {
 		return field[y][x];
 	}
-	
+
 	public int getWidth() {
 		return field[0].length;
 	}
-	
+
 	public int getHeigh() {
 		return field.length;
 	}
-	
+
 	public GameField(int width, int height) {
 		field = new GameObject[height][width];
 		cleanField();
 	}
-	
+
 	public boolean isControlObjectOnField() {
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeigh(); j++) {
@@ -49,7 +49,7 @@ public class GameField implements Serializable {
 		}
 		return false;
 	}
-	
+
 	public void addObject(GameObject object, int x, int y) {
 		//проверку на выходы за границы поля не делаю, ибо (как мне помнится) добавление
 		//элемента на поле происходит по клику мыши на соответствующей ячейке поля
@@ -62,11 +62,11 @@ public class GameField implements Serializable {
 			field[y][x] = object;
 		}
 	}
-	
+
 	public void removeObject(int x, int y) {
 		field[y][x] = GameObject.EMPTY_CELL;
 	}
-	
+
 	public void cleanField() {
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeigh(); j++) {
@@ -74,7 +74,7 @@ public class GameField implements Serializable {
 			}
 		}
 	}
-	
+
 	public void automaticCompositionField() {
 		Random random = new Random();
 		int currentObjectAmount;

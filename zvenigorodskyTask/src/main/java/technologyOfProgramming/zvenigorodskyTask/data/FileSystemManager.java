@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
 import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 
@@ -74,13 +75,13 @@ public class FileSystemManager{
 				throw new StorageException();
 			}
 	}
-	public static Serializable getGameField() throws StorageException{
+	public static GameField getGameField() throws StorageException{
 		File gameFieldFile = new File(mapAddress);
 		if(!gameFieldFile.exists())
 			throw new StorageException();
 		try(FileInputStream fileInStream = new FileInputStream(mapAddress);
 			ObjectInputStream serialInputStream = new ObjectInputStream(fileInStream);){
-			return (Serializable) serialInputStream.readObject();
+			return (GameField) serialInputStream.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			throw new StorageException();
 		}
