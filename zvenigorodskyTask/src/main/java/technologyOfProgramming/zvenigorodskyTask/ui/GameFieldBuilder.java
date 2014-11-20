@@ -7,8 +7,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.wb.swt.SWTResourceManager;
 
-public class gameFieldBuilder {
+public class GameFieldBuilder {
 
 	protected Shell shell;
 
@@ -18,7 +19,7 @@ public class gameFieldBuilder {
 	 */
 	public static void main(String[] args) {
 		try {
-			gameFieldBuilder window = new gameFieldBuilder();
+			GameFieldBuilder window = new GameFieldBuilder();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,6 +53,7 @@ public class gameFieldBuilder {
 		composite.setBounds(10, 10, 257, 218);
 
 		Canvas canvas = new Canvas(composite, SWT.NONE);
+		canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		canvas.setBounds(0, 0, 257, 220);
 
 		Group group = new Group(shell, SWT.NONE);
