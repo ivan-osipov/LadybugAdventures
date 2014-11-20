@@ -8,6 +8,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.SlickException;
 
 public class MainFrame {
 
@@ -65,6 +67,19 @@ public class MainFrame {
 		button_1.setBounds(51, 132, 298, 60);
 
 		Button button_2 = new Button(shell, SWT.NONE);
+		button_2.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				try {
+					AppGameContainer managementProgramViewer = new AppGameContainer(new ProgramViewer("Программа управления"));
+					managementProgramViewer.setDisplayMode(800, 600, false);
+					managementProgramViewer.start();
+				} catch (SlickException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		button_2.setText("Выполнить программу управления");
 		button_2.setBounds(51, 231, 298, 60);
 
