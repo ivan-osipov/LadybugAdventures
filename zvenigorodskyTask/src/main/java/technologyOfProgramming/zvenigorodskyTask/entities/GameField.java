@@ -1,7 +1,10 @@
 package technologyOfProgramming.zvenigorodskyTask.entities;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.Random;
+
+import technologyOfProgramming.zvenigorodskyTask.entities.enums.GameObject;
 
 public class GameField implements Serializable {
 	/**
@@ -9,14 +12,8 @@ public class GameField implements Serializable {
 	 */
 	private final float MAX_OBJECT_PERCENT = 0.2f;
 	private static final long serialVersionUID = 1L;
-	//предлагаю использовать следующую систему кодов объектов
-	//0 - пустая клетка
-	//1 - божья коровка
-	//2 - кубик
-	//3 - ямка
-	//4 - занятая клетка
+	
 	private GameObject[][] field;
-	private enum GameObject {LADYBUG, EMPTY_CELL, BLOCK, HOLE, OCCUPIED_CELL}
 	
 	public GameObject[][] getField() {
 		return field;
@@ -32,6 +29,17 @@ public class GameField implements Serializable {
 	
 	public int getHeigh() {
 		return field.length;
+	}
+	
+	public Point getControlObjectCoordinates() {
+		for (int i = 0; i < getWidth(); i++) {
+			for (int j = 0; j < getHeigh(); j++) {
+				if (field[j][i] == GameObject.LADYBUG) {
+					return new Point(j, i);
+				}
+			}
+		}
+		return new Point (-1,-1);
 	}
 	
 	public GameField(int width, int height) {
@@ -76,6 +84,7 @@ public class GameField implements Serializable {
 	}
 	
 	public void automaticCompositionField() {
+		cleanField();
 		Random random = new Random();
 		int currentObjectAmount;
 		int objectMaxAmount = (int)(getWidth() * getHeigh() * MAX_OBJECT_PERCENT); //константа, обеспечивающая заполнение поля объектом каждого типа не более, чем на 20%

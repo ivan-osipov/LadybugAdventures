@@ -30,12 +30,31 @@
 	         <configuration>
 	          <archive>
 	            <manifest>
-<!-- 	              <addClasspath>true</addClasspath> -->
+ 	              <addClasspath>true</addClasspath>
+				  <classpathPrefix>lib/</classpathPrefix>
 	              <mainClass>technologyOfProgramming.zvenigorodskyTask.App</mainClass>
 	            </manifest>
 	          </archive>
 	        </configuration>
       </plugin>
+      <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<executions>
+				<execution>
+					<id>copy</id>
+					<phase>install</phase>
+					<goals>
+						<goal>copy-dependencies</goal>
+					</goals>
+					<configuration>
+						<outputDirectory>
+						  ${project.build.directory}/lib
+						</outputDirectory>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
       </plugins>
   </build>
 
@@ -63,7 +82,24 @@
       <artifactId>org.eclipse.ui.workbench</artifactId>
       <version>3.7.1.v20120104-1859</version>
    </dependency>
-
+	<!-- 2D -->
+<!-- 	<dependency> -->
+<!-- 		<groupId>org.lwjgl.lwjgl</groupId> -->
+<!-- 		<artifactId>lwjgl</artifactId> -->
+<!-- 		<version>2.9.1</version> -->
+<!-- 	</dependency> -->
+	<dependency>
+		<groupId>org.lwjgl.lwjgl</groupId>
+		<artifactId>lwjgl_util</artifactId>
+		<version>2.9.0</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.slick2d</groupId>
+		<artifactId>slick2d-core</artifactId>
+		<version>1.0.1</version>
+	</dependency>
+	
 
   </dependencies>
   <repositories>
