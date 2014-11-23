@@ -39,8 +39,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+//import org.eclipse.core.databinding.observable.Realm;
+//import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -76,9 +76,9 @@ public class ProgramBuilderFrame implements Observer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Display display = Display.getDefault();
-		Realm.runWithDefault(SWTObservables.getRealm(display), new Runnable() {
-			public void run() {
+//		Display display = Display.getDefault();
+//		Realm.runWithDefault(SWTObservables.getRealm(display), new Runnable() {
+//			public void run() {
 				try {
 
 					FileSystemManager.saveGameField(FieldFactory
@@ -90,8 +90,8 @@ public class ProgramBuilderFrame implements Observer {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-		});
+//			}
+//		});
 	}
 
 
