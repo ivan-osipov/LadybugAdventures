@@ -53,7 +53,7 @@ public class Cycle implements Command {
 		for(int i = 0; i < commandList.size();i++)
 			builder.append(commandList.get(i).toString());
 		return builder.toString();*/
-		return MessageFormat.format("Цикл. Повторится {0} раз(а). Операций в цикле {1}", iterations, commandList.size());
+		return MessageFormat.format("Цикл. Повторится {0} раз(а). Команд внутри {1}", iterations, commandList.size());
 	}
 
 }

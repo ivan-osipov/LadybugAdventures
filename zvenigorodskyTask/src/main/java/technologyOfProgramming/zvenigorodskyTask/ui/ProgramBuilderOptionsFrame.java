@@ -109,9 +109,9 @@ public class ProgramBuilderOptionsFrame {
 						MessageDialog.openWarning(shell, "Внимание!", "Укажите игровую карту на которой\nбудет выполняться программа!");
 					else{
 						ManagementProgram mp = new ManagementProgram(authorName.getText(), gameFieldPath.getText());
-						ProgramBuilderFrame programBuilder = new ProgramBuilderFrame();
+						ProgramBuilderFrame programBuilder = new ProgramBuilderFrame(mp);
 
-						programBuilder.open(mp);
+						programBuilder.open();
 
 					}
 

@@ -1,12 +1,15 @@
 package technologyOfProgramming.zvenigorodskyTask.ui;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.entities.CommandImpl;
@@ -17,14 +20,19 @@ import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
 import technologyOfProgramming.zvenigorodskyTask.entities.enums.Direction;
 import technologyOfProgramming.zvenigorodskyTask.factories.FieldFactory;
 import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewerFrame;
+import technologyOfProgramming.zvenigorodskyTask.util.CommandConverter;
 
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
@@ -50,7 +58,18 @@ public class ProgramBuilderFrame implements Observer {
 	// private Direction currentDirection = null;
 	private CommandImpl currentCommand;
 	private WorkMode currentWorkMode;
-
+	private Command[] currentCycle;
+	private int stringNum = 0;
+	public ProgramBuilderFrame(ManagementProgram program){
+		currentCommand = new CommandImpl();
+		currentWorkMode = WorkMode.ADD_COMMAND;
+		this.program = program;
+		this.program.addObserver(this);
+		currentCycle = new Command[9];
+		for(int i = 0; i<currentCycle.length;i++){
+			currentCycle[i] = null;
+		}
+	}
 	/**
 	 * Launch the application.
 	 *
@@ -63,11 +82,11 @@ public class ProgramBuilderFrame implements Observer {
 				try {
 
 					FileSystemManager.saveGameField(FieldFactory
-							.createFieldAutomatically(4, 5));
+							.createFieldAutomatically(13, 16));
 					ManagementProgram mp = new ManagementProgram("NONAME",
 							"C:/defaultMap.map");
-					ProgramBuilderFrame window = new ProgramBuilderFrame();
-					window.open(mp);
+					ProgramBuilderFrame window = new ProgramBuilderFrame(mp);
+					window.open();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -75,37 +94,30 @@ public class ProgramBuilderFrame implements Observer {
 		});
 	}
 
-	public void open(ManagementProgram program) {
-		currentCommand = new CommandImpl();
-		currentWorkMode = WorkMode.ADD_COMMAND;
-		this.program = program;
-		this.program.addObserver(this);
-
-		open();
-	}
 
 	/**
 	 * Open the window.
 	 */
-	private void open() {
+	public void open() {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
-		shell.setSize(505, 510);
+		shell.setSize(593, 510);
 		shell.setText("Редактор программы управления");
 		final List<Button> directionBts = new ArrayList<>();
 		final List<Button> actionBts = new ArrayList<>();
 
+		final Group cycleGroup = new Group(shell, SWT.NONE);
+		final Spinner cycleSpinner = new Spinner(cycleGroup, SWT.BORDER);
+
 		final Label modeLabel = new Label(shell, SWT.NONE);
 		modeLabel.setBounds(419, 452, 75, 30);
 		modeLabel.setText("добавления\r\nкоманды");
-
-		Group cycleGroup = new Group(shell, SWT.NONE);
 		final Button deleteButton = new Button(shell, SWT.TOGGLE);
 		final Button addCycleButton = new Button(cycleGroup, SWT.TOGGLE);
 
 		final Group directionGroup = new Group(shell, SWT.NONE);
 		directionGroup.setText("Направление движения");
-		directionGroup.setBounds(248, 10, 248, 119);
+		directionGroup.setBounds(329, 10, 248, 119);
 
 		Button upButton = new Button(directionGroup, SWT.TOGGLE);
 		upButton.addSelectionListener(new SelectionAdapter() {
@@ -187,7 +199,7 @@ public class ProgramBuilderFrame implements Observer {
 
 		Group actionTypeGroup = new Group(shell, SWT.NONE);
 		actionTypeGroup.setText("Тип команды");
-		actionTypeGroup.setBounds(248, 135, 248, 82);
+		actionTypeGroup.setBounds(329, 135, 248, 82);
 
 		Button stepButton = new Button(actionTypeGroup, SWT.TOGGLE);
 		Image stepImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
@@ -277,13 +289,34 @@ public class ProgramBuilderFrame implements Observer {
 							MessageDialog.openWarning(shell, "Внимание",
 									"Команда не может быть удалена");
 					break;
+				case ADD_CYCLE:
+					List<Command> cycleCommandList = new LinkedList<>();
+					for(int i=0;i<currentCycle.length;i++){
+						if(currentCycle[i]==null)
+							continue;
+						cycleCommandList.add(currentCycle[i]);
+						currentCycle[i] = null;
+					}
+					if(cycleCommandList.isEmpty()){
+						MessageDialog.openWarning(shell, "Внимание",
+								"Нельзя добавлять пустой цикл!");
+						break;
+					}
+					Cycle cycle = new Cycle(cycleSpinner.getIncrement(), cycleCommandList);
+					if (!program.insertCommand(listViewer.getList()
+							.getSelectionIndex(),cycle)) {
+						MessageDialog.openWarning(shell, "Внимание",
+								"Цикл не может быть добавлен");
+					}
+					cycleGroup.redraw(0,0,250,250,true);
+					break;
 				default:
 					break;
 				}
 			}
 		});
 		listComponent.setLocation(10, 10);
-		listComponent.setSize(232, 436);
+		listComponent.setSize(313, 436);
 		listComponent.setItems(new String[] {"Список команд пуст"});
 		directionBts.add(upButton);
 		directionBts.add(downButton);
@@ -295,67 +328,57 @@ public class ProgramBuilderFrame implements Observer {
 		actionBts.add(pushButton);
 
 		cycleGroup.setText("Цикл");
-		cycleGroup.setBounds(248, 221, 242, 225);
+		cycleGroup.setBounds(329, 221, 242, 225);
+		/*
+		 * Инициализация ячеек цикла
+		 */
+		for(int i = 0; i<3;i++)
+			for(int j = 0; j<3; j++){
+				final int numberInArray = j*3+i;
+				final Canvas canvas = new Canvas(cycleGroup, SWT.BORDER);
+				canvas.setBackground(SWTResourceManager
+						.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
+				canvas.setBounds(38+i*54, 65 + j*54, 45, 45);
+//				gc.di
+				//canvas.redraw();
+				canvas.addPaintListener(new PaintListener() {
 
-		Composite composite = new Composite(cycleGroup, SWT.BORDER);
-		composite.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite.setBounds(38, 69, 45, 45);
-		composite.setLayout(new GridLayout(1, false));
+					@Override
+					public void paintControl(PaintEvent e) {
+						if(currentCycle[numberInArray]!=null){
+							e.gc.drawImage(CommandConverter.fromTypeToImage(currentCycle[numberInArray].getType(),25, 25), 0, 0);
+							e.gc.drawImage(CommandConverter.fromDirectionToImage(((CommandImpl)currentCycle[numberInArray]).getDirection(), 15, 15),20,20);
 
-		Composite composite_1 = new Composite(cycleGroup, SWT.BORDER);
-		composite_1.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_1.setBounds(89, 69, 45, 45);
-		composite_1.setLayout(new GridLayout(1, false));
+						}
+					}
+				});
+				canvas.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseUp(MouseEvent e) {
 
-		Composite composite_2 = new Composite(cycleGroup, SWT.BORDER);
-		composite_2.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_2.setBounds(140, 69, 45, 45);
-		composite_2.setLayout(new GridLayout(1, false));
+						switch (currentWorkMode) {
+							case ADD_COMMAND:
+								if(currentCommand.getDirection()!=null &&currentCommand.getType()!=null){
+									currentCycle[numberInArray] = new CommandImpl(currentCommand.getDirection(),currentCommand.getType());
+								}
 
-		Composite composite_3 = new Composite(cycleGroup, SWT.BORDER);
-		composite_3.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_3.setBounds(38, 121, 45, 45);
-		composite_3.setLayout(new GridLayout(1, false));
-
-		Composite composite_4 = new Composite(cycleGroup, SWT.BORDER);
-		composite_4.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_4.setBounds(89, 121, 45, 45);
-		composite_4.setLayout(new GridLayout(1, false));
-
-		Composite composite_5 = new Composite(cycleGroup, SWT.BORDER);
-		composite_5.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_5.setBounds(140, 121, 45, 45);
-		composite_5.setLayout(new GridLayout(1, false));
-
-		Composite composite_6 = new Composite(cycleGroup, SWT.BORDER);
-		composite_6.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_6.setBounds(38, 170, 45, 45);
-		composite_6.setLayout(new GridLayout(1, false));
-
-		Composite composite_7 = new Composite(cycleGroup, SWT.BORDER);
-		composite_7.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_7.setBounds(89, 170, 45, 45);
-		composite_7.setLayout(new GridLayout(1, false));
-
-		Composite composite_8 = new Composite(cycleGroup, SWT.BORDER);
-		composite_8.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
-		composite_8.setBounds(140, 170, 45, 45);
-		composite_8.setLayout(new GridLayout(1, false));
+								break;
+							case DELETE:
+								currentCycle[numberInArray] = null;
+								break;
+							default:
+								break;
+								}
+						canvas.redraw(0, 0, 45, 45, true);
+					}
+				});
+			}
 
 		Label lblNewLabel = new Label(cycleGroup, SWT.NONE);
 		lblNewLabel.setBounds(142, 10, 65, 15);
 		lblNewLabel.setText("Повторить");
 
-		Spinner cycleSpinner = new Spinner(cycleGroup, SWT.BORDER);
+
 		cycleSpinner.setMaximum(25);
 		cycleSpinner.setMinimum(1);
 		cycleSpinner.setBounds(142, 31, 47, 22);
@@ -431,21 +454,8 @@ public class ProgramBuilderFrame implements Observer {
 
 					@Override
 					public void run() {
-						// тут будет вызов компонента Димы для отрисовки поля
-						Shell shell2 = new Shell(SWT.DIALOG_TRIM);
-						shell2.setSize(505, 510);
-						shell2.setBounds(
-								shell.getBounds().x + shell.getBounds().width,
-								shell.getBounds().y, -1, -1);
-						shell2.setText("Редактор программы управления");
-						shell2.open();
-						shell2.setLayout(new FillLayout());
-						while (!shell2.isDisposed()) {
-							if (!display.readAndDispatch()) {
-								display.sleep();
-							}
-						}
-
+						GameFieldViewerFrame gameFieldFrame = new GameFieldViewerFrame();
+						gameFieldFrame.open(program.getMapAddress(),shell.getBounds().x+shell.getBounds().width,shell.getBounds().y);
 					}
 				});
 
@@ -475,6 +485,7 @@ public class ProgramBuilderFrame implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		stringNum=0;
 		List<Command> updatedList = program.getCommandList();
 		fillListComponent(0, 2, updatedList);
 		if (updatedList.isEmpty()) {
@@ -494,31 +505,34 @@ public class ProgramBuilderFrame implements Observer {
 	 */
 	private void fillListComponent(int tabAmount, int spaceInTabAmount,
 			List<Command> comList) {
-		int stringNum = 0;
-		listComponent.removeAll();
-		listComponent.redraw();
+		if(tabAmount==0){
+			listComponent.removeAll();
+			listComponent.redraw();
+		}
 		for (int i = 0; i < comList.size(); i++) {
 			StringBuilder currentString = new StringBuilder();
 			// регулируем число пробелов
-			currentString.append(stringNum).append(": ");
+			currentString.append(stringNum);
+			if(stringNum<10)
+				currentString.append("  ");
+			currentString.append(": ");
 			for (int spaceCounter = 0; spaceCounter < tabAmount
 					* spaceInTabAmount; spaceCounter++) {
-				currentString.append(" ");
+				currentString.append("-");
 			}
 			Command currentCommand = comList.get(i);
 			currentString.append(currentCommand.toString());
+			listComponent.add(currentString.toString());
 			// если команда не цикл - записываем её с отрегулированным числом
 			// пробелов
-			if (currentCommand.getType() != CommandType.CYCLE) {
-				listComponent.add(currentString.toString());
-			} else {
-				// если команда - цикл
+			if (currentCommand.getType() == CommandType.CYCLE) {
 				Cycle currentCycle = (Cycle) currentCommand;
-				fillListComponent(++tabAmount, spaceInTabAmount,
-						currentCycle.getCommandList());
+				stringNum++;
+				fillListComponent(tabAmount+1, spaceInTabAmount,
+							currentCycle.getCommandList());
 			}
-			stringNum++;
-
+			else
+				stringNum++;
 		}
 
 	}

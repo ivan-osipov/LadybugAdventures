@@ -47,11 +47,18 @@ public class MainFrame {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
+		shell = new Shell(SWT.DIALOG_TRIM);
 		shell.setSize(446, 348);
 		shell.setText("Путешествие божьей коровки");
 
 		Button button = new Button(shell, SWT.NONE);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				GameFieldOptionsFrame gameFieldFrame = new GameFieldOptionsFrame();
+				gameFieldFrame.open();
+			}
+		});
 		button.setBounds(51, 37, 298, 60);
 		button.setText("Создать/редактировать игровое поле");
 
