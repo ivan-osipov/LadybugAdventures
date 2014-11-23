@@ -15,7 +15,7 @@ public class GameFieldViewer extends Canvas {
 	public static final int CELL_WIDTH = 30;
 	public static final int CELL_HEIGH = 30;
 	private GameField field;
-	GC gc;
+	private GC gc;
 
 	public GameFieldViewer(Composite parent, int style) {
 		super(parent, style);
@@ -25,7 +25,7 @@ public class GameFieldViewer extends Canvas {
 	public GameFieldViewer(Composite parent, int style, GameField field) {
 		this(parent, style);
 		this.field = field;
-		setSize(parent.getSize().x, parent.getSize().y);
+		setSize(field.getWidth() * CELL_WIDTH, field.getHeigh() * CELL_HEIGH);
 		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 	}
 
