@@ -27,10 +27,13 @@ public class GameFieldBuilder {
 
 	protected Shell shell;
 	private GameField field;
-	public static final int CELL_WIDTH = 50;
-	public static final int CELL_HEIGH = 50;
+	private GameObject object;
 	public static final int BORDER = 20;
-	private GameObject object = GameObject.HOLE;
+	
+	public GameFieldBuilder() {
+		object = GameObject.LADYBUG;
+	}
+	
 	/**
 	 * Launch the application.
 	 * @param args
@@ -77,39 +80,32 @@ public class GameFieldBuilder {
 		shell.setLayout(null);
 		
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setBounds(CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 190);
+		composite.setBounds(GameFieldViewer.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 190);
 		//composite.setBounds(150, 10, 100, 100);
 		composite.setLayout(null);
 		
 		Composite composite_1 = new Composite(shell, SWT.NONE);
 		//composite_1.setBounds(10, 10, 100, 100);
-		composite_1.setBounds(10, 10, CELL_WIDTH * field.getWidth(), CELL_HEIGH * field.getHeigh());
-		shell.setSize(composite_1.getSize().x + composite.getSize().x + BORDER, (composite_1.getSize().y > composite.getSize().y ? composite_1.getSize().y : composite.getSize().y) + BORDER * 3); //я хз, почему приходится *3, но только так работает как надо, без этого обрезается кусочек
+		composite_1.setBounds(10, 10, GameFieldViewer.CELL_WIDTH * field.getWidth(), GameFieldViewer.CELL_HEIGH * field.getHeigh());
+		shell.setSize(composite_1.getSize().x + composite.getSize().x + BORDER, (composite_1.getSize().y > composite.getSize().y ? composite_1.getSize().y : composite.getSize().y) + BORDER * 3); //TODO я хз, почему приходится *3, но только так работает как надо, без этого обрезается кусочек
 		FillLayout fl_composite_1 = new FillLayout(SWT.HORIZONTAL);
 		fl_composite_1.marginWidth = 10;
 		fl_composite_1.marginHeight = 10;
 		composite_1.setLayout(fl_composite_1);
 
-		final Canvas canvas = new Canvas(composite_1,SWT.NO_REDRAW_RESIZE);
-		canvas.setSize(composite_1.getSize().x, composite_1.getSize().y);
-		canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		GameFieldViewer.showField(field, canvas);
-		field.addObject(object, 0, 0);
-		GameFieldViewer.showField(field, canvas);
+		final GameFieldViewer canvas = new GameFieldViewer(composite_1,SWT.NO_REDRAW_RESIZE, field);
+		canvas.initField();
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseDown(MouseEvent ev) {
-				GameFieldViewer.showField(field, canvas);
-				field.addObject(object, 1, 1);
-				GameFieldViewer.showField(field, canvas);
+			public void mouseDown(MouseEvent e) {
+				field.addObject(object, e.x / GameFieldViewer.CELL_WIDTH, e.y / GameFieldViewer.CELL_HEIGH);
+				canvas.redraw();
 				//super.mouseDown(e);
 			}
 			
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				GameFieldViewer.showField(field, canvas);
-				field.addObject(object, 1, 1);
-				GameFieldViewer.showField(field, canvas);
+				field.removeObject(e.x / GameFieldViewer.CELL_WIDTH, e.y / GameFieldViewer.CELL_HEIGH);
 				//super.mouseDoubleClick(e);
 			}
 		});
@@ -123,9 +119,9 @@ public class GameFieldBuilder {
 		button.setLocation(10, 22);
 		button.setSize(100, 16);
 		button.setText("Божья коровка");
-		button.addTouchListener(new TouchListener() {
+		button.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void touch(TouchEvent e) {
+			public void widgetSelected(SelectionEvent e) {
 				object = GameObject.LADYBUG;
 			}
 		});
@@ -134,9 +130,9 @@ public class GameFieldBuilder {
 		button_1.setLocation(10, 37);
 		button_1.setSize(90, 16);
 		button_1.setText("Кубик");
-		button_1.addTouchListener(new TouchListener() {
+		button_1.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void touch(TouchEvent e) {
+			public void widgetSelected(SelectionEvent e) {
 				object = GameObject.BLOCK;
 			}
 		});
@@ -145,9 +141,9 @@ public class GameFieldBuilder {
 		button_2.setLocation(10, 54);
 		button_2.setSize(90, 16);
 		button_2.setText("Яма");
-		button_2.addTouchListener(new TouchListener() {
+		button_2.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void touch(TouchEvent e) {
+			public void widgetSelected(SelectionEvent e) {
 				object = GameObject.HOLE;
 			}
 		});
@@ -156,9 +152,9 @@ public class GameFieldBuilder {
 		button_3.setLocation(10, 70);
 		button_3.setSize(103, 16);
 		button_3.setText("Занятая клетка");
-		button_3.addTouchListener(new TouchListener() {
+		button_3.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void touch(TouchEvent e) {
+			public void widgetSelected(SelectionEvent e) {
 				object = GameObject.OCCUPIED_CELL;
 			}
 		});
