@@ -70,14 +70,14 @@ public class MainFrame {
 		button_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				try {
-					AppGameContainer managementProgramViewer = new AppGameContainer(new ProgramViewer("Программа управления"));
-					managementProgramViewer.setDisplayMode(800, 600, false);
-					managementProgramViewer.start();
-				} catch (SlickException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					AppGameContainer managementProgramViewer = new AppGameContainer(new ProgramViewer("Программа управления"));
+//					managementProgramViewer.setDisplayMode(800, 600, false);
+//					managementProgramViewer.start();
+//				} catch (SlickException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		});
 		button_2.setText("Выполнить программу управления");
