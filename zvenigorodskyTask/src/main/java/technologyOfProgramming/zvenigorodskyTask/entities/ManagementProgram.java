@@ -8,6 +8,7 @@ import java.util.Observable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
@@ -16,7 +17,9 @@ import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
 @XmlRootElement(name = "ManagementProgram")
 @XmlType(propOrder = { "commandList" })
 public class ManagementProgram extends Observable implements Iterable<Command> {
+	@XmlTransient
 	public final String AUTHOR_DEFAULT = "ANONYM";
+	@XmlTransient
 	public final String GAME_FIELD_ADDRESS = "NOT FOUND";
 
 	private String author;
@@ -40,6 +43,13 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 	@XmlElement(name = "command")
 	public List<Command> getCommandList() {
 		return commandList;
+	}
+	public boolean setManagementProgram(ManagementProgram program) {
+		if(!setCommandList(program.commandList))
+			return false;
+		this.author = program.author;
+		this.gameFieldAddress = program.gameFieldAddress;
+		return true;
 	}
 
 	public boolean setCommandList(List<Command> commandList) {
@@ -90,7 +100,7 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 				return true;
 			}
 			if (commandList.get(i).getType() == CommandType.CYCLE) {
-				return removeFromList(++currentPos, position,
+				return removeFromList(currentPos+1, position,
 						((Cycle) commandList.get(i)).getCommandList());
 
 			}
@@ -121,6 +131,10 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 	 */
 	private boolean insertToList(int depth, int startPos, int position,
 			Command command, List<Command> commandList) {
+		if(position == -1){
+			commandList.add(command);
+			return true;
+		}
 		int currentPos = startPos;
 		for (int i = 0; i < commandList.size(); i++) {
 			if (currentPos == position) {
@@ -130,7 +144,7 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 			if (commandList.get(i).getType() == CommandType.CYCLE) {
 				if (depth == 3 && command.getType() == CommandType.CYCLE)
 					return false;
-				return insertToList(++depth, ++currentPos, position, command,
+				return insertToList(depth+1, currentPos+1, position, command,
 						((Cycle) commandList.get(i)).getCommandList());
 
 			}

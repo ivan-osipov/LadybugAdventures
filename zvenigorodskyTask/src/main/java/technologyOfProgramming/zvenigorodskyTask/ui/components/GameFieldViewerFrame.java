@@ -8,25 +8,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 
 public class GameFieldViewerFrame {
-
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-//			GameFieldViewerFrame window = new GameFieldViewerFrame();
-//			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private Shell shell = null;
 
 	/**
 	 * Open the window.
@@ -34,9 +24,9 @@ public class GameFieldViewerFrame {
 	 */
 	public void open(String gameFileName,int x, int y) {
 		Display display = Display.getDefault();
-		Shell shell = new Shell(SWT.DIALOG_TRIM);
+		shell = new Shell(SWT.DIALOG_TRIM);
 		//shell.setSize(450, 300);
-
+		shell.setLocation(x, y);
 		shell.setText("SWT Application");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 
@@ -50,8 +40,8 @@ public class GameFieldViewerFrame {
 			return;
 		}
 		try {
-			FileSystemManager.setMapAddress(gameFileName);
-			GameFieldViewer canvas = new GameFieldViewer(composite, SWT.NONE,FileSystemManager.getGameField());
+			FileSystemManager.setDefaultMapAddress(gameFileName);
+			GameFieldViewer canvas = new GameFieldViewer(composite, SWT.NONE,FileSystemManager.getDefaultGameField());
 
 			canvas.initField();
 			composite.setSize(canvas.getBounds().width, canvas.getBounds().height);
