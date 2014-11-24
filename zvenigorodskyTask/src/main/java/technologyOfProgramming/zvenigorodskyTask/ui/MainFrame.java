@@ -1,9 +1,15 @@
 package technologyOfProgramming.zvenigorodskyTask.ui;
 
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.SlickException;
 
 public class MainFrame {
 
@@ -41,21 +47,64 @@ public class MainFrame {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
-		shell.setSize(495, 358);
+		shell = new Shell(SWT.DIALOG_TRIM);
+		shell.setSize(446, 348);
 		shell.setText("Путешествие божьей коровки");
 
 		Button button = new Button(shell, SWT.NONE);
-		button.setBounds(106, 10, 298, 78);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				GameFieldOptionsFrame gameFieldFrame = new GameFieldOptionsFrame();
+				gameFieldFrame.open();
+			}
+		});
+		button.setBounds(51, 37, 298, 60);
 		button.setText("Создать/редактировать игровое поле");
 
 		Button button_1 = new Button(shell, SWT.NONE);
+		button_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ProgramBuilderOptionsFrame optionsFrame = new ProgramBuilderOptionsFrame();
+				optionsFrame.open();
+			}
+		});
 		button_1.setText("Создать/редактировать программу управления");
-		button_1.setBounds(106, 103, 298, 88);
+		button_1.setBounds(51, 132, 298, 60);
 
 		Button button_2 = new Button(shell, SWT.NONE);
+		button_2.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+//				try {
+//					AppGameContainer managementProgramViewer = new AppGameContainer(new ProgramViewer("Программа управления"));
+//					managementProgramViewer.setDisplayMode(800, 600, false);
+//					managementProgramViewer.start();
+//				} catch (SlickException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+			}
+		});
 		button_2.setText("Выполнить программу управления");
-		button_2.setBounds(106, 218, 298, 73);
+		button_2.setBounds(51, 231, 298, 60);
+
+		Button btnNewButton = new Button(shell, SWT.CENTER);
+		btnNewButton.setImage(SWTResourceManager.getImage(MainFrame.class.getResource("/img/icons/question.png").getPath()));
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				try {
+					HelpFrame window = new HelpFrame();
+					window.open();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setBounds(375, 247, 44, 44);
+		//btnNewButton.setText("New Button");
 
 	}
 }

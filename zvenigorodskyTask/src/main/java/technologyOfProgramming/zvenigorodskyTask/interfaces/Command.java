@@ -1,5 +1,7 @@
 package technologyOfProgramming.zvenigorodskyTask.interfaces;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
@@ -14,6 +16,6 @@ import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
 
 @XmlTransient
 @XmlSeeAlso({Cycle.class, CommandImpl.class})
-public interface Command {
+public interface Command extends Serializable {
 	public CommandType getType();
 }
