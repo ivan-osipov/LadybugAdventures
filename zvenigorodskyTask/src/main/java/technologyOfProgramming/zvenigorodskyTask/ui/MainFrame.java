@@ -1,6 +1,5 @@
 package technologyOfProgramming.zvenigorodskyTask.ui;
 
-
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -8,8 +7,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.SlickException;
+
+import technologyOfProgramming.zvenigorodskyTask.ui.graphic.MPViewerOptionsFrame;
 
 public class MainFrame {
 
@@ -77,14 +76,8 @@ public class MainFrame {
 		button_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-//				try {
-//					AppGameContainer managementProgramViewer = new AppGameContainer(new ProgramViewer("Программа управления"));
-//					managementProgramViewer.setDisplayMode(800, 600, false);
-//					managementProgramViewer.start();
-//				} catch (SlickException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				MPViewerOptionsFrame optionsFrame = new MPViewerOptionsFrame();
+				optionsFrame.open();
 			}
 		});
 		button_2.setText("Выполнить программу управления");

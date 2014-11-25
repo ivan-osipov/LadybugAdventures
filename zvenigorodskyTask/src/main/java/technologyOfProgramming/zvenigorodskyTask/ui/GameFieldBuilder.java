@@ -1,5 +1,7 @@
 package technologyOfProgramming.zvenigorodskyTask.ui;
 
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TouchEvent;
@@ -13,8 +15,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.enums.GameObject;
+import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewer;
 
 import org.eclipse.swt.layout.FillLayout;
@@ -160,6 +164,22 @@ public class GameFieldBuilder {
 		});
 
 		Button button_4 = new Button(composite, SWT.NONE);
+		button_4.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+				dialog.setFilterNames (new String [] {"Файл игрового поля (*.map)"});
+				dialog.setFilterExtensions (new String [] {"*.map"});
+				dialog.setFileName ("gameField.map");
+				String fileName = dialog.open();
+				if(fileName != null)
+				try {
+					FileSystemManager.saveGameField(field, fileName);
+				} catch (StorageException e1) {
+					MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
+				}
+			}
+		});
 		button_4.setBounds(10, 127, 120, 25);
 		button_4.setText("Сохранить");
 

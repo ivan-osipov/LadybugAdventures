@@ -19,12 +19,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
+import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
+import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 
 public class ProgramBuilderOptionsFrame {
 	private Text authorName;
 	private Text gameFieldPath;
-
+	private Text text;
+	private ManagementProgram mp;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -130,7 +133,61 @@ public class ProgramBuilderOptionsFrame {
 		editingTab.setText("Редактирование");
 
 		Composite editingComposite = new Composite(tabFolder, SWT.NONE);
+		editingComposite.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		editingTab.setControl(editingComposite);
+
+		Button btnJpjh = new Button(editingComposite, SWT.NONE);
+		btnJpjh.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+				dialog.setFilterNames (new String [] {"Файл программы управления *.xml"});
+				dialog.setFilterExtensions (new String [] {"*.xml"}); //Windows wild cards
+//				dialog.setFilterPath ("c:\\user\\"); //Windows path
+				//dialog.setFileName ("managementProgram.xml");
+				String fileName = dialog.open();
+				if(fileName != null)
+					text.setText(fileName);
+			}
+		});
+		btnJpjh.setBounds(175, 70, 75, 25);
+		btnJpjh.setText("Обзор");
+
+		text = new Text(editingComposite, SWT.BORDER);
+		text.setEditable(false);
+		text.setBounds(60, 43, 190, 21);
+
+		Label label_2 = new Label(editingComposite, SWT.NONE);
+		label_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		label_2.setBounds(59, 22, 191, 15);
+		label_2.setText("Путь до программы управления:");
+
+		Button button = new Button(editingComposite, SWT.NONE);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				if(text.getText().isEmpty()){
+					MessageDialog.openWarning(shell, "Внимание", "Задайте программу управления");
+					return;
+				}
+				try {
+					mp = new ManagementProgram();
+					ManagementProgram downloadedMP = FileSystemManager.getManagementProgramm(text.getText());
+					if(!mp.setManagementProgram(downloadedMP)){
+						MessageDialog.openWarning(shell, "Внимание", "Программа управления не соответствует требованиям");
+						return;
+					}
+				} catch (StorageException e1) {
+					MessageDialog.openWarning(shell, "Внимание", "Невозможно открыть файл, файл поврежден");
+					return;
+				}
+				ProgramBuilderFrame programBuilder = new ProgramBuilderFrame(mp);
+				programBuilder.open();
+			}
+		});
+		button.setBounds(60, 70, 105, 25);
+		button.setText("Редактировать");
 
 		shell.open();
 		shell.layout();

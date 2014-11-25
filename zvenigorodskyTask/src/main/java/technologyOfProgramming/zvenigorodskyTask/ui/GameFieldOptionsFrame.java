@@ -1,6 +1,8 @@
 package technologyOfProgramming.zvenigorodskyTask.ui;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.SWT;
@@ -15,7 +17,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
 
+import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
+import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 
 public class GameFieldOptionsFrame {
 	private Text text;
@@ -38,7 +42,7 @@ public class GameFieldOptionsFrame {
 	 */
 	public void open() {
 		Display display = Display.getDefault();
-		Shell shell = new Shell();
+		final Shell shell = new Shell();
 		shell.setSize(356, 257);
 		shell.setText("SWT Application");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -123,10 +127,34 @@ public class GameFieldOptionsFrame {
 		text.setBounds(100, 40, 135, 21);
 		
 		Button buttonOverview = new Button(compositeUpdateField, SWT.NONE);
+		buttonOverview.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+				dialog.setText("Open Game Field");
+		        String[] filterExt = { "*.map"};
+		        dialog.setFilterExtensions(filterExt);
+		        String selected = dialog.open();
+		        if (selected != null)
+		        	text.setText(selected);
+			}
+		});
 		buttonOverview.setBounds(121, 67, 92, 25);
 		buttonOverview.setText("Обзор");
 		
 		Button buttonEdit = new Button(compositeUpdateField, SWT.NONE);
+		buttonEdit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					GameField openedField = FileSystemManager.getGameField(text.getText());
+					GameFieldBuilder fieldBuilder = new GameFieldBuilder();
+					fieldBuilder.open(openedField);
+				} catch (StorageException e1) {
+					MessageDialog.openWarning(shell, "Внимание", "Невозможно открыть файл");
+				}
+			}
+		});
 		buttonEdit.setBounds(121, 98, 92, 25);
 		buttonEdit.setText("Редактировать");
 
