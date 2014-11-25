@@ -13,7 +13,7 @@ public class GameField implements Serializable {
 	private final float MAX_OBJECT_PERCENT = 0.2f;
 	private static final long serialVersionUID = 1L;
 	
-	private GameObject[][] field;
+	protected GameObject[][] field;
 	
 	public GameObject[][] getField() {
 		return field;
