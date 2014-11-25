@@ -90,7 +90,7 @@ public class FileSystemManager{
             throw new StorageException();
         }
 	}
-	public static  ManagementProgram getManagementProgramm() throws StorageException {
+	public static  ManagementProgram getDefaultManagementProgramm() throws StorageException {
 		return getManagementProgramm(programAddress);
 	}
 //	public static void saveCommand(Command command){
