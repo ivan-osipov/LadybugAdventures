@@ -42,6 +42,10 @@ public class GameField implements Serializable {
 		return new Point (-1,-1);
 	}
 	
+	protected GameField() {
+		field = null;
+	}
+	
 	public GameField(int width, int height) {
 		field = new GameObject[height][width];
 		cleanField();
