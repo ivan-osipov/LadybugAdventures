@@ -21,11 +21,12 @@ import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
 import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
+import technologyOfProgramming.zvenigorodskyTask.ui.graphic.components.GameFieldRenderer;
 
 public class MPViewer extends BasicGame {
 	private Image background;
 	private Image buglady;
-
+	private GameFieldRenderer gameField;
 	private GameField startField;
 	private ManagementProgram program;
 
@@ -43,6 +44,7 @@ public class MPViewer extends BasicGame {
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		background.draw(0,0,container.getWidth(),container.getHeight());
+		gameField.render(container, g);
 		buglady.draw(x,y);
 
 	}
@@ -50,6 +52,8 @@ public class MPViewer extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		background = new Image(getClass().getResource("/img/pictures/background.jpg").getPath());
+		gameField = new GameFieldRenderer(5,5);
+		gameField.init(container);
 		buglady = new Image(getClass().getResource("/img/pictures/buglady.png").getPath());
 		buglady.rotate(90);
 		x=10;

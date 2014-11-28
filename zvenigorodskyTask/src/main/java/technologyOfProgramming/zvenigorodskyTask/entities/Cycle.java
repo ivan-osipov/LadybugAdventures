@@ -39,6 +39,19 @@ public class Cycle implements Command {
 	public void setIterations(int iterations) {
 		this.iterations = iterations;
 	}
+	public List<Command> getCommandListInLine() {
+		List<Command> commandList = new LinkedList<>();
+		for(Command command: this.commandList){
+			if(command instanceof Cycle){
+				for(int i=0;i<((Cycle)command).getIterations();i++){
+					commandList.addAll(((Cycle)command).getCommandListInLine());
+				}
+			}
+			else
+				commandList.add(command);
+		}
+		return commandList;
+	}
 	@XmlElement(name = "command", required = true)
 	public List<Command> getCommandList() {
 		return commandList;
@@ -46,13 +59,24 @@ public class Cycle implements Command {
 	public void setCommandList(List<Command> commandList) {
 		this.commandList = commandList;
 	}
+	public int getAllCommandAmount(){
+		int commandAmount = 0;
+		for(Command command: commandList)
+		{
+			if(command instanceof Cycle){
+				int cycleComandAmount = ((Cycle)command).getAllCommandAmount();
+				commandAmount += cycleComandAmount*((Cycle)command).getIterations();
+			}
+			else
+				commandAmount++;
+		}
+		return commandAmount;
+	}
+	public int getCommandAmount(){
+		return commandList.size();
+	}
 	@Override
 	public String toString() {
-		/*StringBuilder builder = new StringBuilder();
-		builder.append("cycle: elemAmount = ").append(commandList.size()).append("; iterations = ").append(iterations).append("\r\n");
-		for(int i = 0; i < commandList.size();i++)
-			builder.append(commandList.get(i).toString());
-		return builder.toString();*/
 		return MessageFormat.format("Цикл. Повторится {0} раз(а). Команд внутри {1}", iterations, commandList.size());
 	}
 

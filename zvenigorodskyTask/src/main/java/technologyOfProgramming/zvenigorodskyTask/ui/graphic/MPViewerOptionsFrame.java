@@ -151,6 +151,7 @@ public class MPViewerOptionsFrame {
 							try {
 								AppGameContainer container = new AppGameContainer(new MPViewer(field,program));
 								container.setDisplayMode(800, 600, false);
+								container.setTargetFrameRate(60);
 								container.start();
 								shell.dispose();
 							} catch (SlickException e3) {

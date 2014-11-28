@@ -40,6 +40,19 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 		this.gameFieldAddress = gameFieldAddress;
 	}
 
+	public List<Command> getCommandListInLine() {
+		List<Command> commandList = new LinkedList<>();
+		for(Command command: this.commandList){
+			if(command instanceof Cycle){
+				for(int i=0;i<((Cycle)command).getIterations();i++){
+					commandList.addAll(((Cycle)command).getCommandListInLine());
+				}
+			}
+			else
+				commandList.add(command);
+		}
+		return commandList;
+	}
 	@XmlElement(name = "command")
 	public List<Command> getCommandList() {
 		return commandList;
@@ -66,8 +79,19 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 	public int getCycleAmount() {
 		return cycleAmount;
 	}
-
-	public int getCommandAmount() {// TODO переписать, это не правда
+	public int getAllCommandAmount() {
+		int commandAmount = 0;
+		for(Command command: commandList){
+			if(command instanceof Cycle){
+				int cycleComandAmount = ((Cycle)command).getAllCommandAmount();
+				commandAmount += cycleComandAmount*((Cycle)command).getIterations();
+			}
+			else
+				commandAmount++;
+		}
+		return commandAmount;
+	}
+	public int getCommandAmount() {
 		return commandList.size();
 	}
 
@@ -81,7 +105,7 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 		return false;
 	}
 
-	public boolean removeCommand(int position) {
+	public boolean removeCommand(int position) {//FIXME have bug; see img file
 		if (removeFromList(0, position, commandList)) {
 			cycleAmount = getLargestCycleDepth(commandList);
 			setChanged();
@@ -99,6 +123,7 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 				commandList.remove(i);
 				return true;
 			}
+
 			if (commandList.get(i).getType() == CommandType.CYCLE) {
 				return removeFromList(currentPos+1, position,
 						((Cycle) commandList.get(i)).getCommandList());
