@@ -46,7 +46,7 @@ public class ManagementProgramTest extends TestCase {
         mp.addCommand(cyc);
         mp.addCommand(c1);
 //        System.out.println(mp.getCommandAmount());
-        assertEquals(mp.getAllCommandAmount(), 7);
-        assertEquals(mp.getAllCommandAmount(), mp.getCommandListInLine().size());
+        assertEquals(mp.getAllCommandAmountWithIterations(), 7);
+//        assertEquals(mp.getAllCommandAmount(), mp.getCommandListInLine().size());
     }
 }

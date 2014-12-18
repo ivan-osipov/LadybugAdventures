@@ -105,6 +105,12 @@ public class ProgramBuilderFrame implements Observer {
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
 		shell.setSize(593, 510);
 		shell.setText("Редактор программы управления");
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
+		
 		final List<Button> directionBts = new ArrayList<>();
 		final List<Button> actionBts = new ArrayList<>();
 
@@ -135,8 +141,8 @@ public class ProgramBuilderFrame implements Observer {
 		});
 
 		upButton.setBounds(109, 20, 32, 32);
-		Image upImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/up.png").getPath());
+		Image upImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/up.png"));
 		upImg = new Image(upImg.getDevice(), upImg.getImageData().scaledTo(32,
 				32));
 		upButton.setImage(upImg);
@@ -154,8 +160,8 @@ public class ProgramBuilderFrame implements Observer {
 			}
 		});
 		downButton.setBounds(109, 77, 32, 32);
-		Image downImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/down.png").getPath());
+		Image downImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/down.png"));
 		downImg = new Image(downImg.getDevice(), downImg.getImageData()
 				.scaledTo(32, 32));
 		downButton.setImage(downImg);
@@ -174,8 +180,8 @@ public class ProgramBuilderFrame implements Observer {
 		});
 		rightButton.setLocation(140, 49);
 		rightButton.setSize(32, 32);
-		Image rightImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/right.png").getPath());
+		Image rightImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/right.png"));
 		rightImg = new Image(rightImg.getDevice(), rightImg.getImageData()
 				.scaledTo(32, 32));
 		rightButton.setImage(rightImg);
@@ -193,8 +199,8 @@ public class ProgramBuilderFrame implements Observer {
 			}
 		});
 		leftButton.setBounds(78, 49, 32, 32);
-		Image leftImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/left.png").getPath());
+		Image leftImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/left.png"));
 		leftImg = new Image(leftImg.getDevice(), leftImg.getImageData()
 				.scaledTo(32, 32));
 		leftButton.setImage(leftImg);
@@ -205,8 +211,8 @@ public class ProgramBuilderFrame implements Observer {
 
 		Button stepButton = new Button(actionTypeGroup, SWT.TOGGLE);
 		stepButton.setToolTipText("Тип команды: ШАГ");
-		Image stepImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/step.png").getPath());
+		Image stepImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/step.png"));
 		leftImg = new Image(stepImg.getDevice(), stepImg.getImageData());
 		stepButton.setImage(stepImg);
 		stepButton.addSelectionListener(new SelectionAdapter() {
@@ -235,8 +241,8 @@ public class ProgramBuilderFrame implements Observer {
 				deleteButton.setSelection(false);
 			}
 		});
-		Image jumpImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/jump.png").getPath());
+		Image jumpImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/jump.png"));
 		jumpImg = new Image(jumpImg.getDevice(), jumpImg.getImageData()
 				.scaledTo(32, 48));
 		jumpButton.setImage(jumpImg);
@@ -256,8 +262,8 @@ public class ProgramBuilderFrame implements Observer {
 				deleteButton.setSelection(false);
 			}
 		});
-		Image pushImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/push.png").getPath());
+		Image pushImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/push.png"));
 		pushImg = new Image(pushImg.getDevice(), pushImg.getImageData()
 				.scaledTo(52, 42));
 		pushButton.setImage(pushImg);

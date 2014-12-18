@@ -82,6 +82,11 @@ public class GameFieldBuilder {
 		shell.setSize(165, 362);
 		shell.setText("Редактор игрового поля");
 		shell.setLayout(null);
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
 		
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(GameFieldViewer.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 190);

@@ -59,16 +59,32 @@ public class Cycle implements Command {
 	public void setCommandList(List<Command> commandList) {
 		this.commandList = commandList;
 	}
+	/**
+	 * Число выполняющихся команд с учетом числа итераций
+	 * @return
+	 */
+	public int getAllCommandAmountWithIterations(){
+		int commandAmount = 0;
+		for(Command command: commandList)
+		{
+			if(command instanceof Cycle){
+				int cycleComandAmount = ((Cycle)command).getAllCommandAmountWithIterations();
+				commandAmount += cycleComandAmount*((Cycle)command).getIterations();
+			}
+			else
+				commandAmount++;
+		}
+		return commandAmount;
+	}
 	public int getAllCommandAmount(){
 		int commandAmount = 0;
 		for(Command command: commandList)
 		{
 			if(command instanceof Cycle){
 				int cycleComandAmount = ((Cycle)command).getAllCommandAmount();
-				commandAmount += cycleComandAmount*((Cycle)command).getIterations();
+				commandAmount += cycleComandAmount;
 			}
-			else
-				commandAmount++;
+			commandAmount++;//команда рассматривается в любом случае - цикл тоже команда
 		}
 		return commandAmount;
 	}

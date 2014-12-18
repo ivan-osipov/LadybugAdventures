@@ -46,6 +46,11 @@ public class GameFieldOptionsFrame {
 		shell.setSize(356, 257);
 		shell.setText("SWT Application");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
 		
 		TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
 		

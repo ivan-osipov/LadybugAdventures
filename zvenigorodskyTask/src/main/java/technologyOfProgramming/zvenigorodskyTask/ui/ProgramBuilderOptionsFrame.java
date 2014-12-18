@@ -50,7 +50,13 @@ public class ProgramBuilderOptionsFrame {
 		shell.setSize(349, 214);
 		shell.setText("Создание/редактирование программы управления");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
-
+		
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
+		
 		TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
 		tabFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 

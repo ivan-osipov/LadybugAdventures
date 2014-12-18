@@ -79,15 +79,26 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 	public int getCycleAmount() {
 		return cycleAmount;
 	}
+	public int getAllCommandAmountWithIterations() {
+		int commandAmount = 0;
+		for(Command command: commandList){
+			if(command instanceof Cycle){
+				int cycleComandAmount = ((Cycle)command).getAllCommandAmountWithIterations();
+				commandAmount += cycleComandAmount*((Cycle)command).getIterations();
+			}
+			else
+				commandAmount++;
+		}
+		return commandAmount;
+	}
 	public int getAllCommandAmount() {
 		int commandAmount = 0;
 		for(Command command: commandList){
 			if(command instanceof Cycle){
 				int cycleComandAmount = ((Cycle)command).getAllCommandAmount();
-				commandAmount += cycleComandAmount*((Cycle)command).getIterations();
+				commandAmount += cycleComandAmount;
 			}
-			else
-				commandAmount++;
+			commandAmount++;
 		}
 		return commandAmount;
 	}
@@ -125,8 +136,14 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 			}
 
 			if (commandList.get(i).getType() == CommandType.CYCLE) {
-				return removeFromList(currentPos+1, position,
-						((Cycle) commandList.get(i)).getCommandList());
+				if(removeFromList(currentPos+1, position,
+						((Cycle) commandList.get(i)).getCommandList())){
+					return true;
+				}
+				else{
+					currentPos += ((Cycle)commandList.get(i)).getAllCommandAmount() + 1;
+					continue;
+				}
 
 			}
 			currentPos++;
