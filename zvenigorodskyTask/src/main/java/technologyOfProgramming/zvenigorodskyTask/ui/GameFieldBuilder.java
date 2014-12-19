@@ -78,7 +78,7 @@ public class GameFieldBuilder {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
+		shell = new Shell(SWT.DIALOG_TRIM);
 		shell.setSize(165, 362);
 		shell.setText("Редактор игрового поля");
 		shell.setLayout(null);

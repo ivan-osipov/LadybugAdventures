@@ -27,7 +27,7 @@ public class GameFieldViewerFrame {
 		shell = new Shell(SWT.DIALOG_TRIM);
 		//shell.setSize(450, 300);
 		shell.setLocation(x, y);
-		shell.setText("SWT Application");
+		shell.setText("Игровая карта");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Composite composite = new Composite(shell, SWT.NONE);
@@ -40,8 +40,8 @@ public class GameFieldViewerFrame {
 			return;
 		}
 		try {
-			FileSystemManager.setDefaultMapAddress(gameFileName);
-			GameFieldViewer canvas = new GameFieldViewer(composite, SWT.NONE,FileSystemManager.getDefaultGameField());
+//			FileSystemManager.setDefaultMapAddress(gameFileName);
+			GameFieldViewer canvas = new GameFieldViewer(composite, SWT.NONE,FileSystemManager.getGameField(gameFileName));
 
 			canvas.initField();
 			composite.setSize(canvas.getBounds().width, canvas.getBounds().height);
@@ -57,5 +57,8 @@ public class GameFieldViewerFrame {
 				display.sleep();
 			}
 		}
+	}
+	public Shell getShell(){
+		return shell;
 	}
 }

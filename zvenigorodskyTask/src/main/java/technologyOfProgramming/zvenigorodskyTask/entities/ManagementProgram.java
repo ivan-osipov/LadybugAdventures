@@ -116,7 +116,7 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 		return false;
 	}
 
-	public boolean removeCommand(int position) {//FIXME have bug; see img file
+	public boolean removeCommand(int position) {
 		if (removeFromList(0, position, commandList)) {
 			cycleAmount = getLargestCycleDepth(commandList);
 			setChanged();
@@ -171,7 +171,7 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 	 * @return true - добавление прошло успешно, false - была попытка добавить
 	 *         цикл >4 уровня вложенности
 	 */
-	private boolean insertToList(int depth, int startPos, int position,
+	private boolean insertToList(int depth, int startPos, int position,//ИСПРАВИТЬ!!!
 			Command command, List<Command> commandList) {
 		if(position == -1){
 			commandList.add(command);
@@ -186,14 +186,19 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 			if (commandList.get(i).getType() == CommandType.CYCLE) {
 				if (depth == 3 && command.getType() == CommandType.CYCLE)
 					return false;
-				return insertToList(depth+1, currentPos+1, position, command,
-						((Cycle) commandList.get(i)).getCommandList());
+				if( insertToList(depth+1, currentPos+1, position, command,
+						((Cycle) commandList.get(i)).getCommandList()))
+					return true;
+				else{
+					currentPos += ((Cycle)commandList.get(i)).getAllCommandAmount() + 1;
+					continue;
+				}
 
 			}
 			currentPos++;
 		}
-		commandList.add(command);
-		return true;
+//		commandList.add(command);
+		return false;
 	}
 
 	public void addCommand(Command command) {

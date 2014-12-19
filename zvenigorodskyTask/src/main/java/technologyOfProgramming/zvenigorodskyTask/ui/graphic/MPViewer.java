@@ -21,6 +21,7 @@ import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
 import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
+import technologyOfProgramming.zvenigorodskyTask.ui.MainFrame;
 import technologyOfProgramming.zvenigorodskyTask.ui.graphic.components.GameFieldRenderer;
 
 public class MPViewer extends BasicGame {
@@ -33,7 +34,7 @@ public class MPViewer extends BasicGame {
 	private float x;
 	private float y;
 	public MPViewer(GameField field, ManagementProgram program){
-		super("Путешествие божьей коровки");
+		super("Приключения божьей коровки");
 		startField = field;
 		this.program = program;
 	}
@@ -75,27 +76,29 @@ public class MPViewer extends BasicGame {
 	 *
 	 *
 	 */
-	public static void main(String[] args) {
-		System.out.println(System.getProperty("java.library.path"));
-		Path resourcePath = null;
-		URL resourceUrl = MPViewer.class.
-				getResource("/native/win32");
-		try {
-			resourcePath = Paths.get(resourceUrl.toURI());
-		} catch (URISyntaxException e1) {
-		}
-		System.setProperty("org.lwjgl.librarypath", resourcePath.toString());
-		System.setProperty("java.library.path", resourcePath.toString());
-
-		try {
-			AppGameContainer container = new AppGameContainer(new MPViewer(FileSystemManager.getDefaultGameField(),FileSystemManager.getDefaultManagementProgramm()));
-			container.setDisplayMode(800, 600, false);
-			container.setTargetFrameRate(60);
-			container.start();
-		} catch (SlickException | StorageException e) {
-			e.printStackTrace();
-		}
-
-	}
+//	public static void main(String[] args) {
+//		System.out.println(System.getProperty("java.library.path"));
+//		Path resourcePath = null;
+//		URL resourceUrl = MPViewer.class.
+//				getResource("../lib/native/win32");
+//		try {
+//			resourcePath = Paths.get(resourceUrl.toURI());
+//			System.out.println(resourcePath);
+//		} catch (URISyntaxException e1) {
+//		}
+//		System.setProperty("org.lwjgl.librarypath", resourcePath.toString());
+//		System.setProperty("java.library.path", resourcePath.toString());
+//
+//		try {
+//			AppGameContainer container = new AppGameContainer(new MPViewer(FileSystemManager.getDefaultGameField(),FileSystemManager.getDefaultManagementProgramm()));
+//			container.setDisplayMode(800, 600, false);
+//			
+//			container.setTargetFrameRate(60);
+//			container.start();
+//		} catch (SlickException | StorageException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 }

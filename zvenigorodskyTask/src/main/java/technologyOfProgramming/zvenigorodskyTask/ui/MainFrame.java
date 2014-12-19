@@ -15,7 +15,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import technologyOfProgramming.zvenigorodskyTask.ui.graphic.MPViewerOptionsFrame;
-import technologyOfProgramming.zvenigorodskyTask.util.YesNoDialog;
+import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
 
 public class MainFrame {
 
@@ -68,7 +68,7 @@ public class MainFrame {
 	protected void createContents() {
 		shell = new Shell(SWT.DIALOG_TRIM);
 		shell.setSize(446, 348);
-		shell.setText("Путешествие божьей коровки");
+		shell.setText("Приключения божьей коровки");
 		
 		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
 		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
@@ -77,9 +77,9 @@ public class MainFrame {
 		shell.setLocation(client.x, client.y);
 		shell.addListener(SWT.Close, new Listener() { 
 			public void handleEvent(Event event) { 
-				if(YesNoDialog.showDialog(shell, "Вы уверены, что хотите завершить приключения "
+				if(Dialogs.showYesNoDialog(shell, "Вы уверены, что хотите завершить приключения "
 						+ "божьей коровки?\r\nВсе не сохраненные данные будут утеряны!", 
-						"Прервать преключения") == SWT.YES){
+						"Прервать приключения") == SWT.YES){
 					shell.dispose();
 				    System.exit(0);
 				}
@@ -99,7 +99,7 @@ public class MainFrame {
 			}
 		});
 		button.setBounds(51, 37, 298, 60);
-		button.setText("Создать/редактировать игровое поле");
+		button.setText("Создать или редактировать поле приключений");
 
 		Button button_1 = new Button(shell, SWT.NONE);
 		button_1.addSelectionListener(new SelectionAdapter() {
@@ -109,7 +109,7 @@ public class MainFrame {
 				optionsFrame.open();
 			}
 		});
-		button_1.setText("Создать/редактировать программу управления");
+		button_1.setText("Создать или редактировать шаги");
 		button_1.setBounds(51, 132, 298, 60);
 
 		Button button_2 = new Button(shell, SWT.NONE);
@@ -120,10 +120,11 @@ public class MainFrame {
 				optionsFrame.open();
 			}
 		});
-		button_2.setText("Выполнить программу управления");
+		button_2.setText("Смотреть!");
 		button_2.setBounds(51, 231, 298, 60);
 
 		Button btnNewButton = new Button(shell, SWT.CENTER);
+		btnNewButton.setToolTipText("Справка");
 		Image img = new Image(shell.getDisplay(), new ImageData(MainFrame.class.getResourceAsStream("/img/icons/question.png")));
 		btnNewButton.setImage(img);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
