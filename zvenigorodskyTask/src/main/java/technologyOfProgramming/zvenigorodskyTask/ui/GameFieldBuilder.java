@@ -1,5 +1,7 @@
 package technologyOfProgramming.zvenigorodskyTask.ui;
 
+import java.io.File;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.events.MouseAdapter;
@@ -7,6 +9,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TouchEvent;
 import org.eclipse.swt.events.TouchListener;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
@@ -20,6 +24,7 @@ import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.enums.GameObject;
 import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewer;
+import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
 
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,10 +37,12 @@ public class GameFieldBuilder {
 	protected Shell shell;
 	private GameField field;
 	private GameObject object;
+	private boolean changesSaved;
 	public static final int BORDER = 20;
 	
 	public GameFieldBuilder() {
 		object = GameObject.LADYBUG;
+		changesSaved = false;
 	}
 	
 	/**
@@ -109,13 +116,13 @@ public class GameFieldBuilder {
 			public void mouseDown(MouseEvent e) {
 				field.addObject(object, e.x / GameFieldViewer.CELL_WIDTH, e.y / GameFieldViewer.CELL_HEIGH);
 				canvas.redraw();
-				//super.mouseDown(e);
+				changesSaved = false;
 			}
 			
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				field.removeObject(e.x / GameFieldViewer.CELL_WIDTH, e.y / GameFieldViewer.CELL_HEIGH);
-				//super.mouseDoubleClick(e);
+				changesSaved = false;
 			}
 		});
 		
@@ -172,17 +179,7 @@ public class GameFieldBuilder {
 		button_4.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-				dialog.setFilterNames (new String [] {"Файл игрового поля (*.map)"});
-				dialog.setFilterExtensions (new String [] {"*.map"});
-				dialog.setFileName ("gameField.map");
-				String fileName = dialog.open();
-				if(fileName != null)
-				try {
-					FileSystemManager.saveGameField(field, fileName);
-				} catch (StorageException e1) {
-					MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
-				}
+				saveChanges();
 			}
 		});
 		button_4.setBounds(10, 127, 120, 25);
@@ -192,11 +189,47 @@ public class GameFieldBuilder {
 		button_5.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				shell.close();
+				if (!changesSaved) {
+					if(Dialogs.showYesNoDialog(shell,"Сохранить изменения перед закрытием?", 
+							"Сохранить изменения?") == SWT.YES){
+						saveChanges();
+					}
+				}
+				shell.dispose();
 			}
 		});
 		button_5.setBounds(10, 158, 120, 25);
 		button_5.setText("Закрыть");
 
+		shell.addListener(SWT.Close, new Listener() { 
+			public void handleEvent(Event event) { 
+				if (!changesSaved) {
+					if(Dialogs.showYesNoDialog(shell,"Сохранить изменения перед закрытием?", 
+							"Сохранить изменения?") == SWT.YES){
+						saveChanges();
+					}
+				}
+				shell.dispose();
+			} 
+			});
+	}
+	
+	private void saveChanges() {
+		FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+		dialog.setFilterNames (new String [] {"Файл игрового поля (*.map)"});
+		dialog.setFilterExtensions (new String [] {"*.map"});
+		dialog.setFileName ("gameField.map");
+		String fileName = dialog.open();
+		if(fileName != null) {
+			try {
+				if (!(new File(fileName).exists() && Dialogs.showYesNoDialog(shell,"Перезаписать?", 
+						"Файл с таким именем существует") == SWT.NO)) {
+					FileSystemManager.saveGameField(field, fileName);
+					changesSaved = true;
+				}
+			} catch (StorageException e1) {
+				MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
+			}
+		}
 	}
 }
