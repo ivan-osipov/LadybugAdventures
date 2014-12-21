@@ -45,7 +45,7 @@ public class HelpFrame {
 	 */
 	public void open() {
 		Display display = Display.getDefault();
-		Shell shell = new Shell();
+		Shell shell = new Shell(SWT.DIALOG_TRIM);
 		shell.setImage(SWTResourceManager
 				.getImage(getClass().getResource("/img/icons/help.png").getPath()));
 		shell.setSize(649, 418);
@@ -63,10 +63,10 @@ public class HelpFrame {
 		Browser browser_1 = new Browser(composite_1, SWT.NONE);
 		browser_1.setBounds(0, 0, 618, 343);
 		StringBuilder builder1=new StringBuilder();
-		builder1.append("<html><body bgcolor=#00e5f5><center><h2><ins>Студенты группы 6403:</h2></ins><br></br></center>");
+		builder1.append("<html><body bgcolor=#Ff0e5f5><center><h2><ins>Студенты группы 6403:</h2></ins><br></br></center>");
 		builder1.append("<h3><ul><li>Осипов Иван</li><br></br><br></br>");
 		builder1.append("<li>Бочаров Дмитрий</li><br></br><br></br>");
-		builder1.append("<li>Мухтулова Евгения</li><br></br><br></br>");
+		builder1.append("<li>Мухтулова Евгения</li>");
 		builder1.append("</ul></h3></body></html>");
 		browser_1.setText(builder1.toString());
 

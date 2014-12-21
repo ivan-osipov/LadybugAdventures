@@ -25,6 +25,8 @@ import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
 import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
+import technologyOfProgramming.zvenigorodskyTask.util.AnimationRunner;
+import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
 
 public class MPViewerOptionsFrame {
 	private Text programText;
@@ -32,6 +34,7 @@ public class MPViewerOptionsFrame {
 
 	private ManagementProgram program;
 	private GameField field;
+	
 	/**
 	 * Launch the application.
 	 * @param args
@@ -53,7 +56,13 @@ public class MPViewerOptionsFrame {
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
 		shell.setSize(314, 210);
 		shell.setText("Выполнение программы управления");
-
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
+		
+		
 		Label label = new Label(shell, SWT.NONE);
 		label.setBounds(31, 10, 250, 30);
 		label.setText("Необходимо указать программу управления \r\nи игровое поле");
@@ -111,7 +120,7 @@ public class MPViewerOptionsFrame {
 		        if(selected!=null){
 		        	try {
 						field = FileSystemManager.getGameField(selected);
-						programText.setText(selected);
+						fieldText.setText(selected);
 					} catch (StorageException e1) {
 						MessageDialog.openWarning(shell, "Внимание", "Игровое поле не может быть корректно распознано. Выберите другое.");
 					}
@@ -134,31 +143,21 @@ public class MPViewerOptionsFrame {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if(program!=null && field != null){
-					Executor executor = Executors.newSingleThreadExecutor();
-					executor.execute(new Runnable() {
-
-						@Override
-						public void run() {
-							Path resourcePath = null;
-							URL resourceUrl = MPViewer.class.
-									getResource("/native/win32");
+					if(!program.getMapAddress().equals(fieldText.getText())){
+						if(Dialogs.showYesNoDialog(shell, "Игровое поле отличается от поля по умолчанию. "
+								+ "Заменить поле по умолчанию на текущее?", "Игровое поле отличается")==SWT.YES){
+							program.setMapAddress(fieldText.getText());
 							try {
-								resourcePath = Paths.get(resourceUrl.toURI());
-							} catch (URISyntaxException e1) {
-							}
-							System.setProperty("org.lwjgl.librarypath", resourcePath.toString());
-							System.setProperty("java.library.path", resourcePath.toString());
-							try {
-								AppGameContainer container = new AppGameContainer(new MPViewer(field,program));
-								container.setDisplayMode(800, 600, false);
-								container.start();
-								shell.dispose();
-							} catch (SlickException e3) {
-								MessageDialog.openError(shell, "Ошибка!", "Невозможно отобразить визуальную составляющую");
+								FileSystemManager.saveManagementProgram(program, programText.getText());
+							} catch (StorageException e1) {
+								MessageDialog.openWarning(new Shell(), "Невозможно сохранить", "Новое игровое поле не будет сохранено в качестве поля по умолчанию!");
 							}
 						}
-					});
-					shell.dispose();
+					}		
+					AnimationRunner.run(field, program);
+//					shell.getParent().dispose();
+//					shell.dispose();
+					
 				}
 			}
 		});

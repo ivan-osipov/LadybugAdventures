@@ -8,7 +8,9 @@ import java.util.Observer;
 
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -23,7 +25,9 @@ import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.factories.FieldFactory;
 import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
 import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewerFrame;
+import technologyOfProgramming.zvenigorodskyTask.util.AnimationRunner;
 import technologyOfProgramming.zvenigorodskyTask.util.CommandConverter;
+import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
 
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
@@ -61,6 +65,7 @@ public class ProgramBuilderFrame implements Observer {
 	private CommandImpl currentCommand;
 	private WorkMode currentWorkMode;
 	private Command[] currentCycle;
+	GameFieldViewerFrame gameFieldFrame;
 	private int stringNum = 0;
 	public ProgramBuilderFrame(ManagementProgram program){
 		currentCommand = new CommandImpl();
@@ -105,6 +110,24 @@ public class ProgramBuilderFrame implements Observer {
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
 		shell.setSize(593, 510);
 		shell.setText("Редактор программы управления");
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
+		
+		shell.addListener(SWT.Close, new Listener() { 
+			public void handleEvent(Event event) { 
+				if(Dialogs.showYesNoDialog(shell, "Перед выходом вы хотите сохранить проделанный путь?"
+						+ "\r\nИначе, все не сохраненные изменения будут утеряны!", 
+						"Прервать редактирование пути") == SWT.YES){
+					Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program);
+				}
+				shell.dispose();
+			
+			} 
+			});
+		
 		final List<Button> directionBts = new ArrayList<>();
 		final List<Button> actionBts = new ArrayList<>();
 
@@ -112,6 +135,7 @@ public class ProgramBuilderFrame implements Observer {
 		final Spinner cycleSpinner = new Spinner(cycleGroup, SWT.BORDER);
 
 		final Label modeLabel = new Label(shell, SWT.NONE);
+		modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		modeLabel.setBounds(453, 457, 118, 15);
 		modeLabel.setText("добавления команды");
 		final Button deleteButton = new Button(shell, SWT.TOGGLE);
@@ -135,8 +159,8 @@ public class ProgramBuilderFrame implements Observer {
 		});
 
 		upButton.setBounds(109, 20, 32, 32);
-		Image upImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/up.png").getPath());
+		Image upImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/up.png"));
 		upImg = new Image(upImg.getDevice(), upImg.getImageData().scaledTo(32,
 				32));
 		upButton.setImage(upImg);
@@ -154,8 +178,8 @@ public class ProgramBuilderFrame implements Observer {
 			}
 		});
 		downButton.setBounds(109, 77, 32, 32);
-		Image downImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/down.png").getPath());
+		Image downImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/down.png"));
 		downImg = new Image(downImg.getDevice(), downImg.getImageData()
 				.scaledTo(32, 32));
 		downButton.setImage(downImg);
@@ -174,8 +198,8 @@ public class ProgramBuilderFrame implements Observer {
 		});
 		rightButton.setLocation(140, 49);
 		rightButton.setSize(32, 32);
-		Image rightImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/right.png").getPath());
+		Image rightImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/right.png"));
 		rightImg = new Image(rightImg.getDevice(), rightImg.getImageData()
 				.scaledTo(32, 32));
 		rightButton.setImage(rightImg);
@@ -193,8 +217,8 @@ public class ProgramBuilderFrame implements Observer {
 			}
 		});
 		leftButton.setBounds(78, 49, 32, 32);
-		Image leftImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/left.png").getPath());
+		Image leftImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/left.png"));
 		leftImg = new Image(leftImg.getDevice(), leftImg.getImageData()
 				.scaledTo(32, 32));
 		leftButton.setImage(leftImg);
@@ -205,8 +229,8 @@ public class ProgramBuilderFrame implements Observer {
 
 		Button stepButton = new Button(actionTypeGroup, SWT.TOGGLE);
 		stepButton.setToolTipText("Тип команды: ШАГ");
-		Image stepImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/step.png").getPath());
+		Image stepImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/step.png"));
 		leftImg = new Image(stepImg.getDevice(), stepImg.getImageData());
 		stepButton.setImage(stepImg);
 		stepButton.addSelectionListener(new SelectionAdapter() {
@@ -235,8 +259,8 @@ public class ProgramBuilderFrame implements Observer {
 				deleteButton.setSelection(false);
 			}
 		});
-		Image jumpImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/jump.png").getPath());
+		Image jumpImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/jump.png"));
 		jumpImg = new Image(jumpImg.getDevice(), jumpImg.getImageData()
 				.scaledTo(32, 48));
 		jumpButton.setImage(jumpImg);
@@ -256,8 +280,8 @@ public class ProgramBuilderFrame implements Observer {
 				deleteButton.setSelection(false);
 			}
 		});
-		Image pushImg = SWTResourceManager.getImage(ProgramBuilderFrame.class
-				.getResource("/img/icons/push.png").getPath());
+		Image pushImg = new Image(shell.getDisplay(), ProgramBuilderFrame.class
+				.getResourceAsStream("/img/icons/push.png"));
 		pushImg = new Image(pushImg.getDevice(), pushImg.getImageData()
 				.scaledTo(52, 42));
 		pushButton.setImage(pushImg);
@@ -318,6 +342,7 @@ public class ProgramBuilderFrame implements Observer {
 				default:
 					break;
 				}
+				
 			}
 		});
 		listComponent.setLocation(10, 10);
@@ -395,6 +420,7 @@ public class ProgramBuilderFrame implements Observer {
 		addCycleButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setDirection(null);
 				currentCommand.setType(null);
 				unselectExcept(null, actionBts);
@@ -416,6 +442,8 @@ public class ProgramBuilderFrame implements Observer {
 		deleteButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+				
 				currentCommand.setDirection(null);
 				currentCommand.setType(null);
 				unselectExcept(null, actionBts);
@@ -424,13 +452,16 @@ public class ProgramBuilderFrame implements Observer {
 						&& !addCycleButton.getSelection()) {
 					currentWorkMode = WorkMode.ADD_COMMAND;
 					modeLabel.setText("добавления команды");
+					modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				} else {
 
 					addCycleButton.setSelection(false);
 					currentWorkMode = WorkMode.DELETE;
 					modeLabel.setText("удаления");
+					modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 				}
 			}
+			
 		});
 		deleteButton.setBounds(10, 420, 75, 25);
 		deleteButton.setText("Удалить");
@@ -439,14 +470,40 @@ public class ProgramBuilderFrame implements Observer {
 		cleanButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				program.cleanProgram();
-				listViewer.refresh();
+				if(Dialogs.showYesNoDialog(shell, "Очистка сотрет все команды! Вы уверены?", "Очистка") == SWT.YES){
+					program.cleanProgram();
+					listViewer.refresh();
+				}
 			}
 		});
 		cleanButton.setBounds(98, 421, 73, 25);
 		cleanButton.setText("Очистить");
 
 		Button runButton = new Button(shell, SWT.NONE);
+		runButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					AnimationRunner.run(FileSystemManager.getGameField(program.getMapAddress()), program);
+				} catch (StorageException e1) {
+					if(Dialogs.showYesNoDialog(shell, "Невозможно загрузить игровую карту. Выбрать другую?", "Карта отсутствует!")==SWT.YES){
+						FileDialog fd = new FileDialog(shell, SWT.OPEN);
+				        fd.setText("Выбор игрового поля");
+				        //fd.setFilterPath(File.pathSeparator);
+				        String[] filterExt = { "*.map"};
+				        fd.setFilterExtensions(filterExt);
+				        String selected = fd.open();
+				        if(selected!=null){
+				        	program.setMapAddress(selected);
+				        	widgetSelected(e);
+				        }
+					}
+					else{
+						
+					}
+				}
+			}
+		});
 		runButton.setBounds(98, 452, 73, 25);
 		runButton.setText("Выполнить");
 
@@ -459,8 +516,19 @@ public class ProgramBuilderFrame implements Observer {
 
 					@Override
 					public void run() {
-						GameFieldViewerFrame gameFieldFrame = new GameFieldViewerFrame();
-						gameFieldFrame.open(program.getMapAddress(),shell.getBounds().x+shell.getBounds().width,shell.getBounds().y);
+						if(gameFieldFrame==null){
+							gameFieldFrame = new GameFieldViewerFrame();
+							gameFieldFrame.open(program.getMapAddress(),shell.getBounds().x+shell.getBounds().width,shell.getBounds().y);
+						}
+						else{
+							Shell gameFieldFrameShell = gameFieldFrame.getShell();
+							if(gameFieldFrameShell.isDisposed()){
+								gameFieldFrame.open(program.getMapAddress(),shell.getBounds().x+shell.getBounds().width,shell.getBounds().y);
+							}
+							else{
+								gameFieldFrameShell.setFocus();
+							}
+						}
 					}
 				});
 
@@ -477,23 +545,14 @@ public class ProgramBuilderFrame implements Observer {
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-				dialog.setFilterNames (new String [] {"Файл программы управления"});
-				dialog.setFilterExtensions (new String [] {"*.xml"}); //Windows wild cards
-//				dialog.setFilterPath ("c:\\user\\"); //Windows path
-				dialog.setFileName ("managementProgram.xml");
-				String fileName = dialog.open();
-				if(fileName != null)
-				try {
-					FileSystemManager.saveManagementProgram(program, fileName);
-				} catch (StorageException e1) {
-					MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
-				}
+				Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program);
 			}
 		});
 		button.setBounds(10, 452, 75, 25);
 		button.setText("Сохранить");
 
+		
+		
 		program.notifyObservers();
 
 		shell.open();
@@ -551,6 +610,7 @@ public class ProgramBuilderFrame implements Observer {
 			Command currentCommand = comList.get(i);
 			currentString.append(currentCommand.toString());
 			listComponent.add(currentString.toString());
+				
 			// если команда не цикл - записываем её с отрегулированным числом
 			// пробелов
 			if (currentCommand.getType() == CommandType.CYCLE) {
@@ -562,6 +622,6 @@ public class ProgramBuilderFrame implements Observer {
 			else
 				stringNum++;
 		}
-
+		
 	}
 }

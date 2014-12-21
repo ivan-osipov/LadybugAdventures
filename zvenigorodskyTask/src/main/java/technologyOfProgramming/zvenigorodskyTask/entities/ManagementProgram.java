@@ -40,6 +40,19 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 		this.gameFieldAddress = gameFieldAddress;
 	}
 
+	public List<Command> getCommandListInLine() {
+		List<Command> commandList = new LinkedList<>();
+		for(Command command: this.commandList){
+			if(command instanceof Cycle){
+				for(int i=0;i<((Cycle)command).getIterations();i++){
+					commandList.addAll(((Cycle)command).getCommandListInLine());
+				}
+			}
+			else
+				commandList.add(command);
+		}
+		return commandList;
+	}
 	@XmlElement(name = "command")
 	public List<Command> getCommandList() {
 		return commandList;
@@ -66,8 +79,30 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 	public int getCycleAmount() {
 		return cycleAmount;
 	}
-
-	public int getCommandAmount() {// TODO переписать, это не правда
+	public int getAllCommandAmountWithIterations() {
+		int commandAmount = 0;
+		for(Command command: commandList){
+			if(command instanceof Cycle){
+				int cycleComandAmount = ((Cycle)command).getAllCommandAmountWithIterations();
+				commandAmount += cycleComandAmount*((Cycle)command).getIterations();
+			}
+			else
+				commandAmount++;
+		}
+		return commandAmount;
+	}
+	public int getAllCommandAmount() {
+		int commandAmount = 0;
+		for(Command command: commandList){
+			if(command instanceof Cycle){
+				int cycleComandAmount = ((Cycle)command).getAllCommandAmount();
+				commandAmount += cycleComandAmount;
+			}
+			commandAmount++;
+		}
+		return commandAmount;
+	}
+	public int getCommandAmount() {
 		return commandList.size();
 	}
 
@@ -99,9 +134,16 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 				commandList.remove(i);
 				return true;
 			}
+
 			if (commandList.get(i).getType() == CommandType.CYCLE) {
-				return removeFromList(currentPos+1, position,
-						((Cycle) commandList.get(i)).getCommandList());
+				if(removeFromList(currentPos+1, position,
+						((Cycle) commandList.get(i)).getCommandList())){
+					return true;
+				}
+				else{
+					currentPos += ((Cycle)commandList.get(i)).getAllCommandAmount() + 1;
+					continue;
+				}
 
 			}
 			currentPos++;
@@ -129,7 +171,7 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 	 * @return true - добавление прошло успешно, false - была попытка добавить
 	 *         цикл >4 уровня вложенности
 	 */
-	private boolean insertToList(int depth, int startPos, int position,
+	private boolean insertToList(int depth, int startPos, int position,//ИСПРАВИТЬ!!!
 			Command command, List<Command> commandList) {
 		if(position == -1){
 			commandList.add(command);
@@ -144,14 +186,19 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 			if (commandList.get(i).getType() == CommandType.CYCLE) {
 				if (depth == 3 && command.getType() == CommandType.CYCLE)
 					return false;
-				return insertToList(depth+1, currentPos+1, position, command,
-						((Cycle) commandList.get(i)).getCommandList());
+				if( insertToList(depth+1, currentPos+1, position, command,
+						((Cycle) commandList.get(i)).getCommandList()))
+					return true;
+				else{
+					currentPos += ((Cycle)commandList.get(i)).getAllCommandAmount() + 1;
+					continue;
+				}
 
 			}
 			currentPos++;
 		}
-		commandList.add(command);
-		return true;
+//		commandList.add(command);
+		return false;
 	}
 
 	public void addCommand(Command command) {
