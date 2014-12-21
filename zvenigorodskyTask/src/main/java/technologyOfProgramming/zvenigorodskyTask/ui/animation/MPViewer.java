@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.ui.graphic;
+package technologyOfProgramming.zvenigorodskyTask.ui.animation;
 
 import java.io.File;
 import java.io.InputStream;
@@ -23,12 +23,12 @@ import org.newdawn.slick.opengl.ImageDataFactory;
 import org.newdawn.slick.opengl.TextureImpl;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
+import technologyOfProgramming.zvenigorodskyTask.data.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.ui.MainFrame;
-import technologyOfProgramming.zvenigorodskyTask.ui.graphic.components.GameFieldRenderer;
-import technologyOfProgramming.zvenigorodskyTask.ui.graphic.components.StartButtonRenderer;
+import technologyOfProgramming.zvenigorodskyTask.ui.animation.components.GameFieldRenderer;
+import technologyOfProgramming.zvenigorodskyTask.ui.animation.components.StartButtonRenderer;
 import technologyOfProgramming.zvenigorodskyTask.util.CommonUtils;
 import technologyOfProgramming.zvenigorodskyTask.util.ResourceProvider;
 

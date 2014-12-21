@@ -9,20 +9,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.GameObject;
+import technologyOfProgramming.zvenigorodskyTask.enums.GameObject;
 
-public class GameFieldViewer extends Canvas {
+public class GameFieldViewerComponent extends Canvas {
 	public static final int CELL_WIDTH = 30;
 	public static final int CELL_HEIGH = 30;
 	private GameField field;
 	private GC gc;
 
-	public GameFieldViewer(Composite parent, int style) {
+	public GameFieldViewerComponent(Composite parent, int style) {
 		super(parent, style);
 		gc = new GC(this);
 	}
 
-	public GameFieldViewer(Composite parent, int style, GameField field) {
+	public GameFieldViewerComponent(Composite parent, int style, GameField field) {
 		this(parent, style);
 		this.field = field;
 		setSize(field.getWidth() * CELL_WIDTH, field.getHeigh() * CELL_HEIGH);

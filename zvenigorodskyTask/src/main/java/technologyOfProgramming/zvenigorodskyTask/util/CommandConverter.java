@@ -5,10 +5,10 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.Direction;
+import technologyOfProgramming.zvenigorodskyTask.enums.CommandType;
+import technologyOfProgramming.zvenigorodskyTask.enums.Direction;
 
-public class CommandConverter {
+public class CommandConverter {//FIXME all "getResource" replace getResourceAsStream//move methods to ResourceProvider
 	public static Image fromTypeToImage(CommandType type,int width, int height){
 		ImageData imgData = null;
 		switch (type) {

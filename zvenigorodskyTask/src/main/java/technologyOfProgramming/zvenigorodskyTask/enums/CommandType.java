@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.entities.enums;
+package technologyOfProgramming.zvenigorodskyTask.enums;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;

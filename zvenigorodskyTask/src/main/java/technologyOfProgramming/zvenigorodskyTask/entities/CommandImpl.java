@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.Direction;
-import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.entities.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.enums.CommandType;
+import technologyOfProgramming.zvenigorodskyTask.enums.Direction;
 
 @XmlRootElement(name = "Command")
 @XmlType(propOrder = { "direction", "type" })

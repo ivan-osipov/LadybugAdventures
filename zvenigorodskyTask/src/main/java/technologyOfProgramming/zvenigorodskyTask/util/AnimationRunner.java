@@ -19,7 +19,7 @@ import org.newdawn.slick.SlickException;
 import technologyOfProgramming.zvenigorodskyTask.App;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.ui.graphic.MPViewer;
+import technologyOfProgramming.zvenigorodskyTask.ui.animation.MPViewer;
 
 public class AnimationRunner {
 	public static void run(final GameField field, final ManagementProgram program){

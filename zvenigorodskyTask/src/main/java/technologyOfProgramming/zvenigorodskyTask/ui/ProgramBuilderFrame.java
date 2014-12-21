@@ -15,16 +15,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
+import technologyOfProgramming.zvenigorodskyTask.data.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.entities.CommandImpl;
 import technologyOfProgramming.zvenigorodskyTask.entities.Cycle;
+import technologyOfProgramming.zvenigorodskyTask.entities.FieldFactory;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.Direction;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
-import technologyOfProgramming.zvenigorodskyTask.factories.FieldFactory;
-import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
-import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewerFrame;
+import technologyOfProgramming.zvenigorodskyTask.entities.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.enums.CommandType;
+import technologyOfProgramming.zvenigorodskyTask.enums.Direction;
 import technologyOfProgramming.zvenigorodskyTask.util.AnimationRunner;
 import technologyOfProgramming.zvenigorodskyTask.util.CommandConverter;
 import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
@@ -65,7 +64,7 @@ public class ProgramBuilderFrame implements Observer {
 	private CommandImpl currentCommand;
 	private WorkMode currentWorkMode;
 	private Command[] currentCycle;
-	GameFieldViewerFrame gameFieldFrame;
+	GameFieldViewer gameFieldFrame;
 	private int stringNum = 0;
 	public ProgramBuilderFrame(ManagementProgram program){
 		currentCommand = new CommandImpl();
@@ -517,7 +516,7 @@ public class ProgramBuilderFrame implements Observer {
 					@Override
 					public void run() {
 						if(gameFieldFrame==null){
-							gameFieldFrame = new GameFieldViewerFrame();
+							gameFieldFrame = new GameFieldViewer();
 							gameFieldFrame.open(program.getMapAddress(),shell.getBounds().x+shell.getBounds().width,shell.getBounds().y);
 						}
 						else{

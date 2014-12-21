@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.interaction;
+package technologyOfProgramming.zvenigorodskyTask.util;
 
 import java.util.List;
 
@@ -7,10 +7,9 @@ import org.eclipse.swt.graphics.Point;
 import technologyOfProgramming.zvenigorodskyTask.entities.CommandImpl;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.ErrorType;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.GameObject;
-import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
-import technologyOfProgramming.zvenigorodskyTask.util.StepTrack;
+import technologyOfProgramming.zvenigorodskyTask.entities.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.enums.ErrorType;
+import technologyOfProgramming.zvenigorodskyTask.enums.GameObject;
 
 public class Analizator {
 	private ErrorType error;

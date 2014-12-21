@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.ui.graphic;
+package technologyOfProgramming.zvenigorodskyTask.ui.options;
 
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -22,9 +22,9 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
+import technologyOfProgramming.zvenigorodskyTask.data.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.util.AnimationRunner;
 import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
 

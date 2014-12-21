@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.ui.graphic.components;
+package technologyOfProgramming.zvenigorodskyTask.ui.animation.components;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

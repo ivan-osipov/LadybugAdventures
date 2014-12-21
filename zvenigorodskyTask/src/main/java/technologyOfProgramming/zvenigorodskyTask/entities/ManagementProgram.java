@@ -11,8 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
-import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.entities.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.enums.CommandType;
 
 @XmlRootElement(name = "ManagementProgram")
 @XmlType(propOrder = { "commandList" })

@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.ui;
+package technologyOfProgramming.zvenigorodskyTask.ui.options;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -18,8 +18,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
+import technologyOfProgramming.zvenigorodskyTask.data.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
+import technologyOfProgramming.zvenigorodskyTask.ui.GameFieldBuilder;
 
 public class GameFieldOptionsFrame {
 	private Text text;

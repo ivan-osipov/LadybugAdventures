@@ -1,6 +1,5 @@
-package technologyOfProgramming.zvenigorodskyTask.factories;
+package technologyOfProgramming.zvenigorodskyTask.entities;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 
 public class FieldFactory {
 	

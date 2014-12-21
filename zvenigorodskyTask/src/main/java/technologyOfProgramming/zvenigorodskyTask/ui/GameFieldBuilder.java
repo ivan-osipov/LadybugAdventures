@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
+import technologyOfProgramming.zvenigorodskyTask.data.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.GameObject;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
-import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewer;
+import technologyOfProgramming.zvenigorodskyTask.enums.GameObject;
+import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewerComponent;
 import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
 
 import org.eclipse.swt.layout.FillLayout;
@@ -96,32 +96,32 @@ public class GameFieldBuilder {
 		shell.setLocation(client.x, client.y);
 		
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setBounds(GameFieldViewer.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 190);
+		composite.setBounds(GameFieldViewerComponent.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 190);
 		//composite.setBounds(150, 10, 100, 100);
 		composite.setLayout(null);
 		
 		Composite composite_1 = new Composite(shell, SWT.NONE);
 		//composite_1.setBounds(10, 10, 100, 100);
-		composite_1.setBounds(10, 10, GameFieldViewer.CELL_WIDTH * field.getWidth(), GameFieldViewer.CELL_HEIGH * field.getHeigh());
+		composite_1.setBounds(10, 10, GameFieldViewerComponent.CELL_WIDTH * field.getWidth(), GameFieldViewerComponent.CELL_HEIGH * field.getHeigh());
 		shell.setSize(composite_1.getSize().x + composite.getSize().x + BORDER, (composite_1.getSize().y > composite.getSize().y ? composite_1.getSize().y : composite.getSize().y) + BORDER * 3); //TODO я хз, почему приходится *3, но только так работает как надо, без этого обрезается кусочек
 		FillLayout fl_composite_1 = new FillLayout(SWT.HORIZONTAL);
 		fl_composite_1.marginWidth = 10;
 		fl_composite_1.marginHeight = 10;
 		composite_1.setLayout(fl_composite_1);
 
-		final GameFieldViewer canvas = new GameFieldViewer(composite_1,SWT.NO_REDRAW_RESIZE, field);
+		final GameFieldViewerComponent canvas = new GameFieldViewerComponent(composite_1,SWT.NO_REDRAW_RESIZE, field);
 		canvas.initField();
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				field.addObject(object, e.x / GameFieldViewer.CELL_WIDTH, e.y / GameFieldViewer.CELL_HEIGH);
+				field.addObject(object, e.x / GameFieldViewerComponent.CELL_WIDTH, e.y / GameFieldViewerComponent.CELL_HEIGH);
 				canvas.redraw();
 				changesSaved = false;
 			}
 			
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				field.removeObject(e.x / GameFieldViewer.CELL_WIDTH, e.y / GameFieldViewer.CELL_HEIGH);
+				field.removeObject(e.x / GameFieldViewerComponent.CELL_WIDTH, e.y / GameFieldViewerComponent.CELL_HEIGH);
 				changesSaved = false;
 			}
 		});

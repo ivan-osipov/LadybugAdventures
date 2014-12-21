@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.ui;
+package technologyOfProgramming.zvenigorodskyTask.ui.options;
 
 import java.io.File;
 
@@ -21,8 +21,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.ui.internal.dnd.SwtUtil;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
+import technologyOfProgramming.zvenigorodskyTask.data.StorageException;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
+import technologyOfProgramming.zvenigorodskyTask.ui.ProgramBuilderFrame;
 
 public class ProgramBuilderOptionsFrame {
 	private Text authorName;

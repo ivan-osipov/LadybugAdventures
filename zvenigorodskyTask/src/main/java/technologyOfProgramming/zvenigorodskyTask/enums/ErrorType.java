@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.entities.enums;
+package technologyOfProgramming.zvenigorodskyTask.enums;
 
 public enum ErrorType {
 	NONE_ERROR, FIELD_BORDER, MOVE_BLOCK, MOVE_HOLE, JUMP_BLOCK, JUMP_EMPTY_CELL, JUMP_OCCUPIED_CELL,

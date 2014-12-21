@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.ui.components;
+package technologyOfProgramming.zvenigorodskyTask.ui;
 
 import java.io.File;
 
@@ -13,9 +13,10 @@ import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.FillLayout;
 
 import technologyOfProgramming.zvenigorodskyTask.data.FileSystemManager;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
+import technologyOfProgramming.zvenigorodskyTask.data.StorageException;
+import technologyOfProgramming.zvenigorodskyTask.ui.components.GameFieldViewerComponent;
 
-public class GameFieldViewerFrame {
+public class GameFieldViewer {
 	private Shell shell = null;
 
 	/**
@@ -41,7 +42,7 @@ public class GameFieldViewerFrame {
 		}
 		try {
 //			FileSystemManager.setDefaultMapAddress(gameFileName);
-			GameFieldViewer canvas = new GameFieldViewer(composite, SWT.NONE,FileSystemManager.getGameField(gameFileName));
+			GameFieldViewerComponent canvas = new GameFieldViewerComponent(composite, SWT.NONE,FileSystemManager.getGameField(gameFileName));
 
 			canvas.initField();
 			composite.setSize(canvas.getBounds().width, canvas.getBounds().height);

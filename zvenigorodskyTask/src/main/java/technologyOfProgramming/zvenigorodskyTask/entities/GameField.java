@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.Random;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.GameObject;
+import technologyOfProgramming.zvenigorodskyTask.enums.GameObject;
 
 public class GameField implements Serializable {
 	/**

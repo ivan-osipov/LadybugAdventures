@@ -3,9 +3,9 @@ package technologyOfProgramming.zvenigorodskyTask.entities;
 import java.util.LinkedList;
 import java.util.List;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.Direction;
-import technologyOfProgramming.zvenigorodskyTask.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.entities.interfaces.Command;
+import technologyOfProgramming.zvenigorodskyTask.enums.CommandType;
+import technologyOfProgramming.zvenigorodskyTask.enums.Direction;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

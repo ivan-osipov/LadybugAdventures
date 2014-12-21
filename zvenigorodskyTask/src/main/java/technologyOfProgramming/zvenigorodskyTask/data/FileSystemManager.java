@@ -16,7 +16,6 @@ import javax.xml.bind.Unmarshaller;
 
 import technologyOfProgramming.zvenigorodskyTask.entities.GameField;
 import technologyOfProgramming.zvenigorodskyTask.entities.ManagementProgram;
-import technologyOfProgramming.zvenigorodskyTask.exceptions.StorageException;
 
 public class FileSystemManager{
 	private static final String PROGRAM_ADDRESS = "/defaultManagementProgram.xml";

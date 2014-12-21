@@ -14,7 +14,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import technologyOfProgramming.zvenigorodskyTask.ui.graphic.MPViewerOptionsFrame;
+import technologyOfProgramming.zvenigorodskyTask.ui.options.GameFieldOptionsFrame;
+import technologyOfProgramming.zvenigorodskyTask.ui.options.MPViewerOptionsFrame;
+import technologyOfProgramming.zvenigorodskyTask.ui.options.ProgramBuilderOptionsFrame;
 import technologyOfProgramming.zvenigorodskyTask.util.Dialogs;
 
 public class MainFrame {

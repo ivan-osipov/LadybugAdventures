@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.interfaces;
+package technologyOfProgramming.zvenigorodskyTask.entities.interfaces;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import technologyOfProgramming.zvenigorodskyTask.entities.CommandImpl;
 import technologyOfProgramming.zvenigorodskyTask.entities.Cycle;
-import technologyOfProgramming.zvenigorodskyTask.entities.enums.CommandType;
+import technologyOfProgramming.zvenigorodskyTask.enums.CommandType;
 
 @XmlTransient
 @XmlSeeAlso({Cycle.class, CommandImpl.class})
