@@ -34,7 +34,7 @@ public class AnimationRunner {
 //						getResource("/native/win32");
 //				try {
 					System.out.println(CommonUtils.getJarPath());
-					resourcePath = Paths.get(CommonUtils.getJarPath()+"/lib/native/win32/");
+					resourcePath = Paths.get(CommonUtils.getJarPath()+"/lib/native/");
 //					resourcePath = Paths.get(resourceUrl.toURI());
 					System.out.println(resourcePath);
 //				} catch (URISyntaxException e1) {
