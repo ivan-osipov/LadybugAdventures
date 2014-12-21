@@ -43,7 +43,7 @@ public class GameFieldOptionsFrame {
 	public void open() {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
-		shell.setSize(232, 257);
+		shell.setSize(250, 261);
 		shell.setText("Редактор игрового поля");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
@@ -66,7 +66,7 @@ public class GameFieldOptionsFrame {
 		Label lblNewLabel = new Label(compositeCreateNewField, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
 		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		lblNewLabel.setBounds(10, 10, 198, 25);
+		lblNewLabel.setBounds(10, 10, 216, 25);
 		lblNewLabel.setText("Размерность игрового поля:");
 		
 		Label label = new Label(compositeCreateNewField, SWT.NONE);
@@ -94,18 +94,18 @@ public class GameFieldOptionsFrame {
 		Label lblNewLabel_1 = new Label(compositeCreateNewField, SWT.NONE);
 		lblNewLabel_1.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
 		lblNewLabel_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		lblNewLabel_1.setBounds(10, 79, 208, 25);
+		lblNewLabel_1.setBounds(10, 87, 216, 25);
 		lblNewLabel_1.setText("Режим составления игрового");
 		
 		final Button radioButtonAutomatically = new Button(compositeCreateNewField, SWT.RADIO);
 		radioButtonAutomatically.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		radioButtonAutomatically.setSelection(true);
-		radioButtonAutomatically.setBounds(10, 121, 108, 16);
+		radioButtonAutomatically.setBounds(10, 132, 108, 16);
 		radioButtonAutomatically.setText("Автоматически");
 		
 		Button radioButtonManually = new Button(compositeCreateNewField, SWT.RADIO);
 		radioButtonManually.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		radioButtonManually.setBounds(10, 143, 108, 16);
+		radioButtonManually.setBounds(10, 154, 108, 16);
 		radioButtonManually.setText("Вручную");
 		
 		Button button_1 = new Button(compositeCreateNewField, SWT.NONE);
@@ -117,16 +117,17 @@ public class GameFieldOptionsFrame {
 					field.automaticCompositionField();
 				}
 				GameFieldBuilder fieldBuilder = new GameFieldBuilder();
+				shell.dispose();
 				fieldBuilder.open(field);
 			}
 		});
-		button_1.setBounds(10, 165, 108, 25);
+		button_1.setBounds(10, 176, 108, 25);
 		button_1.setText("Создать поле");
 		
 		Label label_3 = new Label(compositeCreateNewField, SWT.NONE);
 		label_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		label_3.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
-		label_3.setBounds(10, 97, 41, 25);
+		label_3.setBounds(10, 107, 41, 25);
 		label_3.setText(" поля:");
 		
 		TabItem tbtmUpdateField = new TabItem(tabFolder, SWT.NONE);
@@ -164,6 +165,7 @@ public class GameFieldOptionsFrame {
 				try {
 					GameField openedField = FileSystemManager.getGameField(text.getText());
 					GameFieldBuilder fieldBuilder = new GameFieldBuilder();
+					shell.dispose();
 					fieldBuilder.open(openedField);
 				} catch (StorageException e1) {
 					MessageDialog.openWarning(shell, "Внимание", "Невозможно открыть файл");
