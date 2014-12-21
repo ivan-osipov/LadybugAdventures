@@ -3,12 +3,15 @@ package technologyOfProgramming.zvenigorodskyTask.entities;
 import java.util.LinkedList;
 import java.util.List;
 
-import technologyOfProgramming.zvenigorodskyTask.entities.interfaces.Command;
-import technologyOfProgramming.zvenigorodskyTask.enums.CommandType;
-import technologyOfProgramming.zvenigorodskyTask.enums.Direction;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import ladybugAdventures.entities.CommandImpl;
+import ladybugAdventures.entities.Cycle;
+import ladybugAdventures.entities.ManagementProgram;
+import ladybugAdventures.entities.interfaces.Command;
+import ladybugAdventures.enums.CommandType;
+import ladybugAdventures.enums.Direction;
 
 public class ManagementProgramTest extends TestCase {
 	/**
