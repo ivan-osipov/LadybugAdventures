@@ -14,6 +14,7 @@ import ladybugAdventures.Application;
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
 import ladybugAdventures.ui.animation.MPViewer;
+import ladybugAdventures.ui.components.LoadAnimationFrame;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -43,10 +44,11 @@ public class AnimationRunner {
 				System.setProperty("java.library.path", resourcePath.toString());
 				try {
 					AppGameContainer container = new AppGameContainer(new MPViewer(field,program));
-					container.setDisplayMode(800, 600, false);
+					container.setDisplayMode(1280, 1024, false);
 					container.setShowFPS(false);
 					container.setTitle("Приключения божьей коровки");
 					container.setTargetFrameRate(60);
+//					container.setFullscreen(true);
 					container.start();
 					
 				} catch (SlickException e3) {

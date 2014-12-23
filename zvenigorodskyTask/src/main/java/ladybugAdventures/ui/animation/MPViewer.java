@@ -14,6 +14,8 @@ import ladybugAdventures.entities.ManagementProgram;
 import ladybugAdventures.ui.MainFrame;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
 import ladybugAdventures.ui.animation.components.StartButtonRenderer;
+import ladybugAdventures.ui.components.LoadAnimationFrame;
+import ladybugAdventures.util.Analizator;
 import ladybugAdventures.util.CommonUtils;
 import ladybugAdventures.util.ResourceProvider;
 
@@ -41,6 +43,8 @@ public class MPViewer extends BasicGame {
 	private GameField startField;
 	private ManagementProgram program;
 	private StartButtonRenderer startButton;
+	private Analizator analizator;
+	private boolean animating;
 
 	private float x;
 	private float y;
@@ -48,6 +52,7 @@ public class MPViewer extends BasicGame {
 		super("Приключения божьей коровки");
 		startField = field;
 		this.program = program;
+		analizator = new Analizator(field, program);
 	}
 
 
@@ -66,18 +71,26 @@ public class MPViewer extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		background = new Image(ResourceProvider.getResInpStr(ResourceProvider.BACKGROUND_ID),ResourceProvider.BACKGROUND_ID,false);
 		startButton = new StartButtonRenderer(container);
-		gameField = new GameFieldRenderer(20,20);
+		gameField = new GameFieldRenderer(startField);
 		gameField.init(container);
-		ladybug = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_ID),ResourceProvider.LADYBUG_ID,false);
-		ladybug.rotate(90);
-		x=10;
-		y=20;
+//		ladybug = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_ID),ResourceProvider.LADYBUG_ID,false);
+//		ladybug.rotate(90);
+//		x=10;
+//		y=20;
+		
 	}
 
 	@Override
 	public void update(GameContainer container, int t)
 			throws SlickException {
-		startButton.update(container, t);
+		if(!animating){
+			if(startButton.update(container, t)){
+				animating = true;
+			}
+		}
+		else{
+//			analizator.
+		}
 		//x+=0.1*delta;
 
 
@@ -97,7 +110,7 @@ public class MPViewer extends BasicGame {
 //				getResource("/native/win32");
 //		try {
 			System.out.println(CommonUtils.getJarPath());
-			resourcePath = Paths.get(CommonUtils.getJarPath()+"/lib/native/win32/");
+			resourcePath = Paths.get(CommonUtils.getJarPath()+"/lib/native/");
 //			resourcePath = Paths.get(resourceUrl.toURI());
 			System.out.println(resourcePath);
 //		} catch (URISyntaxException e1) {

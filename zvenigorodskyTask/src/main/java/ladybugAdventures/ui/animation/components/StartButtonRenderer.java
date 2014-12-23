@@ -40,7 +40,7 @@ public class StartButtonRenderer extends org.newdawn.slick.gui.AbstractComponent
 			g.drawImage(drawbleImage, getX(), getY());
 		
 	}
-	public void update(GUIContext container, int t){
+	public boolean update(GUIContext container, int t){
 		Input input = container.getInput();
 
         if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
@@ -52,8 +52,10 @@ public class StartButtonRenderer extends org.newdawn.slick.gui.AbstractComponent
             		&& clickedY <= (this.y+getHeight())){
             				drawbleImage = pressedImage;
             				visible = false;
+            				return true;
             		}
         }
+        return false;
 	}
 	@Override
 	public void setLocation(int x, int y) {

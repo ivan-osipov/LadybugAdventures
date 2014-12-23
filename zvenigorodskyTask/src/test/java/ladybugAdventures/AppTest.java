@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask;
+package ladybugAdventures;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

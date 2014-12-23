@@ -1,4 +1,4 @@
-package technologyOfProgramming.zvenigorodskyTask.entities;
+package ladybugAdventures.entities;
 
 import java.util.LinkedList;
 import java.util.List;

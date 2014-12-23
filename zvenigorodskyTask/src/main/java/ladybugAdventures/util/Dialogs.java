@@ -1,5 +1,7 @@
 package ladybugAdventures.util;
 
+import java.io.File;
+
 import ladybugAdventures.data.FileSystemManager;
 import ladybugAdventures.data.StorageException;
 import ladybugAdventures.entities.GameField;
@@ -37,15 +39,18 @@ public class Dialogs {
 		String fileName = dialog.open();
 		if(fileName != null)
 		try {
-			if(saveObj instanceof ManagementProgram){
-				FileSystemManager.saveManagementProgram((ManagementProgram)saveObj, fileName);
-				return true;
-			}
-			else
-				if(saveObj instanceof GameField){
-					FileSystemManager.saveGameField((GameField)saveObj, fileName);
+			if (!(new File(fileName).exists() && Dialogs.showYesNoDialog(shell,"Перезаписать?", 
+					"Файл с таким именем существует") == SWT.NO)) {
+				if(saveObj instanceof ManagementProgram){
+					FileSystemManager.saveManagementProgram((ManagementProgram)saveObj, fileName);
 					return true;
 				}
+				else
+					if(saveObj instanceof GameField){
+						FileSystemManager.saveGameField((GameField)saveObj, fileName);
+						return true;
+					}
+			}
 		} catch (StorageException e1) {
 			MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
 			return false;

@@ -39,7 +39,10 @@ public class ManagementProgram extends Observable implements Iterable<Command> {
 		this.author = author;
 		this.gameFieldAddress = gameFieldAddress;
 	}
-
+	/**
+	 * Получение полного списка команд с учетом итераций и вложенных циклов
+	 * @return список команд
+	 */
 	public List<Command> getCommandListInLine() {
 		List<Command> commandList = new LinkedList<>();
 		for(Command command: this.commandList){

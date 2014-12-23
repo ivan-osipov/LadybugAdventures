@@ -496,9 +496,6 @@ public class ProgramBuilderFrame implements Observer {
 				        	widgetSelected(e);
 				        }
 					}
-					else{
-						
-					}
 				}
 			}
 		});

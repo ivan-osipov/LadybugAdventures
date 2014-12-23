@@ -61,7 +61,7 @@ public class MainFrame {
 			display.dispose();
 			
 		}
-		System.exit(0);
+//		System.exit(0);
 	}
 
 	/**
