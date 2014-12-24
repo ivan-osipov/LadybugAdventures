@@ -178,7 +178,8 @@ public class GameFieldBuilder {
 		button_4.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				saveChanges();
+				Dialogs.showSaveDialog(shell, "Файл игрового поля (*.map)", 
+						"*.map", "gameField.map", field);
 			}
 		});
 		button_4.setBounds(10, 127, 120, 25);
@@ -191,7 +192,8 @@ public class GameFieldBuilder {
 				if (!changesSaved) {
 					if(Dialogs.showYesNoDialog(shell,"Сохранить изменения перед закрытием?", 
 							"Сохранить изменения?") == SWT.YES){
-						saveChanges();
+						Dialogs.showSaveDialog(shell, "Файл игрового поля (*.map)", 
+								"*.map", "gameField.map", field);
 					}
 				}
 				shell.dispose();
@@ -205,30 +207,12 @@ public class GameFieldBuilder {
 				if (!changesSaved) {
 					if(Dialogs.showYesNoDialog(shell,"Сохранить изменения перед закрытием?", 
 							"Сохранить изменения?") == SWT.YES){
-						saveChanges();
+						Dialogs.showSaveDialog(shell, "Файл игрового поля (*.map)", 
+								"*.map", "gameField.map", field);
 					}
 				}
 				shell.dispose();
 			} 
 			});
-	}
-	
-	private void saveChanges() {
-		FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-		dialog.setFilterNames (new String [] {"Файл игрового поля (*.map)"});
-		dialog.setFilterExtensions (new String [] {"*.map"});
-		dialog.setFileName ("gameField.map");
-		String fileName = dialog.open();
-		if(fileName != null) {
-			try {
-				if (!(new File(fileName).exists() && Dialogs.showYesNoDialog(shell,"Перезаписать?", 
-						"Файл с таким именем существует") == SWT.NO)) {
-					FileSystemManager.saveGameField(field, fileName);
-					changesSaved = true;
-				}
-			} catch (StorageException e1) {
-				MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
-			}
-		}
 	}
 }

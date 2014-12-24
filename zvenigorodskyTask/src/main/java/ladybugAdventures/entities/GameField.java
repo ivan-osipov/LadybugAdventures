@@ -51,6 +51,16 @@ public class GameField implements Serializable {
 		cleanField();
 	}
 	
+	public GameField clone() {
+		GameField newField = new GameField(getWidth(), getHeigh());
+		for (int i = 0; i < getWidth(); i++) {
+			for (int j = 0; j < getHeigh(); j++) {
+				newField.addObject(getType(i, j), i, j);
+			}
+		}
+		return newField;
+	}
+	
 	public boolean isControlObjectOnField() {
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeigh(); j++) {
