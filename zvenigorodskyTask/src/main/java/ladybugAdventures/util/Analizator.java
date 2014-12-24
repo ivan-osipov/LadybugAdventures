@@ -19,6 +19,7 @@ public class Analizator {
 	private List<StepTrack> trackList;
 	private List<Command> commandList;
 	private boolean ladybugOnOccupiedCell;
+	private boolean endOfProgram;
 	private int currentStep;
 	
 	public Analizator(GameField field, ManagementProgram program){
@@ -28,6 +29,8 @@ public class Analizator {
 		ladybugOnOccupiedCell = false;
 		commandList = program.getCommandListInLine();
 		currentStep = 0;
+		endOfProgram = false;
+		trackList = new ArrayList<StepTrack>();
 	}
 	
 	public GameField getFieldBeforeStep() {
@@ -40,6 +43,14 @@ public class Analizator {
 	
 	public List<StepTrack> getTrackList() {
 		return trackList;
+	}
+	
+	public boolean isEndOfProgram() {
+		return endOfProgram;
+	}
+	
+	public ErrorType getCurrentError() {
+		return error;
 	}
 	
 	private Point getDirection(CommandImpl command) {
@@ -74,6 +85,7 @@ public class Analizator {
 	}
 	
 	private boolean canPerform(CommandImpl command){
+		trackList.clear();
 		java.awt.Point controlObjectCoordinates = fieldBeforeStep.getControlObjectCoordinates();
 		Point direction = getDirection(command);
 		if (error != ErrorType.NONE_ERROR) return false;
@@ -241,20 +253,24 @@ public class Analizator {
 		return false;
 	}
 	
-	public ErrorType perform() {
+	public boolean perform() {
+		endOfProgram = false;
 		for (int i = 0; i < commandList.size(); i++) {
 			if (!performStep((CommandImpl)commandList.get(i)))
-				return error;
+				return endOfProgram;
 		}
-		return ErrorType.NONE_ERROR;
+		endOfProgram = true;
+		return endOfProgram;
 	}
 	
-	public ErrorType nextStep() {
+	public boolean nextStep() {
 		if (currentStep < commandList.size()) {
-			performStep((CommandImpl)commandList.get(currentStep));
-			currentStep++;
+			if (performStep((CommandImpl)commandList.get(currentStep))) {
+				currentStep++;
+				return  true;
+			}
 		}
-		return error;
+		return false;
 	}
 	
 	public String getCurrentErrorDefinition() {
