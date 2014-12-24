@@ -6,21 +6,32 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import ladybugAdventures.data.FileSystemManager;
 import ladybugAdventures.data.StorageException;
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
+import ladybugAdventures.enums.Direction;
+import ladybugAdventures.enums.ErrorType;
+import ladybugAdventures.enums.GameObject;
 import ladybugAdventures.ui.MainFrame;
+import ladybugAdventures.ui.animation.components.CommonInformationRenderer;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
 import ladybugAdventures.ui.animation.components.StartButtonRenderer;
 import ladybugAdventures.ui.components.LoadAnimationFrame;
 import ladybugAdventures.util.Analizator;
 import ladybugAdventures.util.CommonUtils;
+import ladybugAdventures.util.MoveRenderElement;
 import ladybugAdventures.util.ResourceProvider;
+import ladybugAdventures.util.StepTrack;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.LWJGLUtil;
@@ -38,23 +49,37 @@ public class MPViewer extends BasicGame {
 	
 	
 	private Image background;
-	private Image ladybug;
 	private GameFieldRenderer gameField;
-	private GameField startField;
-	private ManagementProgram program;
 	private StartButtonRenderer startButton;
 	private Analizator analizator;
+//	private String info;
+	private List<MoveRenderElement> renderTrackList;
+	private List<Point> postrenderObjects;
+//	private CommonInformationRenderer infoRenderer;
 	private boolean animating;
-
+	int printedObjects = 0;
 	private float x;
 	private float y;
 	public MPViewer(GameField field, ManagementProgram program){
 		super("Приключения божьей коровки");
-		startField = field;
-		this.program = program;
+		//FIXME не рисуется русский текст
+//		info = MessageFormat.format("Author: {0}\r\nCommand amount: {1}\r\nРазмер поля: {2}x{3}", program.getAuthor(),program.getAllCommandAmountWithIterations(),
+//				field.getWidth(),field.getHeigh());
 		analizator = new Analizator(field, program);
 	}
-
+	@Override
+	public void init(GameContainer container) throws SlickException {
+		background = new Image(ResourceProvider.getResInpStr(ResourceProvider.BACKGROUND_ID),ResourceProvider.BACKGROUND_ID,false);
+		startButton = new StartButtonRenderer(container);
+		gameField = new GameFieldRenderer(analizator.getFieldBeforeStep());
+		gameField.init(container);
+//		ladybug.rotate(90);
+		//СПИСОК ОТРИСУЕМЫХ
+		renderTrackList = new ArrayList<MoveRenderElement>();
+		if(!updateRenderTrackList()){
+			startButton.setVisible(false);
+		}
+	}
 
 
 	@Override
@@ -63,22 +88,14 @@ public class MPViewer extends BasicGame {
 		background.draw(0,0,container.getWidth(),container.getHeight());
 		gameField.render(container, g);
 		startButton.render(container, g);
-//		buglady.draw(x,y);
+//		g.drawString(info, 30, container.getHeight()-150);
+		for(MoveRenderElement renderElement: renderTrackList){
+			renderElement.sprite.getCurrentFrame().draw(renderElement.current.x, renderElement.current.x);
+		}
 
 	}
 
-	@Override
-	public void init(GameContainer container) throws SlickException {
-		background = new Image(ResourceProvider.getResInpStr(ResourceProvider.BACKGROUND_ID),ResourceProvider.BACKGROUND_ID,false);
-		startButton = new StartButtonRenderer(container);
-		gameField = new GameFieldRenderer(startField);
-		gameField.init(container);
-//		ladybug = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_ID),ResourceProvider.LADYBUG_ID,false);
-//		ladybug.rotate(90);
-//		x=10;
-//		y=20;
-		
-	}
+	
 
 	@Override
 	public void update(GameContainer container, int t)
@@ -89,13 +106,47 @@ public class MPViewer extends BasicGame {
 			}
 		}
 		else{
-//			analizator.
+			int oneStep = gameField.getCellSize()/20;
+			if(!renderTrackList.isEmpty()){
+				for(MoveRenderElement moveElement: renderTrackList){
+					int deltaX = moveElement.result.x-moveElement.current.x;
+					int deltaY = moveElement.result.y-moveElement.current.y;
+					if(deltaX!=0){
+						moveElement.current.x+=oneStep*t;
+						continue;
+					}
+					if(deltaY!=0){
+						moveElement.current.y+=oneStep*t;
+						continue;
+					}
+					printedObjects++;
+					if(printedObjects == renderTrackList.size())
+						gameField.setGameField(analizator.getFieldAfterStep());
+						if(!updateRenderTrackList())
+							animating = false;
+						printedObjects = 0;
+				}
+			}
+				
 		}
-		//x+=0.1*delta;
 
 
 	}
-
+	private boolean updateRenderTrackList() throws SlickException{
+		renderTrackList.clear();
+		if(analizator.nextStep()!=ErrorType.NONE_ERROR)
+		{
+			gameField.setNotRenderList(analizator.getTrackList());
+			List<StepTrack> tracks = analizator.getTrackList();
+			for(int i = 0;i<tracks.size();i++){
+				renderTrackList.add(new MoveRenderElement(tracks.get(i),gameField.getCellSize()));
+			}
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	/*
 	 *
 	 *

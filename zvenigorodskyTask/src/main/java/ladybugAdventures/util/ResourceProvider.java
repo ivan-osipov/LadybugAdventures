@@ -5,7 +5,8 @@ import java.io.InputStream;
 public class ResourceProvider {
 	//IDs
 	public final static String BACKGROUND_ID 			= 		"/main/background";
-	public final static String LADYBUG_ID 				= 		"/gameobject/ladybug";
+	public final static String LADYBUG_FRAME1_ID 		= 		"/gameobject/ladybug1";
+	public final static String LADYBUG_FRAME2_ID 		= 		"/gameobject/ladybug2";
 	public final static String START_BUTTON_ID 			= 		"/main/startButton";
 	public final static String START_BUTTON_PRESSED_ID 	= 		"/main/startButtonPressed";
 	public final static String EMPTY_CELL_ID 			=		"/img/pictures/cell";
@@ -15,7 +16,8 @@ public class ResourceProvider {
 	public final static String OCCUPIED_CELL_ID			=		"/img/pictures/occupiedCell";
 	//links
 	private final static String BACKGROUND_LINK 			= 		"/img/pictures/background.jpg";
-	private final static String LADYBUG_LINK 				= 		"/img/pictures/buglady.png";
+	private final static String LADYBUG_FRAME1_LINK 		= 		"/img/pictures/ladybug_frame1.png";
+	private final static String LADYBUG_FRAME2_LINK 		= 		"/img/pictures/ladybug_frame2.png";
 	private final static String START_BUTTON_LINK 			= 		"/img/pictures/startButton.png";
 	private final static String START_BUTTON_PRESSED_LINK 	= 		"/img/pictures/startButtonPressed.png";
 	private final static String EMPTY_CELL_LINK 			= 		"/img/pictures/cell.png";
@@ -31,8 +33,11 @@ public class ResourceProvider {
 		case BACKGROUND_ID:
 			resultLink = BACKGROUND_LINK;
 			break;
-		case LADYBUG_ID:
-			resultLink = LADYBUG_LINK;
+		case LADYBUG_FRAME1_ID:
+			resultLink = LADYBUG_FRAME1_LINK;
+			break;
+		case LADYBUG_FRAME2_ID:
+			resultLink = LADYBUG_FRAME2_LINK;
 			break;
 		case START_BUTTON_ID:
 			resultLink = START_BUTTON_LINK;

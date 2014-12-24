@@ -44,23 +44,29 @@ public class AnimationRunner {
 				System.setProperty("java.library.path", resourcePath.toString());
 				try {
 					AppGameContainer container = new AppGameContainer(new MPViewer(field,program));
-					container.setDisplayMode(1280, 1024, false);
+					container.setDisplayMode(1600, 900, false);
+//					container.setDisplayMode(800, 600, false);
 					container.setShowFPS(false);
 					container.setTitle("Приключения божьей коровки");
-					container.setTargetFrameRate(60);
+//					container.setAlwaysRender(false);
+//					container.setClearEachFrame(false);
+//					container.setIcon("src/main/resources/img/icons/logoIcon.ico");
+					container.setTargetFrameRate(30);
 //					container.setFullscreen(true);
 					container.start();
 					
 				} catch (SlickException e3) {
 					Shell shell = new Shell(Display.getDefault());
-					MessageDialog.openError(shell, "Ошибка!", "Невозможно отобразить визуализацию.");
-					
-//					shell.dispose();
+					MessageDialog.openError(shell, "Ошибка!", "Невозможно отобразить визуализацию. Переустановите игру!");
+					shell.dispose();
+					System.exit(0);
 				}
 				catch(UnsatisfiedLinkError e){
 					Shell shell = new Shell(Display.getDefault());
 					MessageDialog.openError(shell, "Ошибка!", "Ваша операционная система скорее всего не совместима\n"
-							+ " со средством визуализации. \nОбновите библиотеки jinput(/lib/native/win32) в соотсветствии с вашей ОС");
+							+ " со средством визуализации. \nОбновите библиотеки jinput и lwjgl(/lib/native/) в соотсветствии с вашей ОС");
+					shell.dispose();
+					System.exit(0);
 				}
 			}
 		});

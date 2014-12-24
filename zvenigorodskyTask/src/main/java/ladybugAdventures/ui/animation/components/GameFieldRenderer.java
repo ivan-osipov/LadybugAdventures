@@ -1,9 +1,14 @@
 package ladybugAdventures.ui.animation.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.enums.GameObject;
 import ladybugAdventures.util.Analizator;
+import ladybugAdventures.util.StepTrack;
 
+import org.eclipse.swt.graphics.Point;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Color;
@@ -21,7 +26,7 @@ public class GameFieldRenderer extends GameField{
 	private GameContainer container;
 	private BaseCellRenderer[][] emptyCellCollection;
 	private BaseCellRenderer[][] contentCellCollection;
-	
+	private List<Point> notRenderingList = new ArrayList<Point>();
 	public GameFieldRenderer(GameField field){
 		super(field.getWidth(), field.getHeigh());
 		for(int i = 0; i<super.getWidth();i++){
@@ -34,13 +39,27 @@ public class GameFieldRenderer extends GameField{
 	public GameFieldRenderer(int width, int height) {
 		super(width, height);
 	}
+	public void setGameField(GameField field){
+		for(int i = 0; i<super.getWidth();i++){
+			for(int j = 0; j<super.getHeigh();j++){
+				super.field[j][i] = field.getType(i, j);
+			}
+		}
+	}
 	public void render(GameContainer container, Graphics g) throws SlickException{
 		g.setColor(new Color(152,251,152,0.4f));
 		g.fillRect(renderPosX, renderPosY, fieldWidth, fieldHeight);
+		boolean render;
 		for(int i = 0; i<getWidth(); i++){
 			for(int j = 0; j<getHeigh(); j++){
 				emptyCellCollection[i][j].render(container, g);
-				if(getType(i, j)!=GameObject.EMPTY_CELL)
+//				if(getType(i, j)==GameObject.HOLE || getType(i, j)==GameObject.OCCUPIED_CELL)
+				render = true;
+				for(Point notPaint: notRenderingList){
+					if(notPaint.x==j && notPaint.y == i)
+						render = false;
+				}
+				if(render)
 					contentCellCollection[i][j].render(container, g);
 			}
 		}
@@ -83,6 +102,16 @@ public class GameFieldRenderer extends GameField{
 	}
 	public void setFieldHeight(int fieldHeight) {
 		this.fieldHeight = fieldHeight;
+	}
+	public int getCellSize() {
+		return cellSize;
+	}
+	public void setNotRenderList(List<StepTrack> notRenderList) {
+		this.notRenderingList.clear();
+		for(StepTrack step: notRenderList){
+			this.notRenderingList.add(step.getStartPosition());
+		}
+		
 	}
 	
 
