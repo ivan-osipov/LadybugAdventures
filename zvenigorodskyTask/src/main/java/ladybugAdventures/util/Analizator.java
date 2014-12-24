@@ -45,13 +45,13 @@ public class Analizator {
 		Point direction = new Point(0, 0);
 		switch (command.getDirection()) {
 		case UP:
-			direction.y++;
+			direction.y--;
 			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y > fieldBeforeStep.getHeigh()) {
 				error = ErrorType.FIELD_BORDER;
 			}
 			break;
 		case DOWN:
-			direction.y--;
+			direction.y++;
 			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y < 0) {
 				error = ErrorType.FIELD_BORDER;
 			}
