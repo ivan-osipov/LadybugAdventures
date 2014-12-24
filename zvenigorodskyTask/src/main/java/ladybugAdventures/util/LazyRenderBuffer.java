@@ -62,10 +62,11 @@ public class LazyRenderBuffer {
 		return recieve;
 				
 	}
-	public static List<Image> getImages(GameObject gameObject) throws SlickException{
-		List<Image> recieve = new LinkedList<>();
+	public static Image[] getImages(GameObject gameObject) throws SlickException{
+		Image[] recieve = null;
 		switch (gameObject) {
 		case LADYBUG:
+			recieve = new Image[2];
 			if(ladybug1==null){
 				ladybug1 = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_ID),
 						ResourceProvider.LADYBUG_FRAME1_ID,false);
@@ -74,8 +75,8 @@ public class LazyRenderBuffer {
 				ladybug2 = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME2_ID),
 						ResourceProvider.LADYBUG_FRAME2_ID,false);
 			}
-			recieve.add(ladybug1);
-			recieve.add(ladybug2);
+			recieve[0] =ladybug1;
+			recieve[1] =ladybug2;
 			break;
 		}
 		return recieve;
