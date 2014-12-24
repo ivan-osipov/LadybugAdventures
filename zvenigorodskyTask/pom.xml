@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>technologyOfProgramming</groupId>
-	<artifactId>zvenigorodskyTask</artifactId>
+	<groupId>ru.ssau.6403</groupId>
+	<artifactId>ladybugAdventures</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>zvenigorodskyTask</name>
+	<name>Ladybug adventures</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -18,7 +18,7 @@
 	</properties>
 
 	<build>
-		<finalName>Zvenigirodsky_Task</finalName>
+		<finalName>Ladybug_adventures</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -35,7 +35,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>technologyOfProgramming.zvenigorodskyTask.App</mainClass>
+							<mainClass>ladybugAdventures.Application</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
