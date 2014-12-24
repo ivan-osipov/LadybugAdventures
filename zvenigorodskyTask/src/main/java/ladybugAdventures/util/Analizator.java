@@ -15,26 +15,18 @@ public class Analizator {
 	private ErrorType error;
 	private GameField fieldBeforeStep;
 	private GameField fieldAfterStep;
-	private ManagementProgram program;
 	private List<StepTrack> trackList;
+	private List<Command> commandList;
 	private boolean ladybugOnOccupiedCell;
+	private int currentStep;
 	
 	public Analizator(GameField field, ManagementProgram program){
-		fieldBeforeStep = fieldClone(field);
-		fieldAfterStep = fieldClone(field);
-		this.program = program;
+		fieldBeforeStep = field.clone();
+		fieldAfterStep = field.clone();
 		error = ErrorType.NONE_ERROR;
 		ladybugOnOccupiedCell = false;
-	}
-
-	public GameField fieldClone(GameField field) {
-		GameField newField = new GameField(field.getWidth(), field.getHeigh());
-		for (int i = 0; i < field.getWidth(); i++) {
-			for (int j = 0; j < field.getHeigh(); j++) {
-				newField.addObject(field.getType(i, j), i, j);
-			}
-		}
-		return newField;
+		commandList = program.getCommandListInLine();
+		currentStep = 0;
 	}
 	
 	public GameField getFieldBeforeStep() {
@@ -45,17 +37,21 @@ public class Analizator {
 		return fieldAfterStep;
 	}
 	
+	public List<StepTrack> getTrackList() {
+		return trackList;
+	}
+	
 	private Point getDirection(CommandImpl command) {
 		Point direction = new Point(0, 0);
 		switch (command.getDirection()) {
 		case UP:
-			direction.y++;
+			direction.y--;
 			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y > fieldBeforeStep.getHeigh()) {
 				error = ErrorType.FIELD_BORDER;
 			}
 			break;
 		case DOWN:
-			direction.y--;
+			direction.y++;
 			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y < 0) {
 				error = ErrorType.FIELD_BORDER;
 			}
@@ -76,7 +72,7 @@ public class Analizator {
 		return direction;
 	}
 	
-	public boolean canPerform(CommandImpl command){
+	private boolean canPerform(CommandImpl command){
 		java.awt.Point controlObjectCoordinates = fieldBeforeStep.getControlObjectCoordinates();
 		Point direction = getDirection(command);
 		if (error != ErrorType.NONE_ERROR) return false;
@@ -91,10 +87,14 @@ public class Analizator {
 					error = ErrorType.MOVE_HOLE;
 					return false;
 				default:
-					trackList.add(new StepTrack(new Point(controlObjectCoordinates.x, 
-							controlObjectCoordinates.y), new Point(
-								controlObjectCoordinates.x + direction.x, 
-								controlObjectCoordinates.y + direction.y)));
+					trackList.add(new StepTrack(
+							new Point(controlObjectCoordinates.x, 
+									controlObjectCoordinates.y), 
+							new Point(
+									controlObjectCoordinates.x + direction.x, 
+									controlObjectCoordinates.y + direction.y),
+							fieldBeforeStep.getType(controlObjectCoordinates.x, 
+									controlObjectCoordinates.y)));
 					return true;
 			}
 		case JUMP:
@@ -123,10 +123,14 @@ public class Analizator {
 						error = ErrorType.JUMP_ON_HOLE;
 						return false;
 					default:
-						trackList.add(new StepTrack(new Point(controlObjectCoordinates.x, 
-							controlObjectCoordinates.y), new Point(
-								controlObjectCoordinates.x + 2 * direction.x, 
-								controlObjectCoordinates.y + 2 * direction.y)));
+						trackList.add(new StepTrack(
+								new Point(controlObjectCoordinates.x, 
+										controlObjectCoordinates.y), 
+								new Point(
+										controlObjectCoordinates.x + 2 * direction.x, 
+										controlObjectCoordinates.y + 2 * direction.y),
+								fieldBeforeStep.getType(controlObjectCoordinates.x, 
+										controlObjectCoordinates.y)));
 						return true;
 					}
 				}
@@ -161,15 +165,20 @@ public class Analizator {
 						error = ErrorType.PUSH_BLOCK_TO_OCCUPIED_CELL;
 						return false;
 					default:
-						trackList.add(new StepTrack(new Point(controlObjectCoordinates.x, 
-								controlObjectCoordinates.y), new Point(
-									controlObjectCoordinates.x + direction.x, 
-									controlObjectCoordinates.y + direction.y)));
+						trackList.add(new StepTrack(
+								new Point(controlObjectCoordinates.x, 
+										controlObjectCoordinates.y), 
+								new Point(controlObjectCoordinates.x + direction.x, 
+										controlObjectCoordinates.y + direction.y),
+								fieldBeforeStep.getType(controlObjectCoordinates.x, 
+										controlObjectCoordinates.y)));
 						trackList.add(new StepTrack(
 								new Point(controlObjectCoordinates.x + direction.x, 
 										controlObjectCoordinates.y + direction.y), 
 								new Point(controlObjectCoordinates.x + 2 * direction.x, 
-										controlObjectCoordinates.y + 2 * direction.y)));
+										controlObjectCoordinates.y + 2 * direction.y),
+								fieldBeforeStep.getType(controlObjectCoordinates.x, 
+										controlObjectCoordinates.y)));
 						return true;
 					}
 				}
@@ -183,9 +192,9 @@ public class Analizator {
 		return true;
 	}
 	
-	public boolean stepPerform(CommandImpl command){
+	private boolean performStep(CommandImpl command){
 		if (canPerform(command)) {
-			fieldBeforeStep = fieldClone(fieldAfterStep);
+			fieldBeforeStep = fieldAfterStep.clone();
 			switch(command.getType()) {
 			case PUSH:
 				fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
@@ -231,16 +240,27 @@ public class Analizator {
 		return false;
 	}
 	
-	public ErrorType Perform() {
-		List<Command> commandList = program.getCommandList();
+	public ErrorType perform() {
 		for (int i = 0; i < commandList.size(); i++) {
-			if (!stepPerform((CommandImpl)commandList.get(i)))
+			if (!performStep((CommandImpl)commandList.get(i)))
 				return error;
 		}
 		return ErrorType.NONE_ERROR;
 	}
 	
-	public String getDefininitionError(){
+	public ErrorType nextStep() {
+		if (currentStep < commandList.size()) {
+			performStep((CommandImpl)commandList.get(currentStep));
+			currentStep++;
+		}
+		return error;
+	}
+	
+	public String getCurrentErrorDefinition() {
+		return getDefininitionError(error);
+	}
+	
+	public String getDefininitionError(ErrorType error){
 		switch(error){
 		case FIELD_BORDER:
 			return "Я не могу уйти с поля!";
