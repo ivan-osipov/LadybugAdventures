@@ -1,11 +1,13 @@
 package ladybugAdventures.ui.animation;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
 import ladybugAdventures.enums.GameObject;
+import ladybugAdventures.ui.animation.components.CommonInformationRenderer;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
 import ladybugAdventures.ui.animation.components.StartButtonRenderer;
 import ladybugAdventures.util.Analizator;
@@ -28,17 +30,17 @@ public class MPViewer extends BasicGame {
 	private GameFieldRenderer gameField;
 	private StartButtonRenderer startButton;
 	private Analizator analizator;
-//	private String info;
+	private String info;
 	private List<MoveRenderElement> renderTrackList;
-//	private CommonInformationRenderer infoRenderer;
+	private CommonInformationRenderer infoRenderer;
 	private boolean animating;
 	int printedObjects = 0;
 	int oneStep = 0;
 	public MPViewer(GameField field, ManagementProgram program){
 		super("Приключения божьей коровки");
-		//FIXME не рисуется русский текст
-//		info = MessageFormat.format("Author: {0}\r\nCommand amount: {1}\r\nРазмер поля: {2}x{3}", program.getAuthor(),program.getAllCommandAmountWithIterations(),
-//				field.getWidth(),field.getHeigh());
+		info = MessageFormat.format("Автор: {0}\r\nКоличество команд: {1}\r\nРазмер поля: {2}x{3}", program.getAuthor(),program.getAllCommandAmountWithIterations(),
+				field.getWidth(),field.getHeigh());
+		
 		analizator = new Analizator(field, program);
 	}
 	@Override
@@ -47,6 +49,8 @@ public class MPViewer extends BasicGame {
 		startButton = new StartButtonRenderer(container);
 		gameField = new GameFieldRenderer(analizator.getFieldBeforeStep());
 		gameField.init(container);
+		infoRenderer = new CommonInformationRenderer(container, new Point(10, container.getHeight()-200), new Point(300,300), info);
+		infoRenderer.init(container);
 		//СПИСОК ОТРИСУЕМЫХ
 		renderTrackList = new ArrayList<MoveRenderElement>();
 		if(!updateRenderTrackList()){
@@ -61,7 +65,7 @@ public class MPViewer extends BasicGame {
 		background.draw(0,0,container.getWidth(),container.getHeight());
 		gameField.render(container, g);
 		startButton.render(container, g);
-		
+		infoRenderer.render(container, g);
 //		g.drawString(info, 30, container.getHeight()-150);
 		for(MoveRenderElement renderElement: renderTrackList){
 			renderElement.sprite.draw(renderElement.current.x, 
