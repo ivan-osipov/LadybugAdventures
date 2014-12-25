@@ -1,13 +1,10 @@
 package ladybugAdventures.util;
 
-import java.awt.Point;
-import java.time.Duration;
-
-import ladybugAdventures.entities.GameField;
 import ladybugAdventures.enums.Direction;
 import ladybugAdventures.enums.GameObject;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
 
+import org.eclipse.swt.graphics.Point;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -42,7 +39,7 @@ public class MoveRenderElement {
 					direction = Direction.LEFT;
 				}
 				else
-					if(deltaY<0)
+					if(deltaY>0)
 						direction = Direction.DOWN;
 			}
 			this.sprite = new Animation(LazyRenderBuffer.getImages(GameObject.LADYBUG,direction), 120);
