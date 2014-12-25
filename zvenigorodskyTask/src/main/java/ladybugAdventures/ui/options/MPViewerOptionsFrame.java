@@ -90,7 +90,7 @@ public class MPViewerOptionsFrame {
 							fieldText.setText(program.getMapAddress());
 						}
 						catch(StorageException e2){
-							MessageDialog.openInformation(shell, "Внимание", "Игровое поле установленное по умолчанию не доступно. Выберите другое.");
+							MessageDialog.openInformation(shell, "Внимание", "Игровое поле, установленное по умолчанию, недоступно. Выберите другое.");
 						}
 					} catch (StorageException e1) {
 						MessageDialog.openWarning(shell, "Внимание", "Программа управления не может быть корректно распознана. Выберите другую.");

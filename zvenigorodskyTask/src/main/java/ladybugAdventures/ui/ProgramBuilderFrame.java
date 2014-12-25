@@ -32,6 +32,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -65,6 +67,8 @@ public class ProgramBuilderFrame implements Observer {
 	private Command[] currentCycle;
 	GameFieldViewer gameFieldFrame;
 	private int stringNum = 0;
+	private boolean changeSaved = true;
+	private boolean opened = false;
 	public ProgramBuilderFrame(ManagementProgram program){
 		currentCommand = new CommandImpl();
 		currentWorkMode = WorkMode.ADD_COMMAND;
@@ -116,10 +120,12 @@ public class ProgramBuilderFrame implements Observer {
 		
 		shell.addListener(SWT.Close, new Listener() { 
 			public void handleEvent(Event event) { 
-				if(Dialogs.showYesNoDialog(shell, "Перед выходом вы хотите сохранить проделанный путь?"
-						+ "\r\nИначе, все не сохраненные изменения будут утеряны!", 
-						"Прервать редактирование пути") == SWT.YES){
-					Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program);
+				if(!changeSaved){
+					if(Dialogs.showYesNoDialog(shell, "Перед выходом вы хотите сохранить проделанный путь?"
+							+ "\r\nИначе, все не сохраненные изменения будут утеряны!", 
+							"Прервать редактирование пути") == SWT.YES){
+						Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program);
+					}
 				}
 				if(gameFieldFrame!=null)
 					gameFieldFrame.getShell().dispose();
@@ -297,6 +303,7 @@ public class ProgramBuilderFrame implements Observer {
 		listComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
+				changeSaved = false;
 				listComponent.redraw();
 				switch (currentWorkMode) {
 				case ADD_COMMAND:
@@ -471,6 +478,7 @@ public class ProgramBuilderFrame implements Observer {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if(Dialogs.showYesNoDialog(shell, "Очистка сотрет все команды! Вы уверены?", "Очистка") == SWT.YES){
+					changeSaved = false;
 					program.cleanProgram();
 					listViewer.refresh();
 				}
@@ -515,7 +523,26 @@ public class ProgramBuilderFrame implements Observer {
 					public void run() {
 						if(gameFieldFrame==null){
 							gameFieldFrame = new GameFieldViewer();
-							gameFieldFrame.open(program.getMapAddress(),shell.getBounds().x+shell.getBounds().width,shell.getBounds().y);
+						}
+						if(!gameFieldFrame.isOpened()){
+							
+							if(!gameFieldFrame.open(program.getMapAddress(),shell.getBounds().x+shell.getBounds().width,shell.getBounds().y)){
+								if(SWT.YES == Dialogs.showYesNoDialog(shell, "Карта не определена, либо не существует. Выбрать другую?", "Внимание")){
+									FileDialog fd = new FileDialog(shell, SWT.OPEN);
+							        fd.setText("Открыть игровое поле");
+							        //fd.setFilterPath(File.pathSeparator);
+							        String[] filterExt = { "*.map"};
+							        fd.setFilterExtensions(filterExt);
+							        String selected = fd.open();
+							        if(selected!=null){
+							        	program.setMapAddress(selected);
+										changeSaved = false;
+										run();
+							        }
+								}
+							}
+//							else
+								
 						}
 						else{
 							Shell gameFieldFrameShell = gameFieldFrame.getShell();
@@ -542,7 +569,9 @@ public class ProgramBuilderFrame implements Observer {
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program);
+				if(Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program)){
+					changeSaved = true;
+				}
 			}
 		});
 		button.setBounds(10, 452, 75, 25);

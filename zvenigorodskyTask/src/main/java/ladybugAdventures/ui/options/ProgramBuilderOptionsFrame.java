@@ -97,7 +97,7 @@ public class ProgramBuilderOptionsFrame {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
-		        fd.setText("Open Game Field");
+		        fd.setText("Открыть игровое поле");
 		        //fd.setFilterPath(File.pathSeparator);
 		        String[] filterExt = { "*.map"};
 		        fd.setFilterExtensions(filterExt);
@@ -176,7 +176,7 @@ public class ProgramBuilderOptionsFrame {
 			public void widgetSelected(SelectionEvent e) {
 
 				if(text.getText().isEmpty()){
-					MessageDialog.openWarning(shell, "Внимание", "Задайте программу управления");
+					MessageDialog.openWarning(shell, "Внимание", "Файл не указан!");
 					return;
 				}
 				try {

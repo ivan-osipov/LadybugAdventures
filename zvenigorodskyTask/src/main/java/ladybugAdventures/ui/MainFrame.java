@@ -77,20 +77,20 @@ public class MainFrame {
 		client.x = screen.width/2 -client.width/2;
 		client.y = screen.height/2 - client.height/2;
 		shell.setLocation(client.x, client.y);
-		shell.addListener(SWT.Close, new Listener() { 
-			public void handleEvent(Event event) { 
-				if(Dialogs.showYesNoDialog(shell, "Вы уверены, что хотите завершить приключения "
-						+ "божьей коровки?\r\nВсе не сохраненные данные будут утеряны!", 
-						"Прервать приключения") == SWT.YES){
-					shell.dispose();
-				    System.exit(0);
-				}
-				else{
-					event.doit = false;
-				}
-			
-			} 
-			});
+//		shell.addListener(SWT.Close, new Listener() { 
+//			public void handleEvent(Event event) { 
+//				if(Dialogs.showYesNoDialog(shell, "Вы уверены, что хотите завершить приключения "
+//						+ "божьей коровки?\r\nВсе не сохраненные данные будут утеряны!", 
+//						"Прервать приключения") == SWT.YES){
+//					shell.dispose();
+//				    System.exit(0);
+//				}
+//				else{
+//					event.doit = false;
+//				}
+//			
+//			} 
+//			});
 		
 		Button button = new Button(shell, SWT.NONE);
 		button.addSelectionListener(new SelectionAdapter() {
