@@ -44,19 +44,19 @@ public class GameFieldViewerComponent extends Canvas {
 					e.gc.drawLine(0, currentY, getSize().x, currentY);
 					currentY += CELL_WIDTH;
 				}
-				for (int i = 0; i < field.getWidth(); i++) {
-					for (int j = 0; j < field.getHeigh(); j++) {
-						drawCell(i, j, field.getType(i, j));
+				for (int row = 0; row < field.getHeigh(); row++) {
+					for (int column = 0; column < field.getWidth(); column++) {
+						drawCell(row, column, field.getType(row, column));
 					}
 				}
 			}
 		});
 	}
 
-	public void drawCell(final int x, final int y, final GameObject object) {
+	public void drawCell(final int row, final int column, final GameObject object) {
 		switch (object) {
 		case LADYBUG:
-			gc.drawOval(CELL_WIDTH * x + 6, CELL_HEIGH * y + 2,
+			gc.drawOval(CELL_WIDTH * row + 6, CELL_HEIGH * column + 2,
 					CELL_WIDTH - 12, CELL_HEIGH - 4);
 //			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH / 2, CELL_HEIGH * y + CELL_HEIGH / 2, 4, 4);
 //			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH, CELL_HEIGH * y + CELL_HEIGH / 2, 4, 4);
@@ -64,37 +64,37 @@ public class GameFieldViewerComponent extends Canvas {
 //			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH, CELL_HEIGH * y + CELL_HEIGH, 4, 4);
 //			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH / 2, CELL_HEIGH * y + CELL_HEIGH, 4, 4);
 //			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH, CELL_HEIGH * y + CELL_HEIGH, 4, 4);
-			gc.drawLine(CELL_WIDTH * x, CELL_HEIGH * y + CELL_HEIGH / 2 + 2,
-					CELL_WIDTH * x + 6, CELL_HEIGH * y + CELL_HEIGH / 2 + 2);
-			gc.drawLine(CELL_WIDTH * (x + 1) - 6, CELL_HEIGH * y + CELL_HEIGH
-					/ 2 + 2, CELL_WIDTH * (x + 1), CELL_HEIGH * y + CELL_HEIGH
+			gc.drawLine(CELL_WIDTH * row, CELL_HEIGH * column + CELL_HEIGH / 2 + 2,
+					CELL_WIDTH * row + 6, CELL_HEIGH * column + CELL_HEIGH / 2 + 2);
+			gc.drawLine(CELL_WIDTH * (row + 1) - 6, CELL_HEIGH * column + CELL_HEIGH
+					/ 2 + 2, CELL_WIDTH * (row + 1), CELL_HEIGH * column + CELL_HEIGH
 					/ 2 + 2);
-			gc.drawLine(CELL_WIDTH * x + 2, CELL_HEIGH * y + CELL_HEIGH / 2
-					- 10, CELL_WIDTH * x + 8, CELL_HEIGH * y + CELL_HEIGH / 2
+			gc.drawLine(CELL_WIDTH * row + 2, CELL_HEIGH * column + CELL_HEIGH / 2
+					- 10, CELL_WIDTH * row + 8, CELL_HEIGH * column + CELL_HEIGH / 2
 					- 10);
-			gc.drawLine(CELL_WIDTH * x + 4, CELL_HEIGH * y + CELL_HEIGH / 2
-					+ 10, CELL_WIDTH * x + 10, CELL_HEIGH * y + CELL_HEIGH / 2
+			gc.drawLine(CELL_WIDTH * row + 4, CELL_HEIGH * column + CELL_HEIGH / 2
+					+ 10, CELL_WIDTH * row + 10, CELL_HEIGH * column + CELL_HEIGH / 2
 					+ 10);
-			gc.drawLine(CELL_WIDTH * (x + 1) - 8, CELL_HEIGH * y + CELL_HEIGH
-					/ 2 - 10, CELL_WIDTH * (x + 1) - 2, CELL_HEIGH * y
+			gc.drawLine(CELL_WIDTH * (row + 1) - 8, CELL_HEIGH * column + CELL_HEIGH
+					/ 2 - 10, CELL_WIDTH * (row + 1) - 2, CELL_HEIGH * column
 					+ CELL_HEIGH / 2 - 10);
-			gc.drawLine(CELL_WIDTH * (x + 1) - 10, CELL_HEIGH * y + CELL_HEIGH
-					/ 2 + 10, CELL_WIDTH * (x + 1) - 4, CELL_HEIGH * y
+			gc.drawLine(CELL_WIDTH * (row + 1) - 10, CELL_HEIGH * column + CELL_HEIGH
+					/ 2 + 10, CELL_WIDTH * (row + 1) - 4, CELL_HEIGH * column
 					+ CELL_HEIGH / 2 + 10);
 			break;
 		case BLOCK:
-			gc.drawRectangle(CELL_WIDTH * x + 4, CELL_HEIGH * y + 4,
+			gc.drawRectangle(CELL_WIDTH * row + 4, CELL_HEIGH * column + 4,
 					CELL_WIDTH - 8, CELL_HEIGH - 8);
 			break;
 		case HOLE:
-			gc.drawOval(CELL_WIDTH * x + 4, CELL_HEIGH * y + 4, CELL_WIDTH - 8,
+			gc.drawOval(CELL_WIDTH * row + 4, CELL_HEIGH * column + 4, CELL_WIDTH - 8,
 					CELL_HEIGH - 8);
 			break;
 		case OCCUPIED_CELL:
-			gc.drawLine(CELL_WIDTH * x, CELL_HEIGH * y, CELL_WIDTH * x
-					+ CELL_WIDTH, CELL_HEIGH * y + CELL_HEIGH);
-			gc.drawLine(CELL_WIDTH * x + CELL_WIDTH, CELL_HEIGH * y, CELL_WIDTH
-					* x, CELL_HEIGH * y + CELL_HEIGH);
+			gc.drawLine(CELL_WIDTH * row, CELL_HEIGH * column, CELL_WIDTH * row
+					+ CELL_WIDTH, CELL_HEIGH * column + CELL_HEIGH);
+			gc.drawLine(CELL_WIDTH * row + CELL_WIDTH, CELL_HEIGH * column, CELL_WIDTH
+					* row, CELL_HEIGH * column + CELL_HEIGH);
 			break;
 		case EMPTY_CELL:
 			break;
