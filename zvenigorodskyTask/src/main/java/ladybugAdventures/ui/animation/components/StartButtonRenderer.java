@@ -50,7 +50,7 @@ public class StartButtonRenderer extends org.newdawn.slick.gui.AbstractComponent
             		&& clickedX <= (this.x+getWidth()) 
             		&& clickedY >= this.y 
             		&& clickedY <= (this.y+getHeight())){
-            				drawbleImage = pressedImage;
+//            				drawbleImage = pressedImage;
             				visible = false;
             				return true;
             		}

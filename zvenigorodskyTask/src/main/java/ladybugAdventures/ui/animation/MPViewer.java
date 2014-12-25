@@ -105,9 +105,9 @@ public class MPViewer extends BasicGame {
 			int oneStep = gameField.getCellSize()/20;
 			for(int i = 0; i<renderTrackList.size(); i++){
 				MoveRenderElement currentElement = renderTrackList.get(i);
-//				if(!currentElement.isAnimating()){
-//					currentElement.setAnimating(true);
-//				}
+				if(!currentElement.isAnimating()){
+					currentElement.setAnimating(true);
+				}
 				int deltaX = currentElement.result.x-currentElement.current.x;
 				int deltaY = currentElement.result.y-currentElement.current.y;
 				if(deltaX>0){
@@ -132,7 +132,7 @@ public class MPViewer extends BasicGame {
 	private boolean updateRenderTrackList() throws SlickException{
 		renderTrackList.clear();
 		
-		if(analizator.nextStep())//FIXME заменить на проверку флага конца выполнения
+		if(!analizator.nextStep())//FIXME заменить на проверку флага конца выполнения
 		{
 			List<StepTrack> tracks = analizator.getTrackList();
 			gameField.setNotRenderList(tracks);
@@ -140,6 +140,9 @@ public class MPViewer extends BasicGame {
 				renderTrackList.add(new MoveRenderElement(tracks.get(i),gameField));
 			}
 			return true;
+		}
+		if(analizator.isEndOfProgram()){
+			startButton.setVisible(true);
 		}
 		return false;
 	}
