@@ -5,13 +5,16 @@ import java.util.List;
 
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
+import ladybugAdventures.enums.GameObject;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
 import ladybugAdventures.ui.animation.components.StartButtonRenderer;
 import ladybugAdventures.util.Analizator;
+import ladybugAdventures.util.LazyRenderBuffer;
 import ladybugAdventures.util.MoveRenderElement;
 import ladybugAdventures.util.ResourceProvider;
 import ladybugAdventures.util.StepTrack;
 
+import org.eclipse.swt.graphics.Point;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -30,6 +33,7 @@ public class MPViewer extends BasicGame {
 //	private CommonInformationRenderer infoRenderer;
 	private boolean animating;
 	int printedObjects = 0;
+	int oneStep = 0;
 	public MPViewer(GameField field, ManagementProgram program){
 		super("Приключения божьей коровки");
 		//FIXME не рисуется русский текст
@@ -57,6 +61,7 @@ public class MPViewer extends BasicGame {
 		background.draw(0,0,container.getWidth(),container.getHeight());
 		gameField.render(container, g);
 		startButton.render(container, g);
+		
 //		g.drawString(info, 30, container.getHeight()-150);
 		for(MoveRenderElement renderElement: renderTrackList){
 			renderElement.sprite.draw(renderElement.current.x, 
@@ -72,10 +77,10 @@ public class MPViewer extends BasicGame {
 		if(!animating){
 			if(startButton.update(container, t)){
 				animating = true;
+				oneStep = gameField.getCellSize()/20;//размер 1 шага
 			}
 		}
 		else{
-			int oneStep = gameField.getCellSize()/20;
 			for(int i = 0; i<renderTrackList.size(); i++){
 				MoveRenderElement currentElement = renderTrackList.get(i);
 				if(!currentElement.isAnimating()){
@@ -83,19 +88,28 @@ public class MPViewer extends BasicGame {
 				}
 				int deltaX = currentElement.result.x-currentElement.current.x;
 				int deltaY = currentElement.result.y-currentElement.current.y;
-				if(deltaX>0){
-					currentElement.current.x+=oneStep;
-					continue;
+				if(!(Math.abs(deltaX)<oneStep && Math.abs(deltaY)<oneStep)){
+					if(deltaX>0){
+						currentElement.current.x+=oneStep;
+						continue;
+					}
+					if(deltaX<0){
+						currentElement.current.x-=oneStep;
+						continue;
+					}
+					if(deltaY>0){
+						currentElement.current.y+=oneStep;
+						continue;
+					}
+					if(deltaY<0){
+						currentElement.current.y-=oneStep;
+						continue;
+					}
 				}
-				if(deltaY>0){
-					currentElement.current.y+=oneStep;
-					continue;
-				}
-				if(i < renderTrackList.size()){
-					gameField.setGameField(analizator.getFieldAfterStep());
-					if(!updateRenderTrackList())
-						animating = false;
-				}
+//				if(i < renderTrackList.size()){
+				if(!updateRenderTrackList())
+					animating = false;
+//				}
 			}
 				
 		}
@@ -105,18 +119,32 @@ public class MPViewer extends BasicGame {
 	private boolean updateRenderTrackList() throws SlickException{
 		renderTrackList.clear();
 		
-		if(!analizator.nextStep())//FIXME заменить на проверку флага конца выполнения
+		if(analizator.nextStep())
 		{
 			List<StepTrack> tracks = analizator.getTrackList();
 			gameField.setNotRenderList(tracks);
 			for(int i = 0;i<tracks.size();i++){
 				renderTrackList.add(new MoveRenderElement(tracks.get(i),gameField));
 			}
+
+			gameField.setGameField(analizator.getFieldBeforeStep());
+			if(analizator.isLadybugOnOccupiedCell())
+			{
+				Point ladybugPosition = analizator.getTrackList().get(0).getFinishPosition();//gameField.getControlObjectCoordinates();
+				gameField.addObject(GameObject.OCCUPIED_CELL, ladybugPosition.y, ladybugPosition.x);
+//				LazyRenderBuffer.getImage(GameObject.OCCUPIED_CELL)
+//				.draw(gameField.getRenderPosX()+ladybugPosition.x*gameField.getCellSize(), 
+//						gameField.getRenderPosY()+ladybugPosition.y*gameField.getCellSize(), 	
+//						gameField.getCellSize(), gameField.getCellSize());
+			}
 			return true;
 		}
 		if(analizator.isEndOfProgram()){
 			startButton.setVisible(true);
 		}
+
+		gameField.setNotRenderList(new ArrayList<StepTrack>());
+		gameField.setGameField(analizator.getFieldAfterStep());
 		return false;
 	}
 	/*

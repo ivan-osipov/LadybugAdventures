@@ -24,22 +24,43 @@ public class GameFieldRenderer extends GameField{
 	private int renderPosX;
 	private int renderPosY;
 	
+	private
+	GameContainer container;
 	private Image emptyCell;
 	private BaseCellRenderer[][] contentCellCollection;
 	private List<Point> notRenderingList = new ArrayList<Point>();
 	
 	public GameFieldRenderer(GameField field){
 		super(field.getWidth(), field.getHeigh());
+		contentCellCollection = new BaseCellRenderer[getHeigh()][getWidth()];
 		super.field = field.getField();
 	}
 	public GameFieldRenderer(int width, int height) {
 		super(width, height);
+		contentCellCollection = new BaseCellRenderer[getHeigh()][getWidth()];
 	}
-	public void setGameField(GameField field){
+	public void setGameField(GameField field) throws SlickException{
 		this.field = field.getField();
+		for(int row = 0; row<getHeigh(); row++){
+			for(int column = 0; column<getWidth(); column++){
+				contentCellCollection[row][column] = new BaseCellRenderer(container, cellSize,getType(row, column));
+				contentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
+			}
+		}
+	}
+	
+	public void addObject(GameObject object, int row, int column){
+		super.addObject(object, row, column);
+		try {
+			contentCellCollection[row][column] = new BaseCellRenderer(container, cellSize,object);
+			contentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void init(GameContainer container) throws SlickException{
+		this.container = container;
 		maxWidth = container.getWidth()-50;
 		maxHeigth = container.getHeight()-150;
 		int cellWidth =  maxWidth / getWidth();
@@ -50,7 +71,6 @@ public class GameFieldRenderer extends GameField{
 		renderPosX = (container.getWidth()-fieldWidth)/2;
 		renderPosY = (container.getHeight()-100-getFieldHeight())/2;
 		emptyCell = LazyRenderBuffer.getImage(GameObject.EMPTY_CELL);
-		contentCellCollection = new BaseCellRenderer[getHeigh()][getWidth()];
 
 		for(int row = 0; row<getHeigh(); row++){
 			for(int column = 0; column<getWidth(); column++){

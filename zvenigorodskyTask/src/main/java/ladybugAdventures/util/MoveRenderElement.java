@@ -42,7 +42,7 @@ public class MoveRenderElement {
 					if(deltaY>0)
 						direction = Direction.DOWN;
 			}
-			this.sprite = new Animation(LazyRenderBuffer.getImages(GameObject.LADYBUG,direction), 120);
+			this.sprite = new Animation(LazyRenderBuffer.getImages(GameObject.LADYBUG,direction), 400);
 		}
 		else{
 			if(data.getGameObject()==GameObject.BLOCK)
