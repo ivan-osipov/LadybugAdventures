@@ -49,6 +49,10 @@ public class Analizator {
 		return endOfProgram;
 	}
 	
+	public boolean isLadybugOnOccupiedCell() {
+		return ladybugOnOccupiedCell;
+	}
+	
 	public ErrorType getCurrentError() {
 		return error;
 	}
