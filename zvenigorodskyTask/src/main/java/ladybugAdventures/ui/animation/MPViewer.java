@@ -128,15 +128,7 @@ public class MPViewer extends BasicGame {
 			}
 
 			gameField.setGameField(analizator.getFieldBeforeStep());
-			if(analizator.isLadybugOnOccupiedCell())
-			{
-				Point ladybugPosition = analizator.getTrackList().get(0).getFinishPosition();//gameField.getControlObjectCoordinates();
-				gameField.addObject(GameObject.OCCUPIED_CELL, ladybugPosition.y, ladybugPosition.x);
-//				LazyRenderBuffer.getImage(GameObject.OCCUPIED_CELL)
-//				.draw(gameField.getRenderPosX()+ladybugPosition.x*gameField.getCellSize(), 
-//						gameField.getRenderPosY()+ladybugPosition.y*gameField.getCellSize(), 	
-//						gameField.getCellSize(), gameField.getCellSize());
-			}
+			
 			return true;
 		}
 		if(analizator.isEndOfProgram()){

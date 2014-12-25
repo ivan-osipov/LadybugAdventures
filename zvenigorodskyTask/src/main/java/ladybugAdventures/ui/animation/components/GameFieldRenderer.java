@@ -28,16 +28,19 @@ public class GameFieldRenderer extends GameField{
 	GameContainer container;
 	private Image emptyCell;
 	private BaseCellRenderer[][] contentCellCollection;
+	private BaseCellRenderer[][] staticContentCellCollection;
 	private List<Point> notRenderingList = new ArrayList<Point>();
 	
 	public GameFieldRenderer(GameField field){
 		super(field.getWidth(), field.getHeigh());
 		contentCellCollection = new BaseCellRenderer[getHeigh()][getWidth()];
+		staticContentCellCollection = new BaseCellRenderer[getHeigh()][getWidth()];
 		super.field = field.getField();
 	}
 	public GameFieldRenderer(int width, int height) {
 		super(width, height);
 		contentCellCollection = new BaseCellRenderer[getHeigh()][getWidth()];
+		staticContentCellCollection = new BaseCellRenderer[getHeigh()][getWidth()];
 	}
 	public void setGameField(GameField field) throws SlickException{
 		this.field = field.getField();
@@ -53,7 +56,7 @@ public class GameFieldRenderer extends GameField{
 		super.addObject(object, row, column);
 		try {
 			contentCellCollection[row][column] = new BaseCellRenderer(container, cellSize,object);
-			contentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
+//			contentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -74,8 +77,14 @@ public class GameFieldRenderer extends GameField{
 
 		for(int row = 0; row<getHeigh(); row++){
 			for(int column = 0; column<getWidth(); column++){
-				contentCellCollection[row][column] = new BaseCellRenderer(container, cellSize,getType(row, column));
-				contentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
+				if(getType(row, column) == GameObject.OCCUPIED_CELL){
+					staticContentCellCollection[row][column] = new BaseCellRenderer(container, cellSize,GameObject.OCCUPIED_CELL);
+					staticContentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
+				}
+				else{
+					contentCellCollection[row][column] = new BaseCellRenderer(container, cellSize,getType(row, column));
+					contentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
+				}
 			}
 		}
 		
@@ -89,6 +98,8 @@ public class GameFieldRenderer extends GameField{
 				emptyCell.draw(renderPosX+column*getCellSize(), renderPosY + row*getCellSize(),
 						getCellSize(),getCellSize());//ячейка задднего фона будет отрисована в любом случае
 	//				if(getType(i, j)==GameObject.HOLE || getType(i, j)==GameObject.OCCUPIED_CELL)
+				if(staticContentCellCollection[row][column]!=null)
+					staticContentCellCollection[row][column].render(container, g);
 				render = true;
 				for(Point notPaint: notRenderingList){
 					if(notPaint.x==column && notPaint.y == row){
@@ -97,6 +108,7 @@ public class GameFieldRenderer extends GameField{
 					}
 				}
 				if(render)
+					if(contentCellCollection[row][column]!=null)
 						contentCellCollection[row][column].render(container, g);
 				}
 		}
