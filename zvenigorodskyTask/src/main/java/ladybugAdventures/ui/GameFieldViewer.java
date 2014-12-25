@@ -4,6 +4,7 @@ import java.io.File;
 
 import ladybugAdventures.data.FileSystemManager;
 import ladybugAdventures.data.StorageException;
+import ladybugAdventures.entities.GameField;
 import ladybugAdventures.ui.components.GameFieldViewerComponent;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -14,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 
 public class GameFieldViewer {
@@ -25,14 +27,14 @@ public class GameFieldViewer {
 	 */
 	public void open(String gameFileName,int x, int y) {
 		Display display = Display.getDefault();
-		shell = new Shell(SWT.DIALOG_TRIM);
+		shell = new Shell(display, SWT.DIALOG_TRIM);
 		//shell.setSize(450, 300);
 		shell.setLocation(x, y);
 		shell.setText("Игровая карта");
-		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
+		shell.setLayout(new FillLayout());
 
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
+		composite.setLayout(new FillLayout());
 
 
 		File file = new File(gameFileName);
@@ -41,13 +43,15 @@ public class GameFieldViewer {
 			return;
 		}
 		try {
-//			FileSystemManager.setDefaultMapAddress(gameFileName);
-			GameFieldViewerComponent canvas = new GameFieldViewerComponent(composite, SWT.NONE,FileSystemManager.getGameField(gameFileName));
+//			FileSystemManager.setDefaultMapAddress(gameFileName);]
+			GameField field = FileSystemManager.getGameField(gameFileName);
+			GameFieldViewerComponent canvas = new GameFieldViewerComponent(composite, SWT.NONE, field);
 
 			canvas.initField();
-			composite.setSize(canvas.getBounds().width, canvas.getBounds().height);
-			//shell.setBounds(x, y,-1, -1);
-			shell.setSize(canvas.getBounds().width+8,canvas.getBounds().height+28);
+			composite.setSize(canvas.getSize());
+			canvas.pack();
+			shell.setSize((field.getWidth()+1)*GameFieldViewerComponent.CELL_WIDTH-GameFieldViewerComponent.CELL_WIDTH/2, (field.getHeigh()+1)*GameFieldViewerComponent.CELL_HEIGH);
+			//непонятные особенность SWT размер shell непоколебим
 		} catch (StorageException e) {
 			MessageDialog.openWarning(shell, "Внимание", "Ошибка загрузки поля");
 		}

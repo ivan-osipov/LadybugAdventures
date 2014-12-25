@@ -121,6 +121,8 @@ public class ProgramBuilderFrame implements Observer {
 						"Прервать редактирование пути") == SWT.YES){
 					Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program);
 				}
+				if(gameFieldFrame!=null)
+					gameFieldFrame.getShell().dispose();
 				shell.dispose();
 			
 			} 
