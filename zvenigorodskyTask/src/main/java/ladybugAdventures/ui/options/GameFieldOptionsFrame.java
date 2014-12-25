@@ -21,6 +21,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 public class GameFieldOptionsFrame {
 	private Text text;
@@ -83,13 +87,37 @@ public class GameFieldOptionsFrame {
 		label_1.setText("Высота:");
 		
 		final Spinner spinnerWidth = new Spinner(compositeCreateNewField, SWT.BORDER);
-		spinnerWidth.setMaximum(20);
-		spinnerWidth.setMinimum(2);
+		spinnerWidth.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (spinnerWidth.getSelection() > 20) {
+					spinnerWidth.setSelection(20);
+				}
+				if (spinnerWidth.getSelection() < 2) {
+					spinnerWidth.setSelection(2);
+				}
+			}
+		});
+		spinnerWidth.setMaximum(1000);
+		spinnerWidth.setMinimum(-1000);
+		spinnerWidth.setSelection(2);
 		spinnerWidth.setBounds(84, 35, 47, 22);
 		
 		final Spinner spinnerHeigh = new Spinner(compositeCreateNewField, SWT.BORDER);
-		spinnerHeigh.setMaximum(20);
-		spinnerHeigh.setMinimum(2);
+		spinnerHeigh.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (spinnerHeigh.getSelection() > 20) {
+					spinnerHeigh.setSelection(20);
+				}
+				if (spinnerHeigh.getSelection() < 2) {
+					spinnerHeigh.setSelection(2);
+				}
+			}
+		});
+		spinnerHeigh.setMaximum(1000);
+		spinnerHeigh.setMinimum(-1000);
+		spinnerHeigh.setSelection(2);
 		spinnerHeigh.setBounds(84, 59, 47, 22);
 		
 		Label lblNewLabel_1 = new Label(compositeCreateNewField, SWT.NONE);
@@ -113,11 +141,13 @@ public class GameFieldOptionsFrame {
 		button_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				boolean automaticComposition = false;
 				GameField field = new GameField(Integer.parseInt(spinnerWidth.getText()), Integer.parseInt(spinnerHeigh.getText()));
 				if (radioButtonAutomatically.getSelection()) {
 					field.automaticCompositionField();
+					automaticComposition = true;
 				}
-				GameFieldBuilder fieldBuilder = new GameFieldBuilder();
+				GameFieldBuilder fieldBuilder = new GameFieldBuilder(automaticComposition);
 				shell.dispose();
 				fieldBuilder.open(field);
 			}
@@ -169,7 +199,7 @@ public class GameFieldOptionsFrame {
 					shell.dispose();
 					fieldBuilder.open(openedField);
 				} catch (StorageException e1) {
-					MessageDialog.openWarning(shell, "Внимание", "Невозможно открыть файл");
+					MessageDialog.openWarning(shell, "Внимание", "Файл не указан!");
 				}
 			}
 		});
