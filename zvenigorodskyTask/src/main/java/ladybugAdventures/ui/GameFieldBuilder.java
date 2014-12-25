@@ -113,14 +113,14 @@ public class GameFieldBuilder {
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				field.addObject(object, e.x / GameFieldViewerComponent.CELL_WIDTH, e.y / GameFieldViewerComponent.CELL_HEIGH);
+				field.addObject(object, e.y / GameFieldViewerComponent.CELL_WIDTH, e.x / GameFieldViewerComponent.CELL_HEIGH);
 				canvas.redraw();
 				changesSaved = false;
 			}
 			
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				field.removeObject(e.x / GameFieldViewerComponent.CELL_WIDTH, e.y / GameFieldViewerComponent.CELL_HEIGH);
+				field.removeObject(e.y / GameFieldViewerComponent.CELL_WIDTH, e.x / GameFieldViewerComponent.CELL_HEIGH);
 				changesSaved = false;
 			}
 		});
