@@ -58,13 +58,13 @@ public class Analizator {
 		switch (command.getDirection()) {
 		case UP:
 			direction.y--;
-			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y > fieldBeforeStep.getHeigh()) {
+			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y < 0) {
 				error = ErrorType.FIELD_BORDER;
 			}
 			break;
 		case DOWN:
 			direction.y++;
-			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y < 0) {
+			if (fieldBeforeStep.getControlObjectCoordinates().y + direction.y >= fieldBeforeStep.getHeigh()) {
 				error = ErrorType.FIELD_BORDER;
 			}
 			break;
@@ -76,7 +76,7 @@ public class Analizator {
 			break;
 		case RIGHT:
 			direction.x++;
-			if (fieldBeforeStep.getControlObjectCoordinates().x + direction.x > fieldBeforeStep.getWidth()) {
+			if (fieldBeforeStep.getControlObjectCoordinates().x + direction.x >= fieldBeforeStep.getWidth()) {
 				error = ErrorType.FIELD_BORDER;
 			}
 			break;
@@ -91,8 +91,8 @@ public class Analizator {
 		if (error != ErrorType.NONE_ERROR) return false;
 		switch (command.getType()) {
 		case MOVE:
-			switch (fieldBeforeStep.getType(controlObjectCoordinates.x + direction.x, 
-						controlObjectCoordinates.y + direction.y)) {
+			switch (fieldBeforeStep.getType(controlObjectCoordinates.y + direction.y,
+					controlObjectCoordinates.x + direction.x)) {
 				case BLOCK:
 					error = ErrorType.MOVE_BLOCK;
 					return false;
@@ -106,13 +106,13 @@ public class Analizator {
 							new Point(
 									controlObjectCoordinates.x + direction.x, 
 									controlObjectCoordinates.y + direction.y),
-							fieldBeforeStep.getType(controlObjectCoordinates.x, 
-									controlObjectCoordinates.y)));
+							fieldBeforeStep.getType(controlObjectCoordinates.y,
+									controlObjectCoordinates.x)));
 					return true;
 			}
 		case JUMP:
-			switch (fieldBeforeStep.getType(controlObjectCoordinates.x + direction.x, 
-						controlObjectCoordinates.y + direction.y)) {
+			switch (fieldBeforeStep.getType(controlObjectCoordinates.y + direction.y,
+					controlObjectCoordinates.x + direction.x)) {
 			case BLOCK:
 				error = ErrorType.JUMP_BLOCK;
 				return false;
@@ -124,9 +124,9 @@ public class Analizator {
 				return false;
 			default:
 				if (controlObjectCoordinates.x + 2 * direction.x < fieldBeforeStep.getWidth() &&
-						controlObjectCoordinates.x + 2 * direction.x > 0 &&
+						controlObjectCoordinates.x + 2 * direction.x >= 0 &&
 						controlObjectCoordinates.y + 2 * direction.y < fieldBeforeStep.getHeigh() &&
-						controlObjectCoordinates.y + 2 * direction.y > 0) {
+						controlObjectCoordinates.y + 2 * direction.y >= 0) {
 					switch (fieldBeforeStep.getType(controlObjectCoordinates.x + 2 * direction.x, 
 								controlObjectCoordinates.y + 2 * direction.y)) {
 					case BLOCK:
@@ -142,8 +142,8 @@ public class Analizator {
 								new Point(
 										controlObjectCoordinates.x + 2 * direction.x, 
 										controlObjectCoordinates.y + 2 * direction.y),
-								fieldBeforeStep.getType(controlObjectCoordinates.x, 
-										controlObjectCoordinates.y)));
+								fieldBeforeStep.getType(controlObjectCoordinates.y,
+										controlObjectCoordinates.x)));
 						return true;
 					}
 				}
@@ -153,8 +153,8 @@ public class Analizator {
 				}
 			}
 		case PUSH:
-			switch (fieldBeforeStep.getType(controlObjectCoordinates.x + direction.x, 
-						controlObjectCoordinates.y + direction.y)) {
+			switch (fieldBeforeStep.getType(controlObjectCoordinates.y + direction.y,
+					controlObjectCoordinates.x + direction.x)) {
 			case EMPTY_CELL:
 				error = ErrorType.PUSH_EMPTY_CELL;
 				return false;
@@ -166,9 +166,9 @@ public class Analizator {
 				return false;
 			default:
 				if (controlObjectCoordinates.x + 2 * direction.x < fieldBeforeStep.getWidth() &&
-						controlObjectCoordinates.x + 2 * direction.x > 0 &&
+						controlObjectCoordinates.x + 2 * direction.x >= 0 &&
 						controlObjectCoordinates.y + 2 * direction.y < fieldBeforeStep.getHeigh() &&
-						controlObjectCoordinates.y + 2 * direction.y > 0) {
+						controlObjectCoordinates.y + 2 * direction.y >= 0) {
 					switch (fieldBeforeStep.getType(controlObjectCoordinates.x + 2 * direction.x, 
 								controlObjectCoordinates.y + 2 * direction.y)) {
 					case BLOCK:
@@ -183,15 +183,15 @@ public class Analizator {
 										controlObjectCoordinates.y), 
 								new Point(controlObjectCoordinates.x + direction.x, 
 										controlObjectCoordinates.y + direction.y),
-								fieldBeforeStep.getType(controlObjectCoordinates.x, 
-										controlObjectCoordinates.y)));
+								fieldBeforeStep.getType(controlObjectCoordinates.y,
+										controlObjectCoordinates.x)));
 						trackList.add(new StepTrack(
 								new Point(controlObjectCoordinates.x + direction.x, 
 										controlObjectCoordinates.y + direction.y), 
 								new Point(controlObjectCoordinates.x + 2 * direction.x, 
 										controlObjectCoordinates.y + 2 * direction.y),
-								fieldBeforeStep.getType(controlObjectCoordinates.x, 
-										controlObjectCoordinates.y)));
+								fieldBeforeStep.getType(controlObjectCoordinates.y + direction.y,
+										controlObjectCoordinates.x + direction.x)));
 						return true;
 					}
 				}
@@ -210,43 +210,43 @@ public class Analizator {
 		if (canPerform(command)) {
 			switch(command.getType()) {
 			case PUSH:
-				fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
-						trackList.get(trackList.size() - 2).getStartPosition().x, 
-						trackList.get(trackList.size() - 2).getStartPosition().y);
-				if (fieldBeforeStep.getType(trackList.get(trackList.size() - 1).getFinishPosition().x,
-						trackList.get(trackList.size() - 1).getFinishPosition().y) == GameObject.HOLE) {
-					fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
-							trackList.get(trackList.size() - 1).getFinishPosition().x,
-							trackList.get(trackList.size() - 1).getFinishPosition().y);
+				fieldAfterStep.addObject(GameObject.EMPTY_CELL,
+						trackList.get(0).getStartPosition().y,
+						trackList.get(0).getStartPosition().x);
+				if (fieldBeforeStep.getType(trackList.get(1).getFinishPosition().y,
+						trackList.get(1).getFinishPosition().x) == GameObject.HOLE) {
+					fieldAfterStep.addObject(GameObject.EMPTY_CELL,
+							trackList.get(1).getFinishPosition().y,
+							trackList.get(1).getFinishPosition().x);
 				}
 				else {
-					fieldAfterStep.addObject(GameObject.BLOCK, 
-							trackList.get(trackList.size() - 1).getFinishPosition().x,
-							trackList.get(trackList.size() - 1).getFinishPosition().y);
+					fieldAfterStep.addObject(GameObject.BLOCK,
+							trackList.get(1).getFinishPosition().y,
+							trackList.get(1).getFinishPosition().x);
 				}
 				fieldAfterStep.addObject(GameObject.LADYBUG, 
-						trackList.get(trackList.size() - 1).getStartPosition().x, 
-						trackList.get(trackList.size() - 1).getStartPosition().y);
+						trackList.get(0).getFinishPosition().y, 
+						trackList.get(0).getFinishPosition().x);
 				break;
 			default:
 				if (ladybugOnOccupiedCell) {
 					fieldAfterStep.addObject(GameObject.OCCUPIED_CELL, 
-							trackList.get(trackList.size() - 1).getStartPosition().x, 
-							trackList.get(trackList.size() - 1).getStartPosition().y);
+							trackList.get(0).getStartPosition().y, 
+							trackList.get(0).getStartPosition().x);
 				}
 				else {
 					fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
-							trackList.get(trackList.size() - 1).getStartPosition().x, 
-							trackList.get(trackList.size() - 1).getStartPosition().y);
+							trackList.get(0).getStartPosition().y, 
+							trackList.get(0).getStartPosition().x);
 				}
-				if (fieldBeforeStep.getType(trackList.get(trackList.size() - 1).getFinishPosition().x,
-						trackList.get(trackList.size() - 1).getFinishPosition().y) == GameObject.EMPTY_CELL) {
+				if (fieldBeforeStep.getType(trackList.get(0).getFinishPosition().y,
+						trackList.get(0).getFinishPosition().x) == GameObject.EMPTY_CELL) {
 					ladybugOnOccupiedCell = false;
 				}
 				else ladybugOnOccupiedCell = true;
 				fieldAfterStep.addObject(GameObject.LADYBUG, 
-						trackList.get(trackList.size() - 1).getFinishPosition().x, 
-						trackList.get(trackList.size() - 1).getFinishPosition().y);
+						trackList.get(0).getFinishPosition().y, 
+						trackList.get(0).getFinishPosition().x);
 				break;
 			}
 			return true;
@@ -258,7 +258,7 @@ public class Analizator {
 		endOfProgram = false;
 		for (int i = 0; i < commandList.size(); i++) {
 			if (!performStep((CommandImpl)commandList.get(i)))
-				return endOfProgram;
+				return false;
 		}
 		endOfProgram = true;
 		return endOfProgram;
@@ -268,11 +268,11 @@ public class Analizator {
 		if (currentStep < commandList.size()) {
 			if (performStep((CommandImpl)commandList.get(currentStep))) {
 				currentStep++;
+				return true;
 			}
-			else endOfProgram = true;
 		}
 		else endOfProgram = true;
-		return endOfProgram;
+		return false;
 	}
 	
 	public String getCurrentErrorDefinition() {
