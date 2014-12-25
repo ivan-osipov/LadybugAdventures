@@ -1,28 +1,17 @@
 package ladybugAdventures.ui;
 
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
 
-import javax.swing.JEditorPane;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
-
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWTError;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.internal.Platform;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.ui.internal.EditorPane;
 
 public class HelpFrame {
 
@@ -46,13 +35,20 @@ public class HelpFrame {
 	public void open() {
 		Display display = Display.getDefault();
 		Shell shell = new Shell(SWT.DIALOG_TRIM);
-		shell.setImage(SWTResourceManager
-				.getImage(getClass().getResource("/img/icons/help.png").getPath()));
-		shell.setSize(649, 418);
+		//shell.setImage(SWTResourceManager
+				//.getImage(getClass().getResource("/img/icons/help.png").getPath()));
+		new Image(shell.getDisplay(), getClass()
+				.getResourceAsStream("/img/icons/help.png"));
+		shell.setSize(700, 650);
 		shell.setText("Справочная информация");
-
+		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
+		
 		TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
-		tabFolder.setBounds(0, 0, 633, 379);
 
 		TabItem tabItem_1 = new TabItem(tabFolder, SWT.NONE);
 		tabItem_1.setText("Информация о разработчиках"); 	
@@ -61,14 +57,23 @@ public class HelpFrame {
 		tabItem_1.setControl(composite_1);
 		
 		Browser browser_1 = new Browser(composite_1, SWT.NONE);
-		browser_1.setBounds(0, 0, 618, 343);
-		StringBuilder builder1=new StringBuilder();
-		builder1.append("<html><body bgcolor=#Ff0e5f5><center><h2><ins>Студенты группы 6403:</h2></ins><br></br></center>");
-		builder1.append("<h3><ul><li>Осипов Иван</li><br></br><br></br>");
-		builder1.append("<li>Бочаров Дмитрий</li><br></br><br></br>");
-		builder1.append("<li>Мухтулова Евгения</li>");
-		builder1.append("</ul></h3></body></html>");
-		browser_1.setText(builder1.toString());
+		browser_1.setBounds(0, 0, 700, 650);
+
+        browser_1.setTouchEnabled(true);
+	    
+        InputStream is = getClass().getResourceAsStream("/files/authors.html");
+		if (is != null) {
+			try {
+				browser_1.setText(IOUtils.toString(is, "UTF-8"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+		StringBuilder builder=new StringBuilder();
+		builder.append("<html><body bgcolor=#c0c0c0><center><br></br><h1>Файл информации об авторах отсутствует!</h1><h2><br></br>");
+		builder.append("Пожалуйста,проверьте наличие файла и его корректность.</h2></center></body></html>");
+		browser_1.setText(builder.toString());
+	}
 
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText("Информация о системе");
@@ -76,19 +81,22 @@ public class HelpFrame {
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		tabItem.setControl(composite);
 		composite.setLayout(new FillLayout(SWT.HORIZONTAL)); 
-
+		
 		Browser browser = new Browser(composite, SWT.NONE);
-		browser.setTouchEnabled(true);
-	    
-		File file = new File(getClass().getResource("/files/help.html").getPath());
-		if (file.exists()) {
-			browser.setUrl(file.getAbsolutePath());
+		browser.setTouchEnabled(true);  
+		
+		is = getClass().getResourceAsStream("/files/help.html");
+		if (is != null) {
+			try {
+				browser.setText(IOUtils.toString(is, "UTF-8"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} else {
 		StringBuilder builder=new StringBuilder();
 		builder.append("<html><body bgcolor=#c0c0c0><center><br></br><h1>Файл справки отсутствует!</h1><h2><br></br>");
 		builder.append("Пожалуйста,проверьте наличие файла и его корректность.</h2></center></body></html>");
 		browser.setText(builder.toString());
-		
 	}
 		shell.open();
 		  shell.layout();
