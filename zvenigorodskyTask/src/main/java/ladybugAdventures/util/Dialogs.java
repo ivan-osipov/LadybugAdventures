@@ -48,6 +48,12 @@ public class Dialogs {
 							FileSystemManager.saveManagementProgram((ManagementProgram)saveObj, fileName);
 							return true;
 						}
+						else{
+							if(((ManagementProgram)saveObj).getCommandAmount()!=0){
+								FileSystemManager.saveManagementProgram((ManagementProgram)saveObj, fileName);
+								return true;
+							}
+						}
 						return false;
 					}
 					else
