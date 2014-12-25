@@ -86,7 +86,7 @@ public class Analizator {
 	
 	private boolean canPerform(CommandImpl command){
 		trackList.clear();
-		java.awt.Point controlObjectCoordinates = fieldBeforeStep.getControlObjectCoordinates();
+		Point controlObjectCoordinates = fieldBeforeStep.getControlObjectCoordinates();
 		Point direction = getDirection(command);
 		if (error != ErrorType.NONE_ERROR) return false;
 		switch (command.getType()) {
