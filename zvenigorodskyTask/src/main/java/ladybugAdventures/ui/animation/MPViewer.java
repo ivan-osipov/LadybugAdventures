@@ -54,12 +54,9 @@ public class MPViewer extends BasicGame {
 	private Analizator analizator;
 //	private String info;
 	private List<MoveRenderElement> renderTrackList;
-	private List<Point> postrenderObjects;
 //	private CommonInformationRenderer infoRenderer;
 	private boolean animating;
 	int printedObjects = 0;
-	private float x;
-	private float y;
 	public MPViewer(GameField field, ManagementProgram program){
 		super("Приключения божьей коровки");
 		//FIXME не рисуется русский текст
@@ -73,7 +70,6 @@ public class MPViewer extends BasicGame {
 		startButton = new StartButtonRenderer(container);
 		gameField = new GameFieldRenderer(analizator.getFieldBeforeStep());
 		gameField.init(container);
-//		ladybug.rotate(90);
 		//СПИСОК ОТРИСУЕМЫХ
 		renderTrackList = new ArrayList<MoveRenderElement>();
 		if(!updateRenderTrackList()){
@@ -109,6 +105,9 @@ public class MPViewer extends BasicGame {
 			int oneStep = gameField.getCellSize()/20;
 			for(int i = 0; i<renderTrackList.size(); i++){
 				MoveRenderElement currentElement = renderTrackList.get(i);
+//				if(!currentElement.isAnimating()){
+//					currentElement.setAnimating(true);
+//				}
 				int deltaX = currentElement.result.x-currentElement.current.x;
 				int deltaY = currentElement.result.y-currentElement.current.y;
 				if(deltaX>0){
