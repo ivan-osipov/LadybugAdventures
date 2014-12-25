@@ -40,8 +40,13 @@ public class GameFieldBuilder {
 	public static final int BORDER = 20;
 	
 	public GameFieldBuilder() {
+		
+	}
+	
+	public GameFieldBuilder(boolean automaticComposition) {
 		object = GameObject.LADYBUG;
-		changesSaved = false;
+		if (automaticComposition)changesSaved = false;
+		else changesSaved = true;
 	}
 	
 	/**
@@ -95,7 +100,7 @@ public class GameFieldBuilder {
 		shell.setLocation(client.x, client.y);
 		
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setBounds(GameFieldViewerComponent.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 190);
+		composite.setBounds(GameFieldViewerComponent.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 220);
 		//composite.setBounds(150, 10, 100, 100);
 		composite.setLayout(null);
 		
@@ -178,8 +183,12 @@ public class GameFieldBuilder {
 		button_4.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Dialogs.showSaveDialog(shell, "Файл игрового поля (*.map)", 
-						"*.map", "gameField.map", field);
+				if (field.isControlObjectOnField()) {
+					Dialogs.showSaveDialog(shell, "Файл игрового поля (*.map)", 
+							"*.map", "gameField.map", field);
+					changesSaved = true;
+				}
+				else MessageDialog.openWarning(shell, "Невозможно сохранить", "На поле нет божьей коровки!");
 			}
 		});
 		button_4.setBounds(10, 127, 120, 25);
@@ -189,7 +198,7 @@ public class GameFieldBuilder {
 		button_5.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (!changesSaved) {
+				if (!changesSaved && field.isControlObjectOnField()) {
 					if(Dialogs.showYesNoDialog(shell,"Сохранить изменения перед закрытием?", 
 							"Сохранить изменения?") == SWT.YES){
 						Dialogs.showSaveDialog(shell, "Файл игрового поля (*.map)", 
@@ -199,12 +208,26 @@ public class GameFieldBuilder {
 				shell.dispose();
 			}
 		});
-		button_5.setBounds(10, 158, 120, 25);
+		button_5.setBounds(10, 189, 120, 25);
 		button_5.setText("Закрыть");
+		
+		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(Dialogs.showYesNoDialog(shell,"Игровое поле будет очищено! Вы уверены?", 
+						"Очистка") == SWT.YES){
+					field.cleanField();
+					canvas.redraw();
+				}
+			}
+		});
+		btnNewButton.setBounds(10, 158, 120, 25);
+		btnNewButton.setText("Очистить поле");
 
 		shell.addListener(SWT.Close, new Listener() { 
 			public void handleEvent(Event event) { 
-				if (!changesSaved) {
+				if (!changesSaved && field.isControlObjectOnField()) {
 					if(Dialogs.showYesNoDialog(shell,"Сохранить изменения перед закрытием?", 
 							"Сохранить изменения?") == SWT.YES){
 						Dialogs.showSaveDialog(shell, "Файл игрового поля (*.map)", 
