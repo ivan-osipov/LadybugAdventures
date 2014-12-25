@@ -35,7 +35,7 @@ public class GameField implements Serializable {
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeigh(); j++) {
 				if (field[j][i] == GameObject.LADYBUG) {
-					return new Point(j, i);
+					return new Point(i, j);
 				}
 			}
 		}

@@ -206,8 +206,8 @@ public class Analizator {
 	}
 	
 	private boolean performStep(CommandImpl command){
+		fieldBeforeStep = fieldAfterStep.clone();
 		if (canPerform(command)) {
-			fieldBeforeStep = fieldAfterStep.clone();
 			switch(command.getType()) {
 			case PUSH:
 				fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
@@ -243,6 +243,7 @@ public class Analizator {
 						trackList.get(trackList.size() - 1).getFinishPosition().y) == GameObject.EMPTY_CELL) {
 					ladybugOnOccupiedCell = false;
 				}
+				else ladybugOnOccupiedCell = true;
 				fieldAfterStep.addObject(GameObject.LADYBUG, 
 						trackList.get(trackList.size() - 1).getFinishPosition().x, 
 						trackList.get(trackList.size() - 1).getFinishPosition().y);
@@ -267,10 +268,11 @@ public class Analizator {
 		if (currentStep < commandList.size()) {
 			if (performStep((CommandImpl)commandList.get(currentStep))) {
 				currentStep++;
-				return  true;
 			}
+			else endOfProgram = true;
 		}
-		return false;
+		else endOfProgram = true;
+		return endOfProgram;
 	}
 	
 	public String getCurrentErrorDefinition() {
@@ -282,7 +284,7 @@ public class Analizator {
 		case FIELD_BORDER:
 			return "Я не могу уйти с поля!";
 		case JUMP_BLOCK:
-			return "К сожалению,я не могу прыгнуть на кубик!";
+			return "К сожалению,я не могу прыгнуть через кубик!";
 		case JUMP_EMPTY_CELL:
 			return"Я могу прыгать только через яму...Увы!";
 		case JUMP_OCCUPIED_CELL:
