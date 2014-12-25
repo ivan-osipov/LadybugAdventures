@@ -127,8 +127,8 @@ public class Analizator {
 						controlObjectCoordinates.x + 2 * direction.x >= 0 &&
 						controlObjectCoordinates.y + 2 * direction.y < fieldBeforeStep.getHeigh() &&
 						controlObjectCoordinates.y + 2 * direction.y >= 0) {
-					switch (fieldBeforeStep.getType(controlObjectCoordinates.x + 2 * direction.x, 
-								controlObjectCoordinates.y + 2 * direction.y)) {
+					switch (fieldBeforeStep.getType(controlObjectCoordinates.y + 2 * direction.y,
+							controlObjectCoordinates.x + 2 * direction.x)) {
 					case BLOCK:
 						error = ErrorType.JUMP_BLOCK;
 						return false;
@@ -169,8 +169,8 @@ public class Analizator {
 						controlObjectCoordinates.x + 2 * direction.x >= 0 &&
 						controlObjectCoordinates.y + 2 * direction.y < fieldBeforeStep.getHeigh() &&
 						controlObjectCoordinates.y + 2 * direction.y >= 0) {
-					switch (fieldBeforeStep.getType(controlObjectCoordinates.x + 2 * direction.x, 
-								controlObjectCoordinates.y + 2 * direction.y)) {
+					switch (fieldBeforeStep.getType(controlObjectCoordinates.y + 2 * direction.y,
+							controlObjectCoordinates.x + 2 * direction.x)) {
 					case BLOCK:
 						error = ErrorType.PUSH_TWO_BLOCKS;
 						return false;
