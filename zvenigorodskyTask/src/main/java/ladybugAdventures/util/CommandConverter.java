@@ -3,6 +3,7 @@ package ladybugAdventures.util;
 import ladybugAdventures.enums.CommandType;
 import ladybugAdventures.enums.Direction;
 
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
@@ -13,13 +14,13 @@ public class CommandConverter {//FIXME all "getResource" replace getResourceAsSt
 		ImageData imgData = null;
 		switch (type) {
 			case JUMP:
-				imgData = SWTResourceManager.getImage(CommandConverter.class.getResource("/img/icons/jump.png").getPath()).getImageData();
+				imgData =  new Image(Display.getDefault(), CommandConverter.class.getResourceAsStream("/img/icons/jump.png")).getImageData();
 				break;
 			case MOVE:
-				imgData = SWTResourceManager.getImage(CommandConverter.class.getResource("/img/icons/step.png").getPath()).getImageData();
+				imgData = new Image(Display.getDefault(), CommandConverter.class.getResourceAsStream("/img/icons/step.png")).getImageData();
 				break;
 			case PUSH:
-				imgData = SWTResourceManager.getImage(CommandConverter.class.getResource("/img/icons/push.png").getPath()).getImageData();
+				imgData = new Image(Display.getDefault(), CommandConverter.class.getResourceAsStream("/img/icons/push.png")).getImageData();
 				break;
 			case CYCLE:
 				break;
@@ -31,16 +32,16 @@ public class CommandConverter {//FIXME all "getResource" replace getResourceAsSt
 		Image img = null;
 		switch (direction) {
 			case UP:
-				img = SWTResourceManager.getImage(CommandConverter.class.getResource("/img/icons/up.png").getPath());
+				img = new Image(Display.getDefault(), CommandConverter.class.getResourceAsStream("/img/icons/up.png"));
 				break;
 			case DOWN:
-				img = SWTResourceManager.getImage(CommandConverter.class.getResource("/img/icons/down.png").getPath());
+				img = new Image(Display.getDefault(), CommandConverter.class.getResourceAsStream("/img/icons/down.png"));
 				break;
 			case LEFT:
-				img = SWTResourceManager.getImage(CommandConverter.class.getResource("/img/icons/left.png").getPath());
+				img = new Image(Display.getDefault(), CommandConverter.class.getResourceAsStream("/img/icons/left.png"));
 				break;
 			case RIGHT:
-				img = SWTResourceManager.getImage(CommandConverter.class.getResource("/img/icons/right.png").getPath());
+				img = new Image(Display.getDefault(), CommandConverter.class.getResourceAsStream("/img/icons/right.png"));
 				break;
 		}
 		return (new Image(img.getDevice(), img.getImageData().scaledTo(width, height)));

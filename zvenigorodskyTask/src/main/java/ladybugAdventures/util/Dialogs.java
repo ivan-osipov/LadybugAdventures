@@ -38,23 +38,28 @@ public class Dialogs {
 		dialog.setFileName (defaultFileName);
 		String fileName = dialog.open();
 		if(fileName != null)
-		try {
-			if (!(new File(fileName).exists() && Dialogs.showYesNoDialog(shell,"Перезаписать?", 
-					"Файл с таким именем существует") == SWT.NO)) {
-				if(saveObj instanceof ManagementProgram){
-					FileSystemManager.saveManagementProgram((ManagementProgram)saveObj, fileName);
-					return true;
-				}
-				else
-					if(saveObj instanceof GameField){
-						FileSystemManager.saveGameField((GameField)saveObj, fileName);
-						return true;
+			try {
+				if (!(new File(fileName).exists() && Dialogs.showYesNoDialog(shell,"Перезаписать?", 
+						"Файл с таким именем существует") == SWT.NO)) {
+					if(saveObj instanceof ManagementProgram){
+						if(((ManagementProgram)saveObj).getCommandAmount()==0 
+								&& Dialogs.showYesNoDialog(shell,"Вы уверены, что хотите "
+										+ "сохранить пустую программу управления?", "Внимание")==SWT.YES){
+							FileSystemManager.saveManagementProgram((ManagementProgram)saveObj, fileName);
+							return true;
+						}
+						return false;
 					}
+					else
+						if(saveObj instanceof GameField){
+							FileSystemManager.saveGameField((GameField)saveObj, fileName);
+							return true;
+						}
+				}
+			} catch (StorageException e1) {
+				MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
+				return false;
 			}
-		} catch (StorageException e1) {
-			MessageDialog.openWarning(shell, "Внимание", "Невозможно сохранить файл, выберите другую директорию");
-			return false;
-		}
 		return false;
 	}
 }
