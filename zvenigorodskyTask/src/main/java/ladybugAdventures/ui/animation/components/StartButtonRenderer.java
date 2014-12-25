@@ -11,9 +11,8 @@ import org.newdawn.slick.gui.GUIContext;
 public class StartButtonRenderer extends org.newdawn.slick.gui.AbstractComponent{
 	private int x,y;
 	private Image unpressedImage;
-	private Image pressedImage;
+//	private Image pressedImage;
 	private Image drawbleImage;
-	private int pressTime = 0;
 	private boolean visible;
 	private final int BOTTOM_SPACING = 20;
 	
@@ -27,7 +26,7 @@ public class StartButtonRenderer extends org.newdawn.slick.gui.AbstractComponent
 	public StartButtonRenderer(GUIContext container) throws SlickException {
 		super(container);
 		unpressedImage = new Image(ResourceProvider.getResInpStr(ResourceProvider.START_BUTTON_ID),ResourceProvider.START_BUTTON_ID, false);
-		pressedImage = new Image(ResourceProvider.getResInpStr(ResourceProvider.START_BUTTON_PRESSED_ID),ResourceProvider.START_BUTTON_PRESSED_ID, false);
+//		pressedImage = new Image(ResourceProvider.getResInpStr(ResourceProvider.START_BUTTON_PRESSED_ID),ResourceProvider.START_BUTTON_PRESSED_ID, false);
 		visible = true;
 		drawbleImage = unpressedImage;
 		x = container.getWidth()/2-getWidth()/2;

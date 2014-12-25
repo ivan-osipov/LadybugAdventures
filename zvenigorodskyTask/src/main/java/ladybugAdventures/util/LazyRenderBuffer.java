@@ -55,6 +55,7 @@ public class LazyRenderBuffer {
 				}		
 				recieve = occupiedCell;
 				break;
+				
 			case LADYBUG:
 				if(ladybug1==null){
 					ladybug1 = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_ID),

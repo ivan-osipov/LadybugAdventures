@@ -29,8 +29,6 @@ public class BaseCellRenderer extends AbstractComponent {
 	
 	public BaseCellRenderer(GUIContext container,int cellSize, GameObject objectType) throws SlickException {
 		super(container);
-//		image = new Image(ResourceProvider.getResInpStr(ResourceProvider.EMPTY_CELL_ID),
-//				ResourceProvider.EMPTY_CELL_ID,false);
 		image = LazyRenderBuffer.getImage(objectType);
 		this.width = cellSize;
 		this.height = cellSize;
@@ -39,7 +37,6 @@ public class BaseCellRenderer extends AbstractComponent {
 	@Override
 	public void render(GUIContext container, Graphics g) throws SlickException {
 		image.draw(x, y, width, height);
-
 	}
 
 	@Override

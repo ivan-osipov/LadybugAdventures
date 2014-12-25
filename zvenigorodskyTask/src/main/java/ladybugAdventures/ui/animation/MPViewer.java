@@ -1,49 +1,22 @@
 package ladybugAdventures.ui.animation;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import ladybugAdventures.data.FileSystemManager;
-import ladybugAdventures.data.StorageException;
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
-import ladybugAdventures.enums.Direction;
-import ladybugAdventures.enums.ErrorType;
-import ladybugAdventures.enums.GameObject;
-import ladybugAdventures.ui.MainFrame;
-import ladybugAdventures.ui.animation.components.CommonInformationRenderer;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
 import ladybugAdventures.ui.animation.components.StartButtonRenderer;
-import ladybugAdventures.ui.components.LoadAnimationFrame;
 import ladybugAdventures.util.Analizator;
-import ladybugAdventures.util.CommonUtils;
 import ladybugAdventures.util.MoveRenderElement;
 import ladybugAdventures.util.ResourceProvider;
 import ladybugAdventures.util.StepTrack;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.lwjgl.LWJGLUtil;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.opengl.ImageDataFactory;
-import org.newdawn.slick.opengl.TextureImpl;
 
 public class MPViewer extends BasicGame {
 	
