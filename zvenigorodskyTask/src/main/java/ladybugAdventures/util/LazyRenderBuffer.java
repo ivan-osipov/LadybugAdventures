@@ -1,26 +1,24 @@
 package ladybugAdventures.util;
 
 
+import ladybugAdventures.enums.Behaviour;
 import ladybugAdventures.enums.Direction;
 import ladybugAdventures.enums.GameObject;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 public class LazyRenderBuffer {
+	public static int duration = 200;
 	private static Image emptyCell;
 	private static Image box;
 	private static Image hole;
 	private static Image occupiedCell;
-	private static Image ladybug1;
-	private static Image ladybug2;//up default
-	private static Image ladybug1l;
-	private static Image ladybug2l;//left
-	private static Image ladybug1r;
-	private static Image ladybug2r;//right
-	private static Image ladybug1d;
-	private static Image ladybug2d;//down
-	private static Image background;
+	private static Image ladybug;
+	
+	private static Animation ladybug_up,ladybug_down,ladybug_right,ladybug_left;
 	public static Image getImage(GameObject gameObject) throws SlickException{
 		Image recieve = null;
 		switch (gameObject) {
@@ -57,81 +55,65 @@ public class LazyRenderBuffer {
 				break;
 				
 			case LADYBUG:
-				if(ladybug1==null){
-					ladybug1 = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_ID),
-							ResourceProvider.LADYBUG_FRAME1_ID,false);
+				if(ladybug==null){
+					ladybug = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_ID),
+							ResourceProvider.LADYBUG_ID,false);
 				}
-				recieve = ladybug1;
+				recieve = ladybug;
 				break;
 		}
 		return recieve;
 				
 	}
-	public static Image[] getImages(GameObject gameObject,Direction derection) throws SlickException{
-		Image[] recieve = null;
+	public static Animation getAnimation(GameObject gameObject, Behaviour behaviour ,Direction derection) throws SlickException{
+		Animation animation = null;
 		switch (gameObject) {
-		case LADYBUG:
-			recieve = new Image[2];
-			switch (derection) {
-			case UP:
-				if(ladybug1==null){
-					
-					ladybug1 = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_ID),
-							ResourceProvider.LADYBUG_FRAME1_ID,false);
+			case LADYBUG:
+				switch (derection) {
+					case UP:
+						if(ladybug_up==null){
+							SpriteSheet frames = new SpriteSheet(
+									new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_UP_ID),
+											ResourceProvider.LADYBUG_UP_ID,false), 256, 256);
+							ladybug_up = new Animation(frames, duration);
+							
+						}
+						animation = ladybug_up;
+						break;
+		
+					case DOWN:
+						if(ladybug_down==null){
+							SpriteSheet frames = new SpriteSheet(
+									new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_DOWN_ID),
+											ResourceProvider.LADYBUG_DOWN_ID,false), 256, 256);
+							ladybug_down = new Animation(frames, duration);
+							
+						}
+						animation = ladybug_down;
+						break;
+					case LEFT:
+						if(ladybug_left==null){
+							SpriteSheet frames = new SpriteSheet(
+									new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_LEFT_ID),
+											ResourceProvider.LADYBUG_LEFT_ID,false), 256, 256);
+							ladybug_left = new Animation(frames, duration);
+							
+						}	
+						animation = ladybug_left;
+						break;
+					case RIGHT:
+						if(ladybug_right==null){
+							SpriteSheet frames = new SpriteSheet(
+									new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_RIGHT_ID),
+											ResourceProvider.LADYBUG_RIGHT_ID,false), 256, 256);
+							ladybug_right = new Animation(frames, duration);
+							
+						}
+						animation = ladybug_right;
+						break;
+	
 				}
-				if(ladybug2==null){
-					ladybug2 = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME2_ID),
-							ResourceProvider.LADYBUG_FRAME2_ID,false);
-				}
-				recieve[0] =ladybug1;
-				recieve[1] =ladybug2;
-				break;
-
-			case DOWN:
-				if(ladybug1d==null){
-					
-					ladybug1d = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_DOWN_ID),
-							ResourceProvider.LADYBUG_FRAME1_DOWN_ID,false);
-				}
-				if(ladybug2d==null){
-					ladybug2d = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME2_DOWN_ID),
-							ResourceProvider.LADYBUG_FRAME2_DOWN_ID,false);
-				}
-				recieve[0] =ladybug1d;
-				recieve[1] =ladybug2d;
-				break;
-			case LEFT:
-				if(ladybug1l==null){
-					
-					ladybug1l = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_LEFT_ID),
-							ResourceProvider.LADYBUG_FRAME1_LEFT_ID,false);
-				}
-				if(ladybug2l==null){
-					ladybug2l = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME2_LEFT_ID),
-							ResourceProvider.LADYBUG_FRAME2_LEFT_ID,false);
-				}
-				recieve[0] =ladybug1l;
-				recieve[1] =ladybug2l;	
-				break;
-			case RIGHT:
-				if(ladybug1r==null){
-					
-					ladybug1r = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_RIGHT_ID),
-							ResourceProvider.LADYBUG_FRAME1_RIGHT_ID,false);
-				}
-				if(ladybug2r==null){
-					ladybug2r = new Image(ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME2_RIGHT_ID),
-							ResourceProvider.LADYBUG_FRAME2_RIGHT_ID,false);
-				}
-				recieve[0] =ladybug1r;
-				recieve[1] =ladybug2r;
-				break;
-
 			}
-			
-			
-			break;
-		}
-		return recieve;
+		return animation;
 	}
 }

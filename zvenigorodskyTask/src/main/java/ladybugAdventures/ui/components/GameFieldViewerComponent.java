@@ -2,7 +2,7 @@ package ladybugAdventures.ui.components;
 
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.enums.GameObject;
-import ladybugAdventures.util.CommandConverter;
+import ladybugAdventures.util.ResourceCach;
 import ladybugAdventures.util.ResourceProvider;
 
 import org.eclipse.swt.SWT;
@@ -59,19 +59,19 @@ public class GameFieldViewerComponent extends Canvas {
 		gc.fillRectangle(CELL_WIDTH * column + 1, CELL_HEIGH * row + 1, CELL_WIDTH - 1, CELL_HEIGH - 1);
 		switch (object) {
 		case LADYBUG:
-			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.LADYBUG, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+			gc.drawImage(ResourceCach.fromGameObjectToImage(GameObject.LADYBUG, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
 					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
 		case BLOCK:
-			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.BLOCK, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+			gc.drawImage(ResourceCach.fromGameObjectToImage(GameObject.BLOCK, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
 					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
 		case HOLE:
-			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.HOLE, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+			gc.drawImage(ResourceCach.fromGameObjectToImage(GameObject.HOLE, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
 					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
 		case OCCUPIED_CELL:
-			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.OCCUPIED_CELL, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+			gc.drawImage(ResourceCach.fromGameObjectToImage(GameObject.OCCUPIED_CELL, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
 					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
 		default: break;
