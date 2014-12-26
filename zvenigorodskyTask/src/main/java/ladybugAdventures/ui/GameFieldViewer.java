@@ -50,7 +50,6 @@ public class GameFieldViewer {
 			GameField field = FileSystemManager.getGameField(gameFileName);
 			GameFieldViewerComponent canvas = new GameFieldViewerComponent(composite, SWT.NONE, field);
 
-			canvas.initField();
 			canvas.pack();
 			canvas.setLayout(new FillLayout(SWT.HORIZONTAL));
 			shell.setSize((field.getWidth()+1)*GameFieldViewerComponent.CELL_WIDTH-GameFieldViewerComponent.CELL_WIDTH/2-10, (field.getHeigh()+1)*GameFieldViewerComponent.CELL_HEIGH);

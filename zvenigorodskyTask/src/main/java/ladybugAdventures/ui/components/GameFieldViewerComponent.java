@@ -2,13 +2,19 @@ package ladybugAdventures.ui.components;
 
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.enums.GameObject;
+import ladybugAdventures.util.CommandConverter;
+import ladybugAdventures.util.ResourceProvider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class GameFieldViewerComponent extends Canvas {
@@ -18,24 +24,13 @@ public class GameFieldViewerComponent extends Canvas {
 	private GC gc;
 
 	public GameFieldViewerComponent(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.BORDER);
 		gc = new GC(this);
-	}
-
-	public GameFieldViewerComponent(Composite parent, int style, GameField field) {
-		this(parent, style);
-		this.field = field;
-		setSize(field.getWidth() * CELL_WIDTH, field.getHeigh() * CELL_HEIGH);
-		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-	}
-
-	public void initField() {
 		addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				int currentX = CELL_WIDTH;
 				int currentY = CELL_HEIGH;
-				e.gc.drawRectangle(0, 0, getSize().x - 1, getSize().y - 1);
 				for (int column = 0; column < field.getWidth(); column++) {
 					e.gc.drawLine(currentX, 0, currentX, getSize().y);
 					currentX += CELL_WIDTH;
@@ -46,58 +41,40 @@ public class GameFieldViewerComponent extends Canvas {
 				}
 				for (int row = 0; row < field.getHeigh(); row++) {
 					for (int column = 0; column < field.getWidth(); column++) {
-						drawCell(column, row, field.getType(row, column));
+							drawCell(column, row, field.getType(row, column));
 					}
 				}
 			}
 		});
 	}
 
+	public GameFieldViewerComponent(Composite parent, int style, GameField field) {
+		this(parent, style);
+		this.field = field;
+		setSize(field.getWidth() * CELL_WIDTH, field.getHeigh() * CELL_HEIGH);
+		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+	}
+
 	public void drawCell(final int column, final int row, final GameObject object) {
+		gc.fillRectangle(CELL_WIDTH * column + 1, CELL_HEIGH * row + 1, CELL_WIDTH - 1, CELL_HEIGH - 1);
 		switch (object) {
 		case LADYBUG:
-			gc.drawOval(CELL_WIDTH * column + 6, CELL_HEIGH * row + 2,
-					CELL_WIDTH - 12, CELL_HEIGH - 4);
-//			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH / 2, CELL_HEIGH * y + CELL_HEIGH / 2, 4, 4);
-//			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH, CELL_HEIGH * y + CELL_HEIGH / 2, 4, 4);
-//			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH/ 3, CELL_HEIGH * y + CELL_HEIGH, 4, 4);
-//			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH, CELL_HEIGH * y + CELL_HEIGH, 4, 4);
-//			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH / 2, CELL_HEIGH * y + CELL_HEIGH, 4, 4);
-//			gc.drawOval(CELL_WIDTH * x + CELL_WIDTH, CELL_HEIGH * y + CELL_HEIGH, 4, 4);
-			gc.drawLine(CELL_WIDTH * column, CELL_HEIGH * row + CELL_HEIGH / 2 + 2,
-					CELL_WIDTH * column + 6, CELL_HEIGH * row + CELL_HEIGH / 2 + 2);
-			gc.drawLine(CELL_WIDTH * (column + 1) - 6, CELL_HEIGH * row + CELL_HEIGH
-					/ 2 + 2, CELL_WIDTH * (column + 1), CELL_HEIGH * row + CELL_HEIGH
-					/ 2 + 2);
-			gc.drawLine(CELL_WIDTH * column + 2, CELL_HEIGH * row + CELL_HEIGH / 2
-					- 10, CELL_WIDTH * column + 8, CELL_HEIGH * row + CELL_HEIGH / 2
-					- 10);
-			gc.drawLine(CELL_WIDTH * column + 4, CELL_HEIGH * row + CELL_HEIGH / 2
-					+ 10, CELL_WIDTH * column + 10, CELL_HEIGH * row + CELL_HEIGH / 2
-					+ 10);
-			gc.drawLine(CELL_WIDTH * (column + 1) - 8, CELL_HEIGH * row + CELL_HEIGH
-					/ 2 - 10, CELL_WIDTH * (column + 1) - 2, CELL_HEIGH * row
-					+ CELL_HEIGH / 2 - 10);
-			gc.drawLine(CELL_WIDTH * (column + 1) - 10, CELL_HEIGH * row + CELL_HEIGH
-					/ 2 + 10, CELL_WIDTH * (column + 1) - 4, CELL_HEIGH * row
-					+ CELL_HEIGH / 2 + 10);
+			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.LADYBUG, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
 		case BLOCK:
-			gc.drawRectangle(CELL_WIDTH * column + 4, CELL_HEIGH * row + 4,
-					CELL_WIDTH - 8, CELL_HEIGH - 8);
+			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.BLOCK, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
 		case HOLE:
-			gc.drawOval(CELL_WIDTH * column + 4, CELL_HEIGH * row + 4, CELL_WIDTH - 8,
-					CELL_HEIGH - 8);
+			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.HOLE, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
 		case OCCUPIED_CELL:
-			gc.drawLine(CELL_WIDTH * column, CELL_HEIGH * row, CELL_WIDTH * column
-					+ CELL_WIDTH, CELL_HEIGH * row + CELL_HEIGH);
-			gc.drawLine(CELL_WIDTH * column + CELL_WIDTH, CELL_HEIGH * row, CELL_WIDTH
-					* column, CELL_HEIGH * row + CELL_HEIGH);
+			gc.drawImage(CommandConverter.fromGameObjectToImage(GameObject.OCCUPIED_CELL, CELL_WIDTH, CELL_HEIGH, this.getDisplay()), 
+					CELL_WIDTH * column, CELL_HEIGH * row);
 			break;
-		case EMPTY_CELL:
-			break;
+		default: break;
 		}
 	}
 }

@@ -2,12 +2,17 @@ package ladybugAdventures.util;
 
 import ladybugAdventures.enums.CommandType;
 import ladybugAdventures.enums.Direction;
+import ladybugAdventures.enums.GameObject;
 
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 
 public class CommandConverter {//FIXME all "getResource" replace getResourceAsStream//move methods to ResourceProvider
+	private static Image ladybugImage, blockImage, holeImage, occupiedCellImage;
+	private static int width = 0;
+	private static int height = 0;
 	public static Image fromTypeToImage(CommandType type,int width, int height){
 		ImageData imgData = null;
 		switch (type) {
@@ -43,5 +48,52 @@ public class CommandConverter {//FIXME all "getResource" replace getResourceAsSt
 				break;
 		}
 		return (new Image(img.getDevice(), img.getImageData().scaledTo(width, height)));
+	}
+	public static Image fromGameObjectToImage(GameObject object,int width, int height, Device device){
+		if (!(CommandConverter.width == width && CommandConverter.height == height)) {
+			if (ladybugImage != null) ladybugImage.dispose();
+			ladybugImage = null;
+			if (blockImage != null) blockImage.dispose();
+			blockImage = null;
+			if (holeImage != null) holeImage.dispose();
+			holeImage = null;
+			if (occupiedCellImage != null) occupiedCellImage.dispose();
+			occupiedCellImage = null;
+			CommandConverter.width = width;
+			CommandConverter.height = height;
+		}
+		ImageData imgData = null;
+		Image img = null;
+		switch (object) {
+			case LADYBUG:
+				if (ladybugImage == null) {
+					imgData = new Image(device, ResourceProvider.getResInpStr(ResourceProvider.LADYBUG_FRAME1_ID)).getImageData();
+					ladybugImage = new Image(device, imgData.scaledTo(width, height));
+				}	
+				img = ladybugImage;
+				break;
+			case BLOCK:
+				if (blockImage == null){
+					imgData = new Image(device, ResourceProvider.getResInpStr(ResourceProvider.BLOCK_ID)).getImageData();
+					blockImage = new Image(device, imgData.scaledTo(width, height));
+				}
+				img = blockImage;
+				break;
+			case HOLE:
+				if (holeImage == null) {
+					imgData = new Image(device, ResourceProvider.getResInpStr(ResourceProvider.HOLE_ID)).getImageData();
+					holeImage = new Image(device, imgData.scaledTo(width, height));
+				}
+				img = holeImage;
+				break;
+			case OCCUPIED_CELL:
+				if (occupiedCellImage == null) {
+					imgData = new Image(device, ResourceProvider.getResInpStr(ResourceProvider.OCCUPIED_CELL_ID)).getImageData();
+					occupiedCellImage = new Image(device, imgData.scaledTo(width, height));
+				}
+				img = occupiedCellImage;
+				break;
+		}
+		return img;
 	}
 }

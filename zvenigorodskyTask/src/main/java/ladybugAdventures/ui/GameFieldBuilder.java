@@ -45,7 +45,7 @@ public class GameFieldBuilder {
 	
 	public GameFieldBuilder(boolean automaticComposition) {
 		object = GameObject.LADYBUG;
-		if (automaticComposition)changesSaved = false;
+		if (automaticComposition) changesSaved = false;
 		else changesSaved = true;
 	}
 	
@@ -93,11 +93,6 @@ public class GameFieldBuilder {
 		shell.setSize(165, 362);
 		shell.setText("Редактор игрового поля");
 		shell.setLayout(null);
-		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
-		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
-		client.x = screen.width/2 -client.width/2;
-		client.y = screen.height/2 - client.height/2;
-		shell.setLocation(client.x, client.y);
 		
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(GameFieldViewerComponent.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 220);
@@ -106,20 +101,29 @@ public class GameFieldBuilder {
 		
 		Composite composite_1 = new Composite(shell, SWT.NONE);
 		//composite_1.setBounds(10, 10, 100, 100);
-		composite_1.setBounds(10, 10, GameFieldViewerComponent.CELL_WIDTH * field.getWidth(), GameFieldViewerComponent.CELL_HEIGH * field.getHeigh());
-		shell.setSize(composite_1.getSize().x + composite.getSize().x + BORDER, (composite_1.getSize().y > composite.getSize().y ? composite_1.getSize().y : composite.getSize().y) + BORDER * 3); //TODO я хз, почему приходится *3, но только так работает как надо, без этого обрезается кусочек
+		composite_1.setBounds(10, 10, GameFieldViewerComponent.CELL_WIDTH * field.getWidth(), 
+				GameFieldViewerComponent.CELL_HEIGH * field.getHeigh());
+		shell.setSize(composite_1.getSize().x + composite.getSize().x + BORDER, 
+				(composite_1.getSize().y > composite.getSize().y ? composite_1.getSize().y : composite.getSize().y) + BORDER * 3); //TODO я хз, почему приходится *3, но только так работает как надо, без этого обрезается кусочек
+		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
+		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
+		client.x = screen.width/2 -client.width/2;
+		client.y = screen.height/2 - client.height/2;
+		shell.setLocation(client.x, client.y);
 		FillLayout fl_composite_1 = new FillLayout(SWT.HORIZONTAL);
 		fl_composite_1.marginWidth = 10;
 		fl_composite_1.marginHeight = 10;
 		composite_1.setLayout(fl_composite_1);
 
 		final GameFieldViewerComponent canvas = new GameFieldViewerComponent(composite_1,SWT.NO_REDRAW_RESIZE, field);
-		canvas.initField();
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				field.addObject(object, e.y / GameFieldViewerComponent.CELL_WIDTH, e.x / GameFieldViewerComponent.CELL_HEIGH);
-				canvas.redraw();
+				canvas.redraw(e.x / GameFieldViewerComponent.CELL_WIDTH, e.y
+						/ GameFieldViewerComponent.CELL_HEIGH,
+						GameFieldViewerComponent.CELL_WIDTH,
+						GameFieldViewerComponent.CELL_HEIGH, false);
 				changesSaved = false;
 			}
 			

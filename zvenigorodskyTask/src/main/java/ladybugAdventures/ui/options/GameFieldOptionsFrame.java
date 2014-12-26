@@ -100,7 +100,7 @@ public class GameFieldOptionsFrame {
 		});
 		spinnerWidth.setMaximum(1000);
 		spinnerWidth.setMinimum(-1000);
-		spinnerWidth.setSelection(2);
+		spinnerWidth.setSelection(5);
 		spinnerWidth.setBounds(84, 35, 47, 22);
 		
 		final Spinner spinnerHeigh = new Spinner(compositeCreateNewField, SWT.BORDER);
@@ -117,7 +117,7 @@ public class GameFieldOptionsFrame {
 		});
 		spinnerHeigh.setMaximum(1000);
 		spinnerHeigh.setMinimum(-1000);
-		spinnerHeigh.setSelection(2);
+		spinnerHeigh.setSelection(5);
 		spinnerHeigh.setBounds(84, 59, 47, 22);
 		
 		Label lblNewLabel_1 = new Label(compositeCreateNewField, SWT.NONE);
@@ -195,7 +195,7 @@ public class GameFieldOptionsFrame {
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					GameField openedField = FileSystemManager.getGameField(text.getText());
-					GameFieldBuilder fieldBuilder = new GameFieldBuilder();
+					GameFieldBuilder fieldBuilder = new GameFieldBuilder(false);
 					shell.dispose();
 					fieldBuilder.open(openedField);
 				} catch (StorageException e1) {
