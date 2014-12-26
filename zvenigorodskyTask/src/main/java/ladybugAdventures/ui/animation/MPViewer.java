@@ -89,7 +89,7 @@ public class MPViewer extends BasicGame {
 		startButton.render(container, g);
 		infoRenderer.render(container, g);
 		logViewer.render(container, g);
-		say.render(container, g);
+		
 //		fire.draw(0, 0, gameField.getCellSize(), gameField.getCellSize());
 //		g.drawString(info, 30, container.getHeight()-150);
 		for(MoveRenderElement renderElement: renderTrackList){
@@ -100,6 +100,7 @@ public class MPViewer extends BasicGame {
 //					fire.draw(renderTrackList.get(1).result.x, renderTrackList.get(1).result.y, 
 //							gameField.getCellSize(), gameField.getCellSize());
 		}
+		say.render(container, g);
 
 	}
 
