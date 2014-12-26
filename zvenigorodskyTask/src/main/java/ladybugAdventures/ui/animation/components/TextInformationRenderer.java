@@ -16,10 +16,10 @@ import org.newdawn.slick.gui.GUIContext;
 public class TextInformationRenderer extends AbstractComponent {
 	
 
-	Point location;
-	Point size;
-	String info;
-	UnicodeFont font2;
+	private Point location;
+	private Point size;
+	private String info;
+	private UnicodeFont font2;
 	public TextInformationRenderer(GUIContext container, Point location, String info) {
 		super(container);
 		this.location = location;
