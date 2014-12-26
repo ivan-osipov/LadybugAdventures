@@ -22,8 +22,8 @@ public class CommandLogRenderer extends AbstractComponent {
 	public CommandLogRenderer(GUIContext container) throws SlickException {
 		
 		super(container);
-		x = container.getWidth()-400;
-		y = container.getHeight() - 150;
+		x = container.getWidth()-200;
+		y = container.getHeight() - 100;
 		size = new Point(-1, -1);
 		log = new ArrayBlockingQueue<>(4);
 		logViewer = new TextInformationRenderer[4];

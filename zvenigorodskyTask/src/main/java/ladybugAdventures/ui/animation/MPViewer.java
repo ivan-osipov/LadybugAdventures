@@ -22,6 +22,7 @@ import ladybugAdventures.util.StepTrack;
 import org.eclipse.swt.graphics.Point;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -68,7 +69,7 @@ public class MPViewer extends BasicGame {
 //		fire = new Animation(cloudFrames, 50);
 //		fire.setLooping(false);
 		say = new BugladySaidRenderer(container, new Point(0,0), analizator, gameField.getCellSize());
-		infoRenderer = new TextInformationRenderer(container, new Point(10, container.getHeight()-200),  info);
+		infoRenderer = new TextInformationRenderer(container, new Point(10, container.getHeight()-90),  info);
 		infoRenderer.init(container);
 		//СПИСОК ОТРИСУЕМЫХ
 		renderTrackList = new ArrayList<MoveRenderElement>();
@@ -87,7 +88,9 @@ public class MPViewer extends BasicGame {
 		background.draw(0,0,container.getWidth(),container.getHeight());
 		gameField.render(container, g);
 		startButton.render(container, g);
-		infoRenderer.render(container, g);
+		g.setColor(new Color(152,251,152,0.6f));
+		g.fillRect(0, container.getHeight()-100, 240, 100);//фон
+		infoRenderer.render(container, g,Color.black);
 		logViewer.render(container, g);
 		
 //		fire.draw(0, 0, gameField.getCellSize(), gameField.getCellSize());
