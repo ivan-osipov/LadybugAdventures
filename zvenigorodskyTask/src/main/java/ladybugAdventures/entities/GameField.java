@@ -73,17 +73,21 @@ public class GameField implements Serializable {
 		return false;
 	}
 	
-	public void addObject(GameObject object, int row, int column) {
+	public boolean addObject(GameObject object, int row, int column) {
 		//проверку на выходы за границы поля не делаю, ибо (как мне помнится) добавление
 		//элемента на поле происходит по клику мыши на соответствующей ячейке поля
 		if (object == GameObject.LADYBUG) {
 			if (!isControlObjectOnField()) {	//Если на поле уже есть объект управления, то ничего не добавляется. Можно придумать код ошибки.
 				field[row][column] = GameObject.LADYBUG;
 			}
+			else {
+				return false;
+			}
 		}
 		else {
 			field[row][column] = object;
 		}
+		return true;
 	}
 	
 	public void removeObject(int row, int column) {

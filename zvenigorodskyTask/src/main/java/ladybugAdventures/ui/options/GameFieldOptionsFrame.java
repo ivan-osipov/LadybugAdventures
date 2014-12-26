@@ -25,6 +25,9 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
 
 public class GameFieldOptionsFrame {
 	private Text text;
@@ -48,7 +51,7 @@ public class GameFieldOptionsFrame {
 	public void open() {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
-		shell.setSize(250, 261);
+		shell.setSize(250, 213);
 		shell.setText("Редактор игрового поля");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
@@ -71,70 +74,75 @@ public class GameFieldOptionsFrame {
 		Label lblNewLabel = new Label(compositeCreateNewField, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		lblNewLabel.setBounds(10, 10, 216, 25);
+		lblNewLabel.setBounds(10, 10, 216, 19);
 		lblNewLabel.setText("Размерность игрового поля:");
 		
 		Label label = new Label(compositeCreateNewField, SWT.NONE);
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label.setBounds(10, 34, 68, 22);
+		label.setBounds(50, 34, 68, 16);
 		label.setText("Ширина:");
 		
 		Label label_1 = new Label(compositeCreateNewField, SWT.NONE);
 		label_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label_1.setBounds(10, 62, 68, 19);
+		label_1.setBounds(50, 59, 68, 16);
 		label_1.setText("Высота:");
 		
 		final Spinner spinnerWidth = new Spinner(compositeCreateNewField, SWT.BORDER);
-		spinnerWidth.addFocusListener(new FocusAdapter() {
+		spinnerWidth.setTextLimit(10);
+		spinnerWidth.addMouseListener(new MouseAdapter() {
 			@Override
-			public void focusLost(FocusEvent e) {
-				if (spinnerWidth.getSelection() > 20) {
-					spinnerWidth.setSelection(20);
-				}
-				if (spinnerWidth.getSelection() < 2) {
-					spinnerWidth.setSelection(2);
-				}
+			public void mouseDown(MouseEvent e) {
+				controlSpinnerValue(spinnerWidth);
 			}
 		});
-		spinnerWidth.setMaximum(1000);
-		spinnerWidth.setMinimum(-1000);
+		spinnerWidth.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				controlSpinnerValue(spinnerWidth);
+			}
+		});
+		
+		spinnerWidth.setMaximum(20);
+		spinnerWidth.setMinimum(2);
 		spinnerWidth.setSelection(5);
-		spinnerWidth.setBounds(84, 35, 47, 22);
+		spinnerWidth.setBounds(147, 31, 47, 22);
 		
 		final Spinner spinnerHeigh = new Spinner(compositeCreateNewField, SWT.BORDER);
-		spinnerHeigh.addFocusListener(new FocusAdapter() {
+		spinnerHeigh.setTextLimit(10);
+		spinnerHeigh.addMouseListener(new MouseAdapter() {
 			@Override
-			public void focusLost(FocusEvent e) {
-				if (spinnerHeigh.getSelection() > 20) {
-					spinnerHeigh.setSelection(20);
-				}
-				if (spinnerHeigh.getSelection() < 2) {
-					spinnerHeigh.setSelection(2);
-				}
+			public void mouseDown(MouseEvent e) {
+				controlSpinnerValue(spinnerHeigh);
 			}
 		});
-		spinnerHeigh.setMaximum(1000);
-		spinnerHeigh.setMinimum(-1000);
+		spinnerHeigh.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				controlSpinnerValue(spinnerHeigh);
+			}
+		});
+		spinnerHeigh.setMaximum(20);
+		spinnerHeigh.setMinimum(2);
 		spinnerHeigh.setSelection(5);
-		spinnerHeigh.setBounds(84, 59, 47, 22);
+		spinnerHeigh.setBounds(147, 56, 47, 22);
 		
 		Label lblNewLabel_1 = new Label(compositeCreateNewField, SWT.NONE);
 		lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		lblNewLabel_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		lblNewLabel_1.setBounds(10, 87, 216, 25);
-		lblNewLabel_1.setText("Режим составления игрового");
+		lblNewLabel_1.setBounds(10, 81, 216, 16);
+		lblNewLabel_1.setText("Режим составления игрового поля:");
 		
 		final Button radioButtonAutomatically = new Button(compositeCreateNewField, SWT.RADIO);
 		radioButtonAutomatically.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		radioButtonAutomatically.setSelection(true);
-		radioButtonAutomatically.setBounds(10, 132, 108, 16);
+		radioButtonAutomatically.setBounds(10, 103, 108, 16);
 		radioButtonAutomatically.setText("Автоматически");
 		
 		Button radioButtonManually = new Button(compositeCreateNewField, SWT.RADIO);
 		radioButtonManually.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		radioButtonManually.setBounds(10, 154, 108, 16);
+		radioButtonManually.setBounds(137, 103, 78, 16);
 		radioButtonManually.setText("Вручную");
 		
 		Button button_1 = new Button(compositeCreateNewField, SWT.NONE);
@@ -152,14 +160,8 @@ public class GameFieldOptionsFrame {
 				fieldBuilder.open(field);
 			}
 		});
-		button_1.setBounds(10, 176, 108, 25);
+		button_1.setBounds(64, 125, 108, 25);
 		button_1.setText("Создать поле");
-		
-		Label label_3 = new Label(compositeCreateNewField, SWT.NONE);
-		label_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label_3.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
-		label_3.setBounds(10, 107, 41, 25);
-		label_3.setText(" поля:");
 		
 		TabItem tbtmUpdateField = new TabItem(tabFolder, SWT.NONE);
 		tbtmUpdateField.setText("Редактирование");
@@ -171,7 +173,7 @@ public class GameFieldOptionsFrame {
 		
 		text = new Text(compositeUpdateField, SWT.BORDER);
 		text.setEnabled(false);
-		text.setBounds(45, 67, 135, 21);
+		text.setBounds(46, 46, 135, 21);
 		
 		Button buttonOverview = new Button(compositeUpdateField, SWT.NONE);
 		buttonOverview.addSelectionListener(new SelectionAdapter() {
@@ -186,29 +188,34 @@ public class GameFieldOptionsFrame {
 		        	text.setText(selected);
 			}
 		});
-		buttonOverview.setBounds(61, 94, 102, 25);
+		buttonOverview.setBounds(62, 73, 102, 25);
 		buttonOverview.setText("Обзор");
 		
 		Button buttonEdit = new Button(compositeUpdateField, SWT.NONE);
 		buttonEdit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					GameField openedField = FileSystemManager.getGameField(text.getText());
-					GameFieldBuilder fieldBuilder = new GameFieldBuilder(false);
-					shell.dispose();
-					fieldBuilder.open(openedField);
-				} catch (StorageException e1) {
+				if (text.getText().isEmpty()) {
 					MessageDialog.openWarning(shell, "Внимание", "Файл не указан!");
+				}
+				else {
+					try {
+						GameField openedField = FileSystemManager.getGameField(text.getText());
+						GameFieldBuilder fieldBuilder = new GameFieldBuilder(false);
+						shell.dispose();
+						fieldBuilder.open(openedField);
+					} catch (StorageException e1) {
+						MessageDialog.openWarning(shell, "Внимание", "Невозможно открыть файл, файл поврежден");
+					}
 				}
 			}
 		});
-		buttonEdit.setBounds(61, 125, 102, 25);
+		buttonEdit.setBounds(62, 104, 102, 25);
 		buttonEdit.setText("Редактировать");
 		
 		Label label_2 = new Label(compositeUpdateField, SWT.NONE);
 		label_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label_2.setBounds(45, 46, 135, 15);
+		label_2.setBounds(46, 25, 135, 15);
 		label_2.setText("Путь до игрового поля:");
 
 		shell.open();
@@ -217,6 +224,15 @@ public class GameFieldOptionsFrame {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
+		}
+	}
+	
+	private void controlSpinnerValue(Spinner spinner) {
+		if (Integer.parseInt(spinner.getText()) > 20) {
+			spinner.setSelection(20);
+		}
+		if (Integer.parseInt(spinner.getText()) < 2) {
+			spinner.setSelection(2);
 		}
 	}
 }

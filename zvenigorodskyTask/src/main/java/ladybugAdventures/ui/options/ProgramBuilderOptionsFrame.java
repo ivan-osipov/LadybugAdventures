@@ -74,7 +74,7 @@ public class ProgramBuilderOptionsFrame {
 		Label label = new Label(creatingComposite, SWT.NONE);
 		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
-		label.setBounds(10, 13, 45, 25);
+		label.setBounds(10, 12, 45, 25);
 		label.setText("Автор:");
 
 		authorName = new Text(creatingComposite, SWT.BORDER);
@@ -83,7 +83,7 @@ public class ProgramBuilderOptionsFrame {
 
 		Label label_1 = new Label(creatingComposite, SWT.NONE);
 		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label_1.setBounds(10, 44, 59, 46);
+		label_1.setBounds(10, 38, 59, 36);
 		label_1.setText("Игровая\nкарта:");
 		label_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 

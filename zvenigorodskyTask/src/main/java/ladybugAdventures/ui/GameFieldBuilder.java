@@ -30,6 +30,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.widgets.Label;
 
 public class GameFieldBuilder {
 
@@ -95,7 +96,7 @@ public class GameFieldBuilder {
 		shell.setLayout(null);
 		
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setBounds(GameFieldViewerComponent.CELL_WIDTH * field.getWidth() + BORDER/2, 0, 145, 220);
+		composite.setBounds(10 + GameFieldViewerComponent.CELL_WIDTH * field.getWidth(), 0, 145, 266);
 		//composite.setBounds(150, 10, 100, 100);
 		composite.setLayout(null);
 		
@@ -104,7 +105,7 @@ public class GameFieldBuilder {
 		composite_1.setBounds(10, 10, GameFieldViewerComponent.CELL_WIDTH * field.getWidth(), 
 				GameFieldViewerComponent.CELL_HEIGH * field.getHeigh());
 		shell.setSize(composite_1.getSize().x + composite.getSize().x + BORDER, 
-				(composite_1.getSize().y > composite.getSize().y ? composite_1.getSize().y : composite.getSize().y) + BORDER * 3); //TODO я хз, почему приходится *3, но только так работает как надо, без этого обрезается кусочек
+				(composite_1.getSize().y > composite.getSize().y ? composite_1.getSize().y : composite.getSize().y) + BORDER * 2); //TODO я хз, почему приходится *3, но только так работает как надо, без этого обрезается кусочек
 		org.eclipse.swt.graphics.Rectangle client = shell.getBounds();
 		org.eclipse.swt.graphics.Rectangle screen = Display.getDefault().getBounds();
 		client.x = screen.width/2 -client.width/2;
@@ -119,23 +120,25 @@ public class GameFieldBuilder {
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				field.addObject(object, e.y / GameFieldViewerComponent.CELL_WIDTH, e.x / GameFieldViewerComponent.CELL_HEIGH);
+				if (e.button == 3) {
+					field.removeObject(e.y / GameFieldViewerComponent.CELL_WIDTH, e.x / GameFieldViewerComponent.CELL_HEIGH);
+				}
+				else {
+					if (!field.addObject(object, e.y / GameFieldViewerComponent.CELL_WIDTH, 
+							e.x / GameFieldViewerComponent.CELL_HEIGH))
+						MessageDialog.openWarning(shell, "Невозможно поставить вторую божью коровку",
+								"Сначала удалите с поля первую божью коровку");
+				}
 				canvas.redraw(e.x / GameFieldViewerComponent.CELL_WIDTH, e.y
 						/ GameFieldViewerComponent.CELL_HEIGH,
 						GameFieldViewerComponent.CELL_WIDTH,
 						GameFieldViewerComponent.CELL_HEIGH, false);
 				changesSaved = false;
 			}
-			
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				field.removeObject(e.y / GameFieldViewerComponent.CELL_WIDTH, e.x / GameFieldViewerComponent.CELL_HEIGH);
-				changesSaved = false;
-			}
 		});
 		
 		Group group = new Group(composite, SWT.NONE);
-		group.setBounds(10, 10, 120, 111);
+		group.setBounds(10, 52, 120, 111);
 		group.setText("Игровые объекты");
 
 		Button button = new Button(group, SWT.RADIO);
@@ -195,7 +198,7 @@ public class GameFieldBuilder {
 				else MessageDialog.openWarning(shell, "Невозможно сохранить", "На поле нет божьей коровки!");
 			}
 		});
-		button_4.setBounds(10, 127, 120, 25);
+		button_4.setBounds(10, 169, 120, 25);
 		button_4.setText("Сохранить");
 
 		Button button_5 = new Button(composite, SWT.NONE);
@@ -212,7 +215,7 @@ public class GameFieldBuilder {
 				shell.dispose();
 			}
 		});
-		button_5.setBounds(10, 189, 120, 25);
+		button_5.setBounds(10, 231, 120, 25);
 		button_5.setText("Закрыть");
 		
 		Button btnNewButton = new Button(composite, SWT.NONE);
@@ -226,8 +229,12 @@ public class GameFieldBuilder {
 				}
 			}
 		});
-		btnNewButton.setBounds(10, 158, 120, 25);
+		btnNewButton.setBounds(10, 200, 120, 25);
 		btnNewButton.setText("Очистить поле");
+		
+		Label lblNewLabel = new Label(composite, SWT.NONE);
+		lblNewLabel.setBounds(20, 10, 120, 36);
+		lblNewLabel.setText("Добавить: ЛКМ\r\nУдалить:   ПКМ");
 
 		shell.addListener(SWT.Close, new Listener() { 
 			public void handleEvent(Event event) { 
