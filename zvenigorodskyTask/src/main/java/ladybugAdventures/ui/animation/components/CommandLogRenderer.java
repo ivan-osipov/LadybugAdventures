@@ -14,18 +14,20 @@ import org.newdawn.slick.gui.GUIContext;
 
 public class CommandLogRenderer extends AbstractComponent {
 	private final int SPACE = 10;
-	private Point location;
+	private int x,y;
 	private Point size;
 	private Queue<CommandImpl> log;
 	private TextInformationRenderer[] logViewer;
 	public CommandLogRenderer(GUIContext container) {
+		
 		super(container);
-		this.location = new Point(container.getWidth()-400, container.getHeight() - 200);
+		x = container.getWidth()-400;
+		y = container.getHeight() - 200;
 		size = new Point(-1, -1);
 		log = new ArrayBlockingQueue<>(4);
 		logViewer = new TextInformationRenderer[log.size()];
 		for(int i = 0; i< logViewer.length;i++){
-			logViewer[i] = new TextInformationRenderer(container, new Point(location.x,location.y + i*SPACE), String.valueOf(i) + ": ");
+			logViewer[i] = new TextInformationRenderer(container, new Point(x,y + i*SPACE), String.valueOf(i) + ": ");
 		}
 	}
 
@@ -54,19 +56,19 @@ public class CommandLogRenderer extends AbstractComponent {
 	}
 	@Override
 	public void setLocation(int x, int y) {
-		this.location.x = x;
-		this.location.y = y;
+		this.x = x;
+		this.y = y;
 
 	}
 
 	@Override
 	public int getX() {
-		return location.x;
+		return x;
 	}
 
 	@Override
 	public int getY() {
-		return location.y;
+		return y;
 	}
 
 	@Override
