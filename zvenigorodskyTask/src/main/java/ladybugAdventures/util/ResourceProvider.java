@@ -12,6 +12,7 @@ public class ResourceProvider {
 	public final static String BLOCK_ID					=		"/img/pictures/block";
 	public final static String HOLE_ID					=		"/img/pictures/hole";
 	public final static String OCCUPIED_CELL_ID			=		"/img/pictures/occupiedCell";
+	public final static String SAY_ID 					= 		"/img/pictures/say";
 
 	public final static String LADYBUG_FRAME1_ID 		= 		"/gameobject/ladybug1";
 	public final static String LADYBUG_FRAME2_ID 		= 		"/gameobject/ladybug2";
@@ -24,6 +25,9 @@ public class ResourceProvider {
 
 	public final static String LADYBUG_FRAME1_DOWN_ID 		= 		"/gameobject/ladybug1/down";
 	public final static String LADYBUG_FRAME2_DOWN_ID 		= 		"/gameobject/ladybug2/down";
+	
+	public final static String CLOUD_SPRITE_ID 				= 		"/sprites/cloud_sprite";
+	public final static String FIRE_SPRITE_ID 				= 		"/sprites/FIRE_sprite";
 	//links
 	private final static String BACKGROUND_LINK 			= 		"/img/pictures/background.jpg";
 	private final static String START_BUTTON_LINK 			= 		"/img/pictures/startButton.png";
@@ -33,6 +37,7 @@ public class ResourceProvider {
 	private final static String BLOCK_LINK					=		"/img/pictures/box.png";
 	private final static String HOLE_LINK					=		"/img/pictures/hole.png";
 	private final static String OCCUPIED_CELL_LINK			=		"/img/pictures/occupied_cell.png";
+	private final static String SAY_LINK			=		"/img/pictures/say.png";
 	
 	private final static String LADYBUG_FRAME1_LINK 		= 		"/img/pictures/ladybug_frame1.png";
 	private final static String LADYBUG_FRAME2_LINK 		= 		"/img/pictures/ladybug_frame2.png";
@@ -45,6 +50,9 @@ public class ResourceProvider {
 
 	private final static String LADYBUG_FRAME1_DOWN_LINK 	= 		"/img/pictures/ladybug_frame1_down.png";
 	private final static String LADYBUG_FRAME2_DOWN_LINK 	= 		"/img/pictures/ladybug_frame2_down.png";
+	
+	private final static String CLOUD_SPRITE_LINK 			= 		"/img/sprites/clouds.jpg";
+	private final static String FIRE_SPRITE_LINK 			= 		"/img/sprites/fire1.png";
 	
 	
 	public static InputStream getResInpStr(String RESOURCE_ID){
@@ -100,6 +108,15 @@ public class ResourceProvider {
 			break;
 		case LADYBUG_FRAME2_DOWN_ID:
 			resultLink = LADYBUG_FRAME2_DOWN_LINK;
+			break;
+		case CLOUD_SPRITE_ID:
+			resultLink = CLOUD_SPRITE_LINK;
+			break;
+		case FIRE_SPRITE_ID:
+			resultLink = FIRE_SPRITE_LINK;
+			break;
+		case SAY_ID:
+			resultLink = SAY_LINK;
 			break;
 		}
 		return ResourceProvider.class.getResourceAsStream(resultLink);

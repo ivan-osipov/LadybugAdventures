@@ -155,6 +155,7 @@ public class ProgramBuilderFrame implements Observer {
 		upButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setDirection(Direction.UP);
 				unselectExcept(e.getSource(), directionBts);
 				currentWorkMode = WorkMode.ADD_COMMAND;
@@ -175,6 +176,7 @@ public class ProgramBuilderFrame implements Observer {
 		downButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setDirection(Direction.DOWN);
 				unselectExcept(e.getSource(), directionBts);
 				currentWorkMode = WorkMode.ADD_COMMAND;
@@ -194,6 +196,7 @@ public class ProgramBuilderFrame implements Observer {
 		rightButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setDirection(Direction.RIGHT);
 				unselectExcept(e.getSource(), directionBts);
 				currentWorkMode = WorkMode.ADD_COMMAND;
@@ -214,6 +217,7 @@ public class ProgramBuilderFrame implements Observer {
 		leftButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setDirection(Direction.LEFT);
 				unselectExcept(e.getSource(), directionBts);
 				currentWorkMode = WorkMode.ADD_COMMAND;
@@ -242,6 +246,7 @@ public class ProgramBuilderFrame implements Observer {
 		stepButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setType(CommandType.MOVE);
 				unselectExcept(e.getSource(), actionBts);
 				currentWorkMode = WorkMode.ADD_COMMAND;
@@ -257,6 +262,7 @@ public class ProgramBuilderFrame implements Observer {
 		jumpButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setType(CommandType.JUMP);
 				unselectExcept(e.getSource(), actionBts);
 				currentWorkMode = WorkMode.ADD_COMMAND;
@@ -278,6 +284,7 @@ public class ProgramBuilderFrame implements Observer {
 		pushButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				modeLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 				currentCommand.setType(CommandType.PUSH);
 				unselectExcept(e.getSource(), actionBts);
 				currentWorkMode = WorkMode.ADD_COMMAND;
@@ -480,7 +487,6 @@ public class ProgramBuilderFrame implements Observer {
 				if(Dialogs.showYesNoDialog(shell, "Очистка сотрет все команды! Вы уверены?", "Очистка") == SWT.YES){
 					changeSaved = false;
 					program.cleanProgram();
-					listViewer.refresh();
 				}
 			}
 		});
@@ -492,6 +498,9 @@ public class ProgramBuilderFrame implements Observer {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
+					if(!changeSaved && SWT.YES == Dialogs.showYesNoDialog(shell, "Перед выполнением прогрумму рекомендуется сохранить, "
+							+ "иначе могут быть потеряны последние изменения.\r\nСохранить?", "Рекомендуемое сохранение"))
+						Dialogs.showSaveDialog(shell, "Файл программы управления", "*.xml", "managementProgram.xml", program);
 					AnimationRunner.run(FileSystemManager.getGameField(program.getMapAddress()), program);
 				} catch (StorageException e1) {
 					if(Dialogs.showYesNoDialog(shell, "Невозможно загрузить игровую карту. Выбрать другую?", "Карта отсутствует!")==SWT.YES){

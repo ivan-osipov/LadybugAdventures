@@ -44,8 +44,9 @@ public class AnimationRunner {
 				System.setProperty("java.library.path", resourcePath.toString());
 				try {
 					AppGameContainer container = new AppGameContainer(new MPViewer(field,program));
-					container.setDisplayMode(1600, 900, false);
-//					container.setDisplayMode(800, 600, false);
+//					org.eclipse.swt.graphics.Rectangle bounds = Display.getDefault().getBounds();
+//					container.setDisplayMode(bounds.width, bounds.height, false);
+					container.setDisplayMode(1366, 768, false);
 					container.setShowFPS(false);
 					container.setTitle("Приключения божьей коровки");
 //					container.setAlwaysRender(false);
