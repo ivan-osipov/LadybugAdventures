@@ -73,7 +73,7 @@ public class MPViewer extends BasicGame {
 		//СПИСОК ОТРИСУЕМЫХ
 		renderTrackList = new ArrayList<MoveRenderElement>();
 		if(!updateRenderTrackList()){
-			startButton.setVisible(false);
+//			startButton.setVisible(false);
 			say.setVisible(true);
 			say.setLocation(gameField.getRenderPosX() + gameField.getCellSize()*(gameField.getControlObjectCoordinates().x+1), 
 					gameField.getRenderPosY() + gameField.getCellSize()*gameField.getControlObjectCoordinates().y);
@@ -89,7 +89,7 @@ public class MPViewer extends BasicGame {
 		startButton.render(container, g);
 		infoRenderer.render(container, g);
 		logViewer.render(container, g);
-		say.render(container, g);
+		
 //		fire.draw(0, 0, gameField.getCellSize(), gameField.getCellSize());
 //		g.drawString(info, 30, container.getHeight()-150);
 		for(MoveRenderElement renderElement: renderTrackList){
@@ -100,6 +100,7 @@ public class MPViewer extends BasicGame {
 //					fire.draw(renderTrackList.get(1).result.x, renderTrackList.get(1).result.y, 
 //							gameField.getCellSize(), gameField.getCellSize());
 		}
+		say.render(container, g);
 
 	}
 
@@ -157,7 +158,7 @@ public class MPViewer extends BasicGame {
 		
 		if(analizator.nextStep())
 		{
-//			analizator.getC
+			logViewer.addToLog(analizator.getLastPerformedCommand());
 			List<StepTrack> tracks = analizator.getTrackList();
 			gameField.setNotRenderList(tracks);
 			for(int i = 0;i<tracks.size();i++){
@@ -169,7 +170,7 @@ public class MPViewer extends BasicGame {
 			return true;
 		}
 		if(analizator.isEndOfProgram()){
-			startButton.setVisible(true);
+//			startButton.setVisible(true);
 		}
 //		fire.restart();
 		gameField.setNotRenderList(new ArrayList<StepTrack>());
