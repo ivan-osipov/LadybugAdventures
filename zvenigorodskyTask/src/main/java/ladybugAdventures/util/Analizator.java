@@ -57,6 +57,10 @@ public class Analizator {
 		return error;
 	}
 	
+	public CommandImpl getLastPerformedCommand() {
+		return (CommandImpl)commandList.get(currentStep - 1); 
+	}
+	
 	private Point getDirection(CommandImpl command) {
 		Point direction = new Point(0, 0);
 		switch (command.getDirection()) {
