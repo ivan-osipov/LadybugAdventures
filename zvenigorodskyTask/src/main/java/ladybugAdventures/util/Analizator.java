@@ -16,22 +16,21 @@ import org.eclipse.swt.graphics.Point;
 public class Analizator {
 	private ErrorType error;
 	private Behaviour behaviour;
-	private GameField fieldBeforeStep;
-	private GameField fieldAfterStep;
+	private GameField fieldBeforeStep, fieldAfterStep;
 	private List<StepTrack> trackList;
 	private List<Command> commandList;
-	private boolean ladybugOnOccupiedCell;
-	private boolean endOfProgram;
+	private boolean ladybugOnOccupiedCell, endOfProgram, blockFellInHole;
 	private int currentStep;
 	
 	public Analizator(GameField field, ManagementProgram program){
 		fieldBeforeStep = field.clone();
 		fieldAfterStep = field.clone();
 		error = ErrorType.NONE_ERROR;
-		ladybugOnOccupiedCell = false;
 		commandList = program.getCommandListInLine();
 		currentStep = 0;
+		ladybugOnOccupiedCell = false;
 		endOfProgram = false;
+		blockFellInHole = false;
 		trackList = new ArrayList<StepTrack>();
 	}
 	
@@ -53,6 +52,10 @@ public class Analizator {
 	
 	public boolean isLadybugOnOccupiedCell() {
 		return ladybugOnOccupiedCell;
+	}
+	
+	public boolean isBlockFellInHole() {
+		return blockFellInHole;
 	}
 	
 	public ErrorType getCurrentError() {
@@ -225,55 +228,45 @@ public class Analizator {
 	private boolean performStep(CommandImpl command){
 		fieldBeforeStep = fieldAfterStep.clone();
 		if (canPerform(command)) {
+			if (ladybugOnOccupiedCell) {
+				fieldAfterStep.addObject(GameObject.OCCUPIED_CELL, 
+						trackList.get(0).getStartPosition().y, 
+						trackList.get(0).getStartPosition().x);
+			}
+			else {
+				fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
+						trackList.get(0).getStartPosition().y, 
+						trackList.get(0).getStartPosition().x);
+			}
 			switch(command.getType()) {
 			case PUSH:
-				if (ladybugOnOccupiedCell) {
-					fieldAfterStep.addObject(GameObject.OCCUPIED_CELL, 
-							trackList.get(0).getStartPosition().y, 
-							trackList.get(0).getStartPosition().x);
-					ladybugOnOccupiedCell = false;
-				}
-				else {
-					fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
-							trackList.get(0).getStartPosition().y, 
-							trackList.get(0).getStartPosition().x);
-				}
+				ladybugOnOccupiedCell = false;
 				if (fieldBeforeStep.getType(trackList.get(1).getFinishPosition().y,
 						trackList.get(1).getFinishPosition().x) == GameObject.HOLE) {
 					fieldAfterStep.addObject(GameObject.EMPTY_CELL,
 							trackList.get(1).getFinishPosition().y,
 							trackList.get(1).getFinishPosition().x);
+					blockFellInHole = true;
 				}
 				else {
 					fieldAfterStep.addObject(GameObject.BLOCK,
 							trackList.get(1).getFinishPosition().y,
 							trackList.get(1).getFinishPosition().x);
+					blockFellInHole = false;
 				}
-				fieldAfterStep.addObject(GameObject.LADYBUG, 
-						trackList.get(0).getFinishPosition().y, 
-						trackList.get(0).getFinishPosition().x);
 				break;
 			default:
-				if (ladybugOnOccupiedCell) {
-					fieldAfterStep.addObject(GameObject.OCCUPIED_CELL, 
-							trackList.get(0).getStartPosition().y, 
-							trackList.get(0).getStartPosition().x);
-				}
-				else {
-					fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
-							trackList.get(0).getStartPosition().y, 
-							trackList.get(0).getStartPosition().x);
-				}
+				blockFellInHole = false;
 				if (fieldBeforeStep.getType(trackList.get(0).getFinishPosition().y,
 						trackList.get(0).getFinishPosition().x) == GameObject.EMPTY_CELL) {
 					ladybugOnOccupiedCell = false;
 				}
 				else ladybugOnOccupiedCell = true;
-				fieldAfterStep.addObject(GameObject.LADYBUG, 
-						trackList.get(0).getFinishPosition().y, 
-						trackList.get(0).getFinishPosition().x);
 				break;
 			}
+			fieldAfterStep.addObject(GameObject.LADYBUG, 
+					trackList.get(0).getFinishPosition().y, 
+					trackList.get(0).getFinishPosition().x);
 			return true;
 		}
 		return false;
