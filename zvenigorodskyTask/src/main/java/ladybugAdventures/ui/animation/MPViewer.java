@@ -4,6 +4,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.Oneway;
+
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
 import ladybugAdventures.enums.Behaviour;
@@ -57,6 +59,7 @@ public class MPViewer extends BasicGameState {
 	}
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
 		background = new Image(ResourceProvider.getResInpStr(ResourceProvider.BACKGROUND_ID),
 				ResourceProvider.BACKGROUND_ID,false);
 		startButton = new StartButtonRenderer(container);
@@ -108,7 +111,7 @@ public class MPViewer extends BasicGameState {
 		if(!animating){
 			if(startButton.update(container, t)){
 				animating = true;
-				oneStep = (int) Math.abs(Math.log(gameField.getCellSize()*0.6));//размер 1 шага
+				oneStep = (int) Math.abs(Math.log(gameField.getCellSize()/10));//размер 1 шага
 				say.setVisible(true);
 			}
 		}
@@ -142,7 +145,7 @@ public class MPViewer extends BasicGameState {
 					}
 				}
 //				if(i < renderTrackList.size()){
-				if(analizator.getCurrentBehaviour()==Behaviour.PUSHING){//FIXME
+				if(analizator.getCurrentBehaviour()==Behaviour.PUSHING && analizator.isBlockFellInHole()){//FIXME
 					fire.setLocation(renderTrackList.get(1).result.x, renderTrackList.get(1).result.y);
 					fire.setVisible(true);
 				}
@@ -179,6 +182,7 @@ public class MPViewer extends BasicGameState {
 		gameField.setGameField(analizator.getFieldAfterStep());
 		return false;
 	}
+	
 	/*
 	 *
 	 *

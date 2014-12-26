@@ -18,6 +18,7 @@ import ladybugAdventures.ui.animation.SplashScreen;
 import ladybugAdventures.ui.components.LoadAnimationFrame;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.newdawn.slick.AppGameContainer;
@@ -29,10 +30,13 @@ public class AnimationRunner extends StateBasedGame{
 	public static final String GAME_NAME = "Приключения божьей коровки";
 	public static final byte mainview = 1;
 	public static final byte splash = 0;//loading screen
+	
 	private ManagementProgram program;
-	GameField field;
+	private GameField field;
+	static AppGameContainer container;
 	public AnimationRunner(String name, ManagementProgram program, GameField field) {
 		super(name);
+		
 		this.field = field;
 		this.program = program;
 	}
@@ -62,11 +66,13 @@ public class AnimationRunner extends StateBasedGame{
 					container.setDisplayMode(1366, 768, false);
 					container.setShowFPS(false);
 					container.setTitle(GAME_NAME);
+					container.setForceExit(false);
 //					container.setAlwaysRender(true);
 //					container.setClearEachFrame(false);
 //					container.setIcon("src/main/resources/img/icons/logoIcon.ico");
 					container.setTargetFrameRate(120);
 //					container.setFullscreen(true);
+					container.setAlwaysRender(true);
 					container.start();
 					
 				} catch (SlickException e3) {
@@ -87,8 +93,10 @@ public class AnimationRunner extends StateBasedGame{
 	}
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
+		
 		this.addState(new SplashScreen(0));
 		this.addState(new MPViewer(field, program));
 		this.enterState(0);
+		
 	}
 }
