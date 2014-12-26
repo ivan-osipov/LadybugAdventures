@@ -42,7 +42,6 @@ public class BugladySaidRenderer extends AbstractComponent{
 			return;
 		background.draw(location.x, location.y,size.x,size.y);
 		text.setLocation(location.x+30, location.y + 10);
-		text.setText(messageProvider.getCurrentErrorDefinition());
 		text.render(container, g,Color.black);
 		
 	}
@@ -77,6 +76,9 @@ public class BugladySaidRenderer extends AbstractComponent{
 	@Override
 	public int getHeight() {
 		return size.y;
+	}
+	public void setText(String text){
+		this.text.setText(text);
 	}
 	
 }

@@ -37,13 +37,9 @@ public class TextInformationRenderer extends AbstractComponent {
 	@SuppressWarnings("unchecked")
 	public void init(GUIContext container) throws SlickException{
 		Font awtFont = new Font("Cambria", Font.ITALIC, 20);
-		
-		font2 = new UnicodeFont(awtFont);
-		font2.addAsciiGlyphs();
-		font2.addGlyphs(1024, 1279);//русские символы внутри unicode
-		font2.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
-		font2.loadGlyphs();
+		init(container,awtFont);
 	}
+	@SuppressWarnings("unchecked")
 	public void init(GUIContext container,Font font) throws SlickException{
 		
 		font2 = new UnicodeFont(font);

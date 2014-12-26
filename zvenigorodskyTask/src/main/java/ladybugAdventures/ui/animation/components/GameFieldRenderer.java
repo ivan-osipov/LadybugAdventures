@@ -24,8 +24,7 @@ public class GameFieldRenderer extends GameField{
 	private int renderPosX;
 	private int renderPosY;
 	
-	private
-	GameContainer container;
+	private GameContainer container;
 	private Image emptyCell;
 	private BaseCellRenderer[][] contentCellCollection;
 	private BaseCellRenderer[][] staticContentCellCollection;
