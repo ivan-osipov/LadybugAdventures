@@ -6,10 +6,12 @@ import java.util.List;
 
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
+import ladybugAdventures.enums.Behaviour;
 import ladybugAdventures.enums.ErrorType;
 import ladybugAdventures.enums.GameObject;
 import ladybugAdventures.ui.animation.components.BugladySaidRenderer;
 import ladybugAdventures.ui.animation.components.CommandLogRenderer;
+import ladybugAdventures.ui.animation.components.FireRenderer;
 import ladybugAdventures.ui.animation.components.TextInformationRenderer;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
 import ladybugAdventures.ui.animation.components.StartButtonRenderer;
@@ -40,9 +42,8 @@ public class MPViewer extends BasicGame {
 	private List<MoveRenderElement> renderTrackList;
 	private TextInformationRenderer infoRenderer;
 	private CommandLogRenderer logViewer;
-//	Animation fire;
 	private BugladySaidRenderer say;
-	
+	private FireRenderer fire;
 	
 	private boolean animating;
 	int printedObjects = 0;
@@ -61,13 +62,9 @@ public class MPViewer extends BasicGame {
 		startButton = new StartButtonRenderer(container);
 		gameField = new GameFieldRenderer(analizator.getFieldBeforeStep());
 		gameField.init(container);
-		
+		fire = new FireRenderer(container, gameField.getCellSize());
 		logViewer = new CommandLogRenderer(container);
-//		SpriteSheet cloudFrames = new SpriteSheet(
-//				new Image(ResourceProvider.getResInpStr(ResourceProvider.FIRE_SPRITE_ID),
-//						ResourceProvider.FIRE_SPRITE_ID,false), 100, 108);
-//		fire = new Animation(cloudFrames, 50);
-//		fire.setLooping(false);
+		
 		say = new BugladySaidRenderer(container, new Point(0,0), analizator, gameField.getCellSize());
 		infoRenderer = new TextInformationRenderer(container, new Point(10, container.getHeight()-90),  info);
 		infoRenderer.init(container);
@@ -93,8 +90,7 @@ public class MPViewer extends BasicGame {
 		infoRenderer.render(container, g,Color.black);
 		logViewer.render(container, g);
 		
-//		fire.draw(0, 0, gameField.getCellSize(), gameField.getCellSize());
-//		g.drawString(info, 30, container.getHeight()-150);
+		g.drawString(info, 30, container.getHeight()-150);
 		for(MoveRenderElement renderElement: renderTrackList){
 			renderElement.sprite.draw(renderElement.current.x, 
 					renderElement.current.y, 
@@ -147,6 +143,9 @@ public class MPViewer extends BasicGame {
 					}
 				}
 //				if(i < renderTrackList.size()){
+				if(analizator.getCurrentBehaviour()==Behaviour.PUSHING){
+					
+				}
 				if(!updateRenderTrackList())
 					animating = false;
 //				}
