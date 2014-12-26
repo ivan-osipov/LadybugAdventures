@@ -51,14 +51,16 @@ public class GameFieldRenderer extends GameField{
 		}
 	}
 	
-	public void addObject(GameObject object, int row, int column){
+	public boolean addObject(GameObject object, int row, int column){
 		super.addObject(object, row, column);
 		try {
 			contentCellCollection[row][column] = new BaseCellRenderer(container, cellSize,object);
 //			contentCellCollection[row][column].setLocation(renderPosX+column*cellSize, renderPosY + row*cellSize);
 		} catch (SlickException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	public void init(GameContainer container) throws SlickException{
