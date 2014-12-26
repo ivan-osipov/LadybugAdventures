@@ -7,6 +7,7 @@ import ladybugAdventures.entities.CommandImpl;
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
 import ladybugAdventures.entities.interfaces.Command;
+import ladybugAdventures.enums.Behaviour;
 import ladybugAdventures.enums.ErrorType;
 import ladybugAdventures.enums.GameObject;
 
@@ -14,6 +15,7 @@ import org.eclipse.swt.graphics.Point;
 
 public class Analizator {
 	private ErrorType error;
+	private Behaviour behaviour;
 	private GameField fieldBeforeStep;
 	private GameField fieldAfterStep;
 	private List<StepTrack> trackList;
@@ -55,6 +57,10 @@ public class Analizator {
 	
 	public ErrorType getCurrentError() {
 		return error;
+	}
+	
+	public Behaviour getCurrentBehaviour() {
+		return behaviour;
 	}
 	
 	public CommandImpl getLastPerformedCommand() {
@@ -108,6 +114,7 @@ public class Analizator {
 					error = ErrorType.MOVE_HOLE;
 					return false;
 				default:
+					behaviour = Behaviour.MOVING;
 					trackList.add(new StepTrack(
 							new Point(controlObjectCoordinates.x, 
 									controlObjectCoordinates.y), 
@@ -144,6 +151,7 @@ public class Analizator {
 						error = ErrorType.JUMP_ON_HOLE;
 						return false;
 					default:
+						behaviour = Behaviour.JUMPING;
 						trackList.add(new StepTrack(
 								new Point(controlObjectCoordinates.x, 
 										controlObjectCoordinates.y), 
@@ -186,6 +194,7 @@ public class Analizator {
 						error = ErrorType.PUSH_BLOCK_TO_OCCUPIED_CELL;
 						return false;
 					default:
+						behaviour = Behaviour.PUSHING;
 						trackList.add(new StepTrack(
 								new Point(controlObjectCoordinates.x, 
 										controlObjectCoordinates.y), 
@@ -218,9 +227,17 @@ public class Analizator {
 		if (canPerform(command)) {
 			switch(command.getType()) {
 			case PUSH:
-				fieldAfterStep.addObject(GameObject.EMPTY_CELL,
-						trackList.get(0).getStartPosition().y,
-						trackList.get(0).getStartPosition().x);
+				if (ladybugOnOccupiedCell) {
+					fieldAfterStep.addObject(GameObject.OCCUPIED_CELL, 
+							trackList.get(0).getStartPosition().y, 
+							trackList.get(0).getStartPosition().x);
+					ladybugOnOccupiedCell = false;
+				}
+				else {
+					fieldAfterStep.addObject(GameObject.EMPTY_CELL, 
+							trackList.get(0).getStartPosition().y, 
+							trackList.get(0).getStartPosition().x);
+				}
 				if (fieldBeforeStep.getType(trackList.get(1).getFinishPosition().y,
 						trackList.get(1).getFinishPosition().x) == GameObject.HOLE) {
 					fieldAfterStep.addObject(GameObject.EMPTY_CELL,
@@ -283,6 +300,18 @@ public class Analizator {
 		return false;
 	}
 	
+	public String getCurrentBehaviourDefinition() {
+		switch (behaviour) {
+		case MOVING:
+			return "Пурум-пум-пум\r\nчем бы заняться?";
+		case JUMPING:
+			return "Йихуу! Полетели!";
+		case PUSHING:
+			return "Ну почему у ящиков нет колесиков?";
+		default: return "";
+		}
+	}
+	
 	public String getCurrentErrorDefinition() {
 		return getDefininitionError(error);
 	}
@@ -290,25 +319,25 @@ public class Analizator {
 	public String getDefininitionError(ErrorType error){
 		switch(error){
 		case FIELD_BORDER:
-			return "Я не могу уйти с поля!";
+			return "Ой, туда нельзя!";
 		case JUMP_BLOCK:
-			return "К сожалению,я не могу \r\nпрыгнуть через кубик!";
+			return "Там же кубик! \r\nЯ не могу прыгнуть.";
 		case JUMP_EMPTY_CELL:
 			return"Я могу прыгать только через яму...Увы!";
 		case JUMP_OCCUPIED_CELL:
-			return"Я не могу совершить прыжок \r\nэта клетка уже занята не мной!";
+			return"Это же не яма! \r\nПочему я должна прыгать?";
 		case JUMP_ON_HOLE:
-			return "Если я прыгну, то попаду в яму. \r\nДавай придумаем что-нибудь другое.";
+			return "Если я прыгну, то упаду в яму. \r\nДавай придумаем что-нибудь другое.";
 		case MOVE_BLOCK:
 			return"Я не могу беспрепятственно\r\nпройти...На моем пути кубик!";
 		case MOVE_HOLE:
 		    return"В яму можно упасть! \r\nЛучше бы мне перепрыгнуть её!";
 		case PUSH_BLOCK_TO_OCCUPIED_CELL:
-		    return"Кубик нельзя поставить на занятую клетку... \r\nПопробуй еще раз!";
+		    return"Кубик нельзя поставить на занятую клетку... \r\nНа то она и занятая.";
 		case PUSH_EMPTY_CELL:
 		    return"К сожалению, мне нечего толкать... \r\nДавай встанем поближе к кубику.";
 		case PUSH_HOLE:
-			return"Я не могу толкать яму! \r\nДавай встанем поближе к кубику.";
+			return"Я не могу толкать яму! \r\nДа и не очень-то и хотелось.";
 		case PUSH_OCCUPIED_CELL:
 			return"Я не могу толкать занятую клетку! \r\nДавай встанем поближе к кубику.";
 		case PUSH_TWO_BLOCKS:
