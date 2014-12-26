@@ -14,15 +14,28 @@ import ladybugAdventures.Application;
 import ladybugAdventures.entities.GameField;
 import ladybugAdventures.entities.ManagementProgram;
 import ladybugAdventures.ui.animation.MPViewer;
+import ladybugAdventures.ui.animation.SplashScreen;
 import ladybugAdventures.ui.components.LoadAnimationFrame;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class AnimationRunner {
+public class AnimationRunner extends StateBasedGame{
+	public static final String GAME_NAME = "Приключения божьей коровки";
+	public static final byte mainview = 1;
+	public static final byte splash = 0;//loading screen
+	private ManagementProgram program;
+	GameField field;
+	public AnimationRunner(String name, ManagementProgram program, GameField field) {
+		super(name);
+		this.field = field;
+		this.program = program;
+	}
 	public static void run(final GameField field, final ManagementProgram program){
 		Executor executor = Executors.newSingleThreadExecutor();
 		executor.execute(new Runnable() {
@@ -43,16 +56,16 @@ public class AnimationRunner {
 				System.setProperty("org.lwjgl.librarypath", resourcePath.toString());
 				System.setProperty("java.library.path", resourcePath.toString());
 				try {
-					AppGameContainer container = new AppGameContainer(new MPViewer(field,program));
+					AppGameContainer container = new AppGameContainer(new AnimationRunner(GAME_NAME, program, field));
 //					org.eclipse.swt.graphics.Rectangle bounds = Display.getDefault().getBounds();
 //					container.setDisplayMode(bounds.width, bounds.height, false);
 					container.setDisplayMode(1366, 768, false);
 					container.setShowFPS(false);
-					container.setTitle("Приключения божьей коровки");
-//					container.setAlwaysRender(false);
+					container.setTitle(GAME_NAME);
+//					container.setAlwaysRender(true);
 //					container.setClearEachFrame(false);
 //					container.setIcon("src/main/resources/img/icons/logoIcon.ico");
-					container.setTargetFrameRate(30);
+					container.setTargetFrameRate(120);
 //					container.setFullscreen(true);
 					container.start();
 					
@@ -71,5 +84,11 @@ public class AnimationRunner {
 				}
 			}
 		});
+	}
+	@Override
+	public void initStatesList(GameContainer container) throws SlickException {
+		this.addState(new SplashScreen(0));
+		this.addState(new MPViewer(field, program));
+		this.enterState(0);
 	}
 }

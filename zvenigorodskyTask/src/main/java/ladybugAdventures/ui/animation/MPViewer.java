@@ -30,8 +30,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class MPViewer extends BasicGame {
+public class MPViewer extends BasicGameState {
 	
 	
 	private Image background;
@@ -46,22 +48,21 @@ public class MPViewer extends BasicGame {
 	private FireRenderer fire;
 	
 	private boolean animating;
-	int printedObjects = 0;
-	int oneStep = 0;
+	private int oneStep = 0;
 	public MPViewer(GameField field, ManagementProgram program){
-		super("Приключения божьей коровки");
 		info = MessageFormat.format("Автор: {0}\r\nКоличество команд: {1}\r\nРазмер поля: {2}x{3}", program.getAuthor(),program.getAllCommandAmountWithIterations(),
 				field.getWidth(),field.getHeigh());
 		
 		analizator = new Analizator(field, program);
 	}
 	@Override
-	public void init(GameContainer container) throws SlickException {
+	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		background = new Image(ResourceProvider.getResInpStr(ResourceProvider.BACKGROUND_ID),
 				ResourceProvider.BACKGROUND_ID,false);
 		startButton = new StartButtonRenderer(container);
 		gameField = new GameFieldRenderer(analizator.getFieldBeforeStep());
 		gameField.init(container);
+		
 		fire = new FireRenderer(container, gameField.getCellSize());
 		logViewer = new CommandLogRenderer(container);
 		
@@ -80,7 +81,7 @@ public class MPViewer extends BasicGame {
 
 
 	@Override
-	public void render(GameContainer container, Graphics g)
+	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		background.draw(0,0,container.getWidth(),container.getHeight());
 		gameField.render(container, g);
@@ -102,7 +103,7 @@ public class MPViewer extends BasicGame {
 	}
 
 	@Override
-	public void update(GameContainer container, int t)
+	public void update(GameContainer container, StateBasedGame game, int t)
 			throws SlickException {
 		if(!animating){
 			if(startButton.update(container, t)){
@@ -141,7 +142,7 @@ public class MPViewer extends BasicGame {
 					}
 				}
 //				if(i < renderTrackList.size()){
-				if(analizator.getCurrentBehaviour()==Behaviour.PUSHING){
+				if(analizator.getCurrentBehaviour()==Behaviour.PUSHING){//FIXME
 					fire.setLocation(renderTrackList.get(1).result.x, renderTrackList.get(1).result.y);
 					fire.setVisible(true);
 				}
@@ -171,6 +172,7 @@ public class MPViewer extends BasicGame {
 			
 			return true;
 		}
+		startButton.setVisible(false);
 		say.setText(analizator.getCurrentErrorDefinition());
 //		fire.restart();
 		gameField.setNotRenderList(new ArrayList<StepTrack>());
@@ -211,5 +213,9 @@ public class MPViewer extends BasicGame {
 //		}
 //
 //	}
+	@Override
+	public int getID() {
+		return 1;
+	}
 
 }

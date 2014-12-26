@@ -1,5 +1,6 @@
 package ladybugAdventures.util;
 
+import ladybugAdventures.enums.Behaviour;
 import ladybugAdventures.enums.Direction;
 import ladybugAdventures.enums.GameObject;
 import ladybugAdventures.ui.animation.components.GameFieldRenderer;
@@ -42,7 +43,7 @@ public class MoveRenderElement {
 					if(deltaY>0)
 						direction = Direction.DOWN;
 			}
-			this.sprite = new Animation(LazyRenderBuffer.getImages(GameObject.LADYBUG,direction), 70);
+			this.sprite = LazyRenderBuffer.getAnimation(GameObject.LADYBUG, Behaviour.MOVING, direction);
 		}
 		else{
 			if(data.getGameObject()==GameObject.BLOCK)

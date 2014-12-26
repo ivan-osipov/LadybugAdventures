@@ -17,7 +17,7 @@ import ladybugAdventures.entities.interfaces.Command;
 import ladybugAdventures.enums.CommandType;
 import ladybugAdventures.enums.Direction;
 import ladybugAdventures.util.AnimationRunner;
-import ladybugAdventures.util.CommandConverter;
+import ladybugAdventures.util.ResourceCach;
 import ladybugAdventures.util.Dialogs;
 
 import org.eclipse.swt.widgets.Canvas;
@@ -390,8 +390,8 @@ public class ProgramBuilderFrame implements Observer {
 					@Override
 					public void paintControl(PaintEvent e) {
 						if(currentCycle[numberInArray]!=null){
-							e.gc.drawImage(CommandConverter.fromTypeToImage(currentCycle[numberInArray].getType(),25, 25), 0, 0);
-							e.gc.drawImage(CommandConverter.fromDirectionToImage(((CommandImpl)currentCycle[numberInArray]).getDirection(), 15, 15),20,20);
+							e.gc.drawImage(ResourceCach.fromTypeToImage(currentCycle[numberInArray].getType(),25, 25), 0, 0);
+							e.gc.drawImage(ResourceCach.fromDirectionToImage(((CommandImpl)currentCycle[numberInArray]).getDirection(), 15, 15),20,20);
 
 						}
 					}

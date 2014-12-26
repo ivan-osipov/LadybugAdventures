@@ -1,6 +1,5 @@
 package ladybugAdventures.ui.components;
 
-import ladybugAdventures.util.ResourceProvider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -16,7 +15,6 @@ public class LoadAnimationFrame {
     private final static Shell shell = new Shell(Display.getDefault(),SWT.ON_TOP);
     private static Image image;
     public void show(){
-    	image = new Image(shell.getDisplay(),ResourceProvider.getResInpStr(ResourceProvider.LOAD_ICON_ID));
         shell.setSize(200,100);
         Rectangle splashRect = shell.getBounds();
         Rectangle displayRect = Display.getDefault().getBounds();

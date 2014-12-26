@@ -154,11 +154,11 @@ public class MPViewerOptionsFrame {
 							}
 						}
 					}		
-					Shell mainShell = ((Shell)shell.getParent());
+//					Shell mainShell = ((Shell)shell.getParent());
 //					mainShell.setVisible(false);
-					shell.dispose();
+//					shell.dispose();
 					AnimationRunner.run(field, program);
-					mainShell.dispose();
+//					mainShell.dispose();
 //					shell.getParent().dispose();
 //					shell.dispose();
 					
