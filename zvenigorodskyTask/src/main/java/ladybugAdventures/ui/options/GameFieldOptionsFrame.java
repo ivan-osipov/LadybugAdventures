@@ -69,19 +69,19 @@ public class GameFieldOptionsFrame {
 		compositeCreateNewField.setLayout(null);
 		
 		Label lblNewLabel = new Label(compositeCreateNewField, SWT.NONE);
-		lblNewLabel.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
+		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		lblNewLabel.setBounds(10, 10, 216, 25);
 		lblNewLabel.setText("Размерность игрового поля:");
 		
 		Label label = new Label(compositeCreateNewField, SWT.NONE);
-		label.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
+		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		label.setBounds(10, 34, 68, 22);
 		label.setText("Ширина:");
 		
 		Label label_1 = new Label(compositeCreateNewField, SWT.NONE);
-		label_1.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
+		label_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		label_1.setBounds(10, 62, 68, 19);
 		label_1.setText("Высота:");
@@ -121,7 +121,7 @@ public class GameFieldOptionsFrame {
 		spinnerHeigh.setBounds(84, 59, 47, 22);
 		
 		Label lblNewLabel_1 = new Label(compositeCreateNewField, SWT.NONE);
-		lblNewLabel_1.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
+		lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		lblNewLabel_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		lblNewLabel_1.setBounds(10, 87, 216, 25);
 		lblNewLabel_1.setText("Режим составления игрового");
@@ -157,7 +157,7 @@ public class GameFieldOptionsFrame {
 		
 		Label label_3 = new Label(compositeCreateNewField, SWT.NONE);
 		label_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label_3.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
+		label_3.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		label_3.setBounds(10, 107, 41, 25);
 		label_3.setText(" поля:");
 		
