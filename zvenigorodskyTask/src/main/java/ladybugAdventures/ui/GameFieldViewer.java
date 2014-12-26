@@ -44,24 +44,21 @@ public class GameFieldViewer {
 
 		File file = new File(gameFileName);
 		if(!file.exists()){
-//			MessageDialog.openWarning(shell, "Внимание", "Программа управления не соответствует никакому полю\r\n"+gameFileName);
 			return false;
 		}
 		try {
-//			FileSystemManager.setDefaultMapAddress(gameFileName);]
 			GameField field = FileSystemManager.getGameField(gameFileName);
 			GameFieldViewerComponent canvas = new GameFieldViewerComponent(composite, SWT.NONE, field);
 
 			canvas.initField();
-//			composite.setSize(canvas.getSize());
 			canvas.pack();
 			canvas.setLayout(new FillLayout(SWT.HORIZONTAL));
 			shell.setSize((field.getWidth()+1)*GameFieldViewerComponent.CELL_WIDTH-GameFieldViewerComponent.CELL_WIDTH/2-10, (field.getHeigh()+1)*GameFieldViewerComponent.CELL_HEIGH);
-			//непонятные особенность SWT размер shell непоколебим
+			//непонятные особенности SWT размер shell непоколебим, вероятно из-за предустановленного минимального размера формы
 		} catch (StorageException e) {
-//			MessageDialog.openWarning(shell, "Внимание", "Ошибка загрузки поля");
 			return false;
 		}
+		opened = true;
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {

@@ -13,17 +13,17 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.GUIContext;
 
-public class CommonInformationRenderer extends AbstractComponent {
+public class TextInformationRenderer extends AbstractComponent {
 	
 
 	Point location;
 	Point size;
 	String info;
 	UnicodeFont font2;
-	public CommonInformationRenderer(GUIContext container, Point location, Point size, String info) {
+	public TextInformationRenderer(GUIContext container, Point location, String info) {
 		super(container);
 		this.location = location;
-		this.size = size;
+		this.size = new Point(0,0);//для текста не нужен
 		this.info = info;
 	}
 	
@@ -31,11 +31,22 @@ public class CommonInformationRenderer extends AbstractComponent {
 	public void render(GUIContext container, Graphics g) throws SlickException {
 		font2.drawString(location.x, location.y, info, Color.green);
 	}
+	public void render(GUIContext container, Graphics g, Color color) throws SlickException {
+		font2.drawString(location.x, location.y, info, color);
+	}
 	@SuppressWarnings("unchecked")
-	public void init(GameContainer container) throws SlickException{
+	public void init(GUIContext container) throws SlickException{
 		Font awtFont = new Font("Cambria", Font.ITALIC, 20);
 		
 		font2 = new UnicodeFont(awtFont);
+		font2.addAsciiGlyphs();
+		font2.addGlyphs(1024, 1279);//русские символы внутри unicode
+		font2.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
+		font2.loadGlyphs();
+	}
+	public void init(GUIContext container,Font font) throws SlickException{
+		
+		font2 = new UnicodeFont(font);
 		font2.addAsciiGlyphs();
 		font2.addGlyphs(1024, 1279);//русские символы внутри unicode
 		font2.getEffects().add(new ColorEffect(java.awt.Color.WHITE));

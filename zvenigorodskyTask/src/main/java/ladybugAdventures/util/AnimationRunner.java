@@ -44,7 +44,7 @@ public class AnimationRunner {
 				System.setProperty("java.library.path", resourcePath.toString());
 				try {
 					AppGameContainer container = new AppGameContainer(new MPViewer(field,program));
-					org.eclipse.swt.graphics.Rectangle bounds = Display.getDefault().getBounds();
+//					org.eclipse.swt.graphics.Rectangle bounds = Display.getDefault().getBounds();
 //					container.setDisplayMode(bounds.width, bounds.height, false);
 					container.setDisplayMode(1366, 768, false);
 					container.setShowFPS(false);
