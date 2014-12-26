@@ -94,9 +94,6 @@ public class MPViewer extends BasicGame {
 			renderElement.sprite.draw(renderElement.current.x, 
 					renderElement.current.y, 
 					gameField.getCellSize(), gameField.getCellSize());
-			
-//					fire.draw(renderTrackList.get(1).result.x, renderTrackList.get(1).result.y, 
-//							gameField.getCellSize(), gameField.getCellSize());
 		}
 
 		fire.render(container, g);
@@ -162,6 +159,7 @@ public class MPViewer extends BasicGame {
 		
 		if(analizator.nextStep())
 		{
+			say.setText(analizator.getCurrentBehaviourDefinition());
 			logViewer.addToLog(analizator.getLastPerformedCommand());
 			List<StepTrack> tracks = analizator.getTrackList();
 			gameField.setNotRenderList(tracks);
@@ -173,9 +171,7 @@ public class MPViewer extends BasicGame {
 			
 			return true;
 		}
-		if(analizator.isEndOfProgram()){
-//			startButton.setVisible(true);
-		}
+		say.setText(analizator.getCurrentErrorDefinition());
 //		fire.restart();
 		gameField.setNotRenderList(new ArrayList<StepTrack>());
 		gameField.setGameField(analizator.getFieldAfterStep());

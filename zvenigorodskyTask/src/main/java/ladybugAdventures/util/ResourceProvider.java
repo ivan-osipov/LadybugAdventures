@@ -28,6 +28,10 @@ public class ResourceProvider {
 	
 	public final static String CLOUD_SPRITE_ID 				= 		"/sprites/cloud_sprite";
 	public final static String FIRE_SPRITE_ID 				= 		"/sprites/FIRE_sprite";
+	public final static String LADYBUG_FLY_UP_SPRITE_ID 	= 		"/sprites/buglady_fly_up_sprite";
+	public final static String LADYBUG_FLY_RIGHT_SPRITE_ID 	= 		"/sprites/buglady_fly_right_sprite";
+	public final static String LADYBUG_FLY_LEFT_SPRITE_ID 	= 		"/sprites/buglady_fly_left_sprite";
+	public final static String LADYBUG_FLY_DOWN_SPRITE_ID 	= 		"/sprites/buglady_fly_down_sprite";
 	//links
 	private final static String BACKGROUND_LINK 			= 		"/img/pictures/background.jpg";
 	private final static String START_BUTTON_LINK 			= 		"/img/pictures/startButton.png";
@@ -54,6 +58,7 @@ public class ResourceProvider {
 	private final static String CLOUD_SPRITE_LINK 			= 		"/img/sprites/clouds.jpg";
 	private final static String FIRE_SPRITE_LINK 			= 		"/img/sprites/fire1.png";
 	
+	private final static String LADYBUG_FLY_UP_LINK 			= 		"/img/sprites/ladybug_fly_up.png";
 	
 	public static InputStream getResInpStr(String RESOURCE_ID){
 		String resultLink = null;
@@ -117,6 +122,9 @@ public class ResourceProvider {
 			break;
 		case SAY_ID:
 			resultLink = SAY_LINK;
+			break;
+		case LADYBUG_FLY_UP_SPRITE_ID:
+			resultLink = LADYBUG_FLY_UP_LINK;
 			break;
 		}
 		return ResourceProvider.class.getResourceAsStream(resultLink);
