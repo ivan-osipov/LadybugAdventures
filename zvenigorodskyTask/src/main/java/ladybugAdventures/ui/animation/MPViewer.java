@@ -90,7 +90,6 @@ public class MPViewer extends BasicGame {
 		infoRenderer.render(container, g,Color.black);
 		logViewer.render(container, g);
 		
-		g.drawString(info, 30, container.getHeight()-150);
 		for(MoveRenderElement renderElement: renderTrackList){
 			renderElement.sprite.draw(renderElement.current.x, 
 					renderElement.current.y, 
@@ -99,6 +98,8 @@ public class MPViewer extends BasicGame {
 //					fire.draw(renderTrackList.get(1).result.x, renderTrackList.get(1).result.y, 
 //							gameField.getCellSize(), gameField.getCellSize());
 		}
+
+		fire.render(container, g);
 		say.render(container, g);
 
 	}
@@ -144,7 +145,8 @@ public class MPViewer extends BasicGame {
 				}
 //				if(i < renderTrackList.size()){
 				if(analizator.getCurrentBehaviour()==Behaviour.PUSHING){
-					
+					fire.setLocation(renderTrackList.get(1).result.x, renderTrackList.get(1).result.y);
+					fire.setVisible(true);
 				}
 				if(!updateRenderTrackList())
 					animating = false;
