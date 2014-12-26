@@ -49,7 +49,7 @@ public class ProgramBuilderOptionsFrame {
 	public void open() {
 		Display display = Display.getDefault();
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
-		shell.setSize(218, 214);
+		shell.setSize(218, 176);
 		shell.setText("Редактор программы управления");
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
@@ -73,7 +73,7 @@ public class ProgramBuilderOptionsFrame {
 
 		Label label = new Label(creatingComposite, SWT.NONE);
 		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
+		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		label.setBounds(10, 13, 45, 25);
 		label.setText("Автор:");
 
@@ -83,14 +83,14 @@ public class ProgramBuilderOptionsFrame {
 
 		Label label_1 = new Label(creatingComposite, SWT.NONE);
 		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label_1.setBounds(10, 56, 59, 50);
+		label_1.setBounds(10, 44, 59, 46);
 		label_1.setText("Игровая\nкарта:");
-		label_1.setFont(SWTResourceManager.getFont("Minion Pro Med", 12, SWT.NORMAL));
+		label_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 
 		gameFieldPath = new Text(creatingComposite, SWT.BORDER);
 		gameFieldPath.setEditable(false);
 		gameFieldPath.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.NORMAL));
-		gameFieldPath.setBounds(75, 73, 111, 25);
+		gameFieldPath.setBounds(75, 44, 111, 25);
 
 		Button explorerBut = new Button(creatingComposite, SWT.NONE);
 		explorerBut.addSelectionListener(new SelectionAdapter() {
@@ -106,7 +106,7 @@ public class ProgramBuilderOptionsFrame {
 		        	gameFieldPath.setText(selected);
 			}
 		});
-		explorerBut.setBounds(111, 116, 75, 25);
+		explorerBut.setBounds(111, 87, 75, 25);
 		explorerBut.setText("Обзор");
 
 		Button createBut = new Button(creatingComposite, SWT.NONE);
@@ -131,7 +131,7 @@ public class ProgramBuilderOptionsFrame {
 
 			}
 		});
-		createBut.setBounds(10, 116, 74, 25);
+		createBut.setBounds(10, 87, 74, 25);
 		createBut.setText("Создать");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
@@ -158,16 +158,16 @@ public class ProgramBuilderOptionsFrame {
 					text.setText(fileName);
 			}
 		});
-		btnJpjh.setBounds(47, 80, 105, 25);
+		btnJpjh.setBounds(47, 58, 105, 25);
 		btnJpjh.setText("Обзор");
 
 		text = new Text(editingComposite, SWT.BORDER);
 		text.setEditable(false);
-		text.setBounds(10, 53, 184, 21);
+		text.setBounds(10, 31, 184, 21);
 
 		Label label_2 = new Label(editingComposite, SWT.NONE);
 		label_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		label_2.setBounds(10, 32, 191, 15);
+		label_2.setBounds(10, 10, 191, 15);
 		label_2.setText("Путь до программы управления:");
 
 		Button button = new Button(editingComposite, SWT.NONE);
@@ -195,7 +195,7 @@ public class ProgramBuilderOptionsFrame {
 				programBuilder.open();
 			}
 		});
-		button.setBounds(47, 111, 105, 25);
+		button.setBounds(47, 89, 105, 25);
 		button.setText("Редактировать");
 
 		shell.open();

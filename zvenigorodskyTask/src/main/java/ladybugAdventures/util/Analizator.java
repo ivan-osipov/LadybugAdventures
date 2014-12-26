@@ -333,9 +333,9 @@ public class Analizator {
 		case MOVE_HOLE:
 		    return"В яму можно упасть! \r\nЛучше бы мне перепрыгнуть её!";
 		case PUSH_BLOCK_TO_OCCUPIED_CELL:
-		    return"Кубик нельзя поставить на занятую клетку... \r\nНа то она и занятая.";
+		    return"Я не могу поставить кубик на занятую клетку.";
 		case PUSH_EMPTY_CELL:
-		    return"К сожалению, мне нечего толкать... \r\nДавай встанем поближе к кубику.";
+		    return"К сожалению, мне нечего толкать. \r\nДавай встанем поближе к кубику.";
 		case PUSH_HOLE:
 			return"Я не могу толкать яму! \r\nДа и не очень-то и хотелось.";
 		case PUSH_OCCUPIED_CELL:
