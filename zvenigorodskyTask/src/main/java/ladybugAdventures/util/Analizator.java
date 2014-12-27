@@ -316,17 +316,17 @@ public class Analizator {
 		case JUMP_BLOCK:
 			return "Там же кубик! \r\nЯ не могу прыгнуть.";
 		case JUMP_EMPTY_CELL:
-			return"Я могу прыгать только через яму...Увы!";
+			return"Я могу прыгать только\r\n через яму... Увы!";
 		case JUMP_OCCUPIED_CELL:
 			return"Это же не яма! \r\nПочему я должна прыгать?";
 		case JUMP_ON_HOLE:
-			return "Если я прыгну, то упаду в яму. \r\nДавай придумаем что-нибудь другое.";
+			return "Если я прыгну, то упаду в яму. \r\nДавай придумаем что-то другое.";
 		case MOVE_BLOCK:
 			return"Я не могу беспрепятственно\r\nпройти...На моем пути кубик!";
 		case MOVE_HOLE:
 		    return"В яму можно упасть! \r\nЛучше бы мне перепрыгнуть её!";
 		case PUSH_BLOCK_TO_OCCUPIED_CELL:
-		    return"Я не могу поставить кубик на занятую клетку.";
+		    return"Я не могу поставить кубик \r\nна занятую клетку.";
 		case PUSH_EMPTY_CELL:
 		    return"К сожалению, мне нечего толкать. \r\nДавай встанем поближе к кубику.";
 		case PUSH_HOLE:

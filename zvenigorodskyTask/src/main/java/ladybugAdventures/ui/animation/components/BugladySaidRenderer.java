@@ -26,7 +26,7 @@ public class BugladySaidRenderer extends AbstractComponent{
 	private boolean visible;
 	public BugladySaidRenderer(GUIContext container, Point location, Analizator analizator, int cellSize) throws SlickException {
 		super(container);
-		this.size = new Point(210, 60);
+		this.size = new Point(220, 60);
 		this.location = location;
 		text = new TextInformationRenderer(container, new Point(location.x+10, location.y + 10), analizator.getCurrentErrorDefinition());
 		text.init(container, new Font("Cambria", Font.ITALIC, 12));
