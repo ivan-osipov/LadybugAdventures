@@ -22,18 +22,17 @@ public class BugladySaidRenderer extends AbstractComponent{
 	private Point size;
 	private TextInformationRenderer text;
 	private Image background;
-	private Analizator messageProvider;
-	private boolean visible;
-	public BugladySaidRenderer(GUIContext container, Point location, Analizator analizator, int cellSize) throws SlickException {
+	private boolean visible = false;
+	public BugladySaidRenderer(GUIContext container, Point location, int cellSize) throws SlickException {
 		super(container);
-		this.size = new Point(210, 60);
+
+		this.size = new Point(220, 60);
 		this.location = location;
-		text = new TextInformationRenderer(container, new Point(location.x+10, location.y + 10), analizator.getCurrentErrorDefinition());
+		text = new TextInformationRenderer(container, new Point(location.x+30, location.y + 10), "");
 		text.init(container, new Font("Cambria", Font.ITALIC, 12));
-		messageProvider = analizator;
-		visible = false;
+		
 //		text.setLocation(location.x+30, location.y + 40);
-		background = new Image(ResourceProvider.getResInpStr(ResourceProvider.SAY_ID),ResourceProvider.SAY_ID,false);
+		background = new Image(ResourceProvider.getResInpStr(ResourceProvider.SAY),ResourceProvider.SAY,false);
 	}
 
 	@Override
