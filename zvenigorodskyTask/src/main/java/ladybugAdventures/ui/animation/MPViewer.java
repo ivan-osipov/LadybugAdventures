@@ -72,7 +72,7 @@ public class MPViewer extends BasicGameState {
 		fire = new FireRenderer(container, gameField.getCellSize());
 		logViewer = new CommandLogRenderer(container);
 		
-		say = new BugladySaidRenderer(container, new Point(0,0), gameField.getCellSize());
+		say = new BugladySaidRenderer(container, new Point(0,0), analizator, gameField.getCellSize());
 		infoRenderer = new TextInformationRenderer(container, new Point(10, container.getHeight()-90),  info);
 		infoRenderer.init(container);
 		//СПИСОК ОТРИСУЕМЫХ
