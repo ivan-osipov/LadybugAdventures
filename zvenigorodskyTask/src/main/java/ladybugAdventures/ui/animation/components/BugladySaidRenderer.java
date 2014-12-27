@@ -22,10 +22,10 @@ public class BugladySaidRenderer extends AbstractComponent{
 	private Point size;
 	private TextInformationRenderer text;
 	private Image background;
-	private boolean visible = false;
-	public BugladySaidRenderer(GUIContext container, Point location, int cellSize) throws SlickException {
+	private Analizator messageProvider;
+	private boolean visible;
+	public BugladySaidRenderer(GUIContext container, Point location, Analizator analizator, int cellSize) throws SlickException {
 		super(container);
-
 		this.size = new Point(220, 60);
 		this.location = location;
 		text = new TextInformationRenderer(container, new Point(location.x+30, location.y + 10), "");
