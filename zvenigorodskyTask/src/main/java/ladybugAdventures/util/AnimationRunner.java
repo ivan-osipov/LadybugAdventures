@@ -68,7 +68,7 @@ public class AnimationRunner extends StateBasedGame{
 					container.setDisplayMode(1300, 760, false);
 					container.setShowFPS(false);
 					container.setTitle(GAME_NAME);
-					container.setForceExit(false);
+					container.setForceExit(true);
 //					container.setAlwaysRender(true);
 //					container.setClearEachFrame(false);
 //					container.setIcon("src/main/resources/img/icons/logoIcon.ico");
