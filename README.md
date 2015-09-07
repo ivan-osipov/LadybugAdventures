@@ -3,7 +3,7 @@ ZvenigorodskyTask
 
 Lab for Technology of Programming
 
-Для пользования ярлыком необходимо собрать проект с помощью maven командой install/package
+Необходимо собрать проект с помощью maven командой install/package
 
 Для подключения анимации необходимо создать в папке target/lib (после сборки) папку native в которую поместить нативные библиотеки jinput и lwjgl. Найти их можно в упакованном в jar виде в папке target/lib.
 
