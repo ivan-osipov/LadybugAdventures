@@ -1,7 +1,7 @@
-ZvenigorodskyTask
+LadybugAdventures
 =================
 
-Lab for Technology of Programming
+It is lab work
 
 Необходимо собрать проект с помощью maven командой install/package
 
